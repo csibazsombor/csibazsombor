@@ -23,3 +23,11 @@ Self-taught in web development and game development through independent study an
 
 ### Conclusion
 I am eager to apply my skills and passion for web and game development in a professional setting. My dedication to continuous learning and problem-solving makes me a strong candidate for any project or collaboration. I look forward to new opportunities where I can contribute and grow.
+
+<hr>
+netbyofficial@gmail.com<br>
+0944-654-794<br>
+Slovakia 
+
+### Contact me
+[LinkedIn]((https://www.linkedin.com/in/csiba-zsombor)
