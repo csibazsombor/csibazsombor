@@ -15,3 +15,8 @@ Self-taught in web development and game development through independent study an
 - Thai – **Learning**
 
   
+### Experience
+**Personal Projects:**
+- (Unreal Engine) [AZISX] – This Project Use **C++** programming language, completed in 8 months. Includes AI Bots, Ray tracking, photo realistic 4K textures, realistic ambient sounds and optimized environment.
+
+- [My website] – My website features a clean, minimalistic design, leveraging the full potential of **CSS**, **JavaScript**, and **HTML5** to ensure an optimal user experience (UX) and intuitive user interface (UI). 
