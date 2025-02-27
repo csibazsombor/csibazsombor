@@ -31,3 +31,4 @@ Slovakia
 
 ### Contact me
 [LinkedIn]((https://www.linkedin.com/in/csiba-zsombor)
+[Resume](https://drive.google.com/drive/folders/1Yk4ZAO0T6wziKMVI_qaFNvMseqpQfKn2?usp=sharing)
