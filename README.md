@@ -30,5 +30,5 @@ netbyofficial@gmail.com<br>
 Slovakia 
 
 ### Contact me
-[LinkedIn](https://www.linkedin.com/in/csiba-zsombor)<br>
-[Resume](https://drive.google.com/drive/folders/1Yk4ZAO0T6wziKMVI_qaFNvMseqpQfKn2?usp=sharing)
+- [LinkedIn](https://www.linkedin.com/in/csiba-zsombor)<br>
+- [Resume](https://drive.google.com/drive/folders/1Yk4ZAO0T6wziKMVI_qaFNvMseqpQfKn2?usp=sharing)
