@@ -5,5 +5,4 @@
 Ez a projekt **Csiba Zsombor** által lett fejlesztve és karbantartva.
 
 ### Kapcsolat
-- **Email**: netbybusiness@gmail.com
-- **Instagram**: @netbyofficial
+- **Email**: netbyofficial@gmail.com
