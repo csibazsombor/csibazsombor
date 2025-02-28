@@ -1,0 +1,44 @@
+.linkek{
+    margin-top: 1.5cm;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.056);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
+    text-align: center;
+    font-size: 0.8cm;
+    float: center;
+    align-items: center;
+    text-align: center; 
+    color: white;
+}
+.linkek a {
+    text-align: center;
+    border-radius: 3px;
+    color: white;
+    transition: all 0.4s;
+}
+.linkek a:hover {
+    font-size: 0.75cm;
+    text-align: center;
+    border-radius: 3px;
+    color: rgb(207, 207, 207);
+    transition: all 0.4s;
+}
+.graycolor{
+    color: gray;
+    transition: all 0.4s;
+}
+.YT-link{
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.056);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
+    float: center;
+    align-items: center;
+    text-align: center; 
+    margin: auto;
+    color: white;
+    transition: 0.6s all;
+}
+.YT-link a:hover{
+    color: rgb(13, 141, 55);
+    transition: 0.6s all;
+}
