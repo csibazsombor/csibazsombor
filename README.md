@@ -1,4 +1,4 @@
-👋 Hi, I’m csibazsombor I'm a Senior Web Developer. I am currently looking for online work in web development as temporary work. I aim to gain experience in web development and expand my skills with modern technologies such as **JavaScript**, **HTML5**, **Python** and other frontend or backend tools. Additionally, I incorporate AI in my work and am involved in game development using Unreal Engine.
+👋 Hi, I’m csibazsombor I'm a Senior Software Developer. I am currently looking for online work in web development as temporary work. I aim to gain experience in web development and expand my skills with modern technologies such as **JavaScript**,**CSS**, **HTML5**, **Python**, **C++** and other frontend or backend tools. Additionally, I incorporate AI in my work and am involved in game development using Unreal Engine, Ray tracking, **Photorealistic graphics,** **C++**.
 
 ### **Education**
 - Self-taught in web development and game development through independent study and online courses. Continuously expanding knowledge in HTML5, CSS, JavaScript, Python, Unreal Engine, and AI integration.
@@ -10,7 +10,7 @@
 
 **Languages:**
 - Hungarian – **Native**
-- English – **High level**
+- English – **High level** (writing, reading, speaking, understanding complex sentences)
 - Japanese – **Basic** (writing, reading)
 - Thai – **Learning**
 
@@ -31,4 +31,4 @@ Slovakia
 
 ### Contact me
 - [LinkedIn](https://www.linkedin.com/in/csiba-zsombor)<br>
-- [Resume](https://drive.google.com/drive/folders/1Yk4ZAO0T6wziKMVI_qaFNvMseqpQfKn2?usp=sharing)
+- [Resume](https://drive.google.com/file/d/11lU2u-MpRRnqYTtQf4qm2hPVe6-_AGHp/view?usp=sharing)
