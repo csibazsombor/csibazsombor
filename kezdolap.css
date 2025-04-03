@@ -1,42 +1,42 @@
 @font-face{
     font-family: TW-Cen-MT-Condensed;
-    src: url(../FONTS/Tw\ Cen\ MT\ Condensed\ Bold.ttf);
+    src: url(FONTS/Tw\ Cen\ MT\ Condensed\ Bold.ttf);
 }
 @font-face{
     font-family: Poppins-Light;
-    src: url(../FONTS/Poppins/Poppins-Medium.ttf);
+    src: url(FONTS/Poppins/Poppins-Medium.ttf);
 }
 
 @font-face{
     font-family: Poppins-Bold;
-    src: url(../FONTS/Poppins/Poppins-Bold.ttf);
+    src: url(FONTS/Poppins/Poppins-Bold.ttf);
 }
 @font-face{
     font-family: Leoscar;
-    src: url(../FONTS/Leoscar-Serif.ttf);
+    src: url(FONTS/Leoscar-Serif.ttf);
 }
 @font-face{
     font-family: coolvetica;
-    src: url(../FONTS/coolvetica\ condensed\ rg.otf);
+    src: url(FONTS/coolvetica\ condensed\ rg.otf);
 }
 
 @font-face{
     font-family: QuickSand-Light;
-    src: url(../FONTS/QuickSand/Quicksand-Light.ttf);
+    src: url(FONTS/QuickSand/Quicksand-Light.ttf);
 }
 
 @font-face{
     font-family: QuickSand-Bold;
-    src: url(../FONTS/QuickSand/Quicksand-Medium.ttf);
+    src: url(FONTS/QuickSand/Quicksand-Medium.ttf);
 }
 
 @font-face{
     font-family: BRUX;
-    src: url(../FONTS/Brux-Font/BRUX.otf);
+    src: url(FONTS/Brux-Font/BRUX.otf);
 }
 @font-face{
     font-family: Gatha;
-    src: url(../FONTS/ZTGatha-SemiBold.ttf);
+    src: url(FONTS/ZTGatha-SemiBold.ttf);
 }
 
 
@@ -45,7 +45,7 @@ html{
 }
 body{
     font-family: 'Poppins-Light';
-    background-image: url("../képek/background/background-travel.png");
+    background-image: url("képek/background/background-travel.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
