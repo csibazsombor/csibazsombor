@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Információk - Zsombor Travelling</title>
+    
+    <link rel="stylesheet" href="../kezdolap.css">
+    <link rel="stylesheet" href="../CSS/ertekeles.css">
+    <link rel="stylesheet" href="../CSS/scrollbar.css">
+    <link rel="stylesheet" href="../CSS/all.min.css">
+
+    <link rel="shortcut icon" href="../favicon/favicon_new.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav class="gombok">
+            <img src="../képek/ViTeLi.png" alt="NetBy Travel Logo" title="NetBy Travel Logo" draggable="false">
+            <div class="nav-links">
+                <a href="../index.html" id="home-link" class="kezdolapgomb"><strong>Főoldal</strong></a>
+                <a href="informacio.html" id="info-link" class="informaciokgomb" title="Információk a Weboldalról"><strong>Információk</strong></a>
+                <a href="#hamarosan" id="coming-soon" class="coming-soon">Hamarosan</a>
+            </div>
+        </nav>
+
+        <div class="sarokverziokijelzo">
+            <h4 class="Verzió" id="verzio">V4.1</h4>
+            <h5 class="update_info" id="update-info">2025 Frissítés</h5>
+        </div>
+    </header>
+    
+    <div class="language-switcher">
+        <button id="switch-to-hu" onclick="switchLanguage('hu')">HU</button>
+        <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
+    </div>
+    
+    <main>
+        <section class="bemutatkozas">
+            <h2 id="rolamCim">Select language</h2>
+            <p id="p1"></p>
+            <p id="p2"></p>
+            <p id="p3"></p>
+            <p id="p4"></p>
+            <p id="p5"></p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 id="kapcsolat">Kapcsolat</h3>
+                <ul class="footer-links">
+                    <li><a href="Linkek.html" id="elerhetosegek">Elérhetőségek</a></li>
+                    <li><a href="#" id="irjon">Írjon nekünk</a></li>
+                </ul>
+            </div>    
+            
+            <div class="footer-section">
+                <h3 id="kovess">Kövessen minket</h3>
+                <ul class="social-media-links">
+                    <li><a href="https://www.youtube.com/@NetByTravel" id="youtube">YouTube</a></li>
+                    <li><a href="#" id="instagram">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bottom-footer">
+            <p id="copyright">&copy; 2025 NetBy Travel - Minden jog fenntartva.</p>
+            <p id="keszitette">Készítette: Csiba Zsombor</p>
+        </div>
+    </footer>
+    <script src="../JS/language.js"></script>
+    <script>
+        window.onload = loadLanguage;
+
+        // Example of switching language buttons
+        document.getElementById("switch-to-hu").addEventListener('click', function() {
+            switchLanguage('hu');
+        });
+
+        document.getElementById("switch-to-en").addEventListener('click', function() {
+            switchLanguage('en');
+        });
+    </script>
+</body>
+</html>

@@ -50,6 +50,8 @@ html {
 }
 
 body {
+    overflow-x: hidden; /* Hides horizontal scrollbar */
+    overflow-y: auto;   /* Ensures vertical scrollbar is still visible */
     font-family: 'Poppins-Light', sans-serif;
     background-image: url("képek/background/background-travel.png");
     background-size: cover;
@@ -72,8 +74,7 @@ header {
     text-align: center;
     font-size: 2.5rem;
     padding: 10px;
-    color: transparent;
-    background-image: linear-gradient(to right, white, rgb(185, 185, 185));
+
     -webkit-background-clip: text;
     background-clip: text;
     animation: animate 3s linear infinite;
@@ -83,6 +84,7 @@ header {
 
 .website-name h1 {
     margin: 0;
+    color: white;
 }
 
 /* Navigation styles */
@@ -452,3 +454,69 @@ footer {
     transform: scale(1.2);
 }
 
+.bemutatkozas {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+    color: #f1f1f1;
+    font-family: 'Poppins-Light', sans-serif;
+    line-height: 1.8;
+    max-width: 900px;
+    margin: 50px auto;
+    text-align: justify;
+}
+
+.bemutatkozas h2 {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.language-switcher {
+    text-align: right;
+    padding: 10px 30px;
+}
+
+.language-switcher button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.language-switcher button:hover {
+    background-color: white;
+    color: black;
+}
+
+
+/* Style for the coming soon message */
+.coming-soon {
+    text-align: center;
+    background-color: rgba(148, 148, 148, 0.185); /* Dark background with some transparency */
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    opacity: 0.5; /* Opacity set to 0.5 */
+    pointer-events: none; /* Disable interactions with this section */
+  }
+  
+  /* Style for heading */
+  .coming-soon h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the paragraph */
+  .coming-soon p {
+    font-size: 1.5rem;
+  }
+  

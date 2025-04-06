@@ -15,7 +15,7 @@
     <link rel="shortcut icon" href="favicon/favicon_new.ico" type="image/x-icon">
     
     <!-- Page Information -->
-    <title>Zsombor Travelling</title>
+    <title id="page-title">Zsombor Travelling</title>
     <meta property="og:title" content="Zsombor's Travelling">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://netbyofficial.github.io/NetBy.hu/">
@@ -25,81 +25,81 @@
 </head>
 <body onload="Értesítés_Engedélykérés()">
     <header>
-        <div class="website-name">
-            <h1>NetBy Travel</h1>
-        </div>
-        
         <nav class="gombok">
             <img src="képek/ViTeLi.png" alt="NetBy Travel Logo" title="NetBy Travel Logo" draggable="false">
             <div class="nav-links">
-                <a href="index.html" class="kezdolapgomb"><strong>Főoldal</strong></a>
-                <a href="HTML/Informáciok.html" class="informaciokgomb" title="Információk a Weboldalról"><strong>Információk</strong></a>
-                <a href="HTML/Linkek.html"><strong>Elérhetőségek</strong></a>
-                <a href="index.html" class="coming-soon">Hamarosan</a>
+                <a href="index.html" id="home-link" class="kezdolapgomb"><strong>Home</strong></a>
+                <a href="PAGE/informacio.html" id="info-link" class="informaciokgomb" title="Információk a Weboldalról"><strong>Information</strong></a>
+                <a href="#hamarosan" id="coming-soon" class="coming-soon">Coming Soon</a>
             </div>
         </nav>
         
         <div class="sarokverziokijelzo">
-            <h4 class="Verzió">V4.1</h4>
-            <h5 class="update_info">2025 Frissítés</h5>
+            <h4 id="verzio" class="Verzió">V4.1</h4>
+            <h5 id="update-info" class="update_info">2025 Update</h5>
         </div>
     </header>
-    
+
+    <div class="language-switcher">
+      <button id="switch-to-hu" onclick="switchLanguage('hu')">HU</button>
+      <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
+  </div>
+  
+
+  </div>
     <main>
         <section class="udvozollek">
-            <h2>Üdvözöljük a NetBy Travel oldalán!</h2>
-            <p>Fedezze fel a világ csodáit velünk!</p>
+            <h2 id="udvozles">Welcome!</h2>
+            <p id="udvozles-text">Discover the wonders of the world with us!</p>
             
             <div class="action-buttons">
-                <p><a href="#Galeria" class="button">Képek</a></p>
-                <p><a href="https://www.youtube.com/@NetByTravel" class="social-button youtube-button">YouTube Csatorna</a></p>
+                <p><a href="#Galeria" class="button" id="galeria-button">Images</a></p>
+                <p><a href="https://www.youtube.com/@NetByTravel" class="social-button youtube-button" id="youtube-button">YouTube Channel</a></p>
             </div>
         </section>
         
         <section id="Galeria" class="photo-gallery">
-
-            <h2>Úti élmények galériája</h2>
+            <h2 id="galeria-title">Gallery</h2>
             <div class="gallery-placeholder">
-              <img src="képek/NetBy Logo new 2024. 08. 12.png"
-                   alt="Utazási kép"
-                   class="clickable-image"
-                   data-location="Example location, Hungary"
-                   data-date="2024.08.12">
-              <p>Hamarosan feltöltjük legújabb utazási képeinket!</p>
-          </div>
-          
-          <!-- Modal structure -->
-          <div id="image-modal" class="modal">
-              <span class="close-btn">&times;</span>
-              <img class="modal-content" id="modal-img">
-              <div class="modal-caption" id="modal-caption"></div>
-          </div>
-          
+                <img src="képek/NetBy Logo new 2024. 08. 12.png"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     data-location="Example location, Hungary"
+                     data-date="2024.08.12">
+                <p id="galeria-text">New travel photos will be uploaded soon!</p>
+            </div>
+            
+            <!-- Modal structure -->
+            <div id="image-modal" class="modal">
+                <span class="close-btn">&times;</span>
+                <img class="modal-content" id="modal-img">
+                <div class="modal-caption" id="modal-caption"></div>
+            </div>
         </section>
     </main>
     
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h3>Kapcsolat</h3>
+                <h3 id="kapcsolat">Contact</h3>
                 <ul class="footer-links">
-                    <li><a href="HTML/Linkek.html">Elérhetőségek</a></li>
-                    <li><a href="#">Írjon nekünk</a></li>
+                    <li><a href="HTML/Linkek.html" id="elerhetosegek">Contact Information</a></li>
+                    <li><a href="#" id="irjon">Write to us</a></li>
                 </ul>
             </div>
             
             <div class="footer-section">
-                <h3>Kövessen minket</h3>
+                <h3 id="kovess">Follow us</h3>
                 <ul class="social-media-links">
-                    <li><a href="https://www.youtube.com/@NetByTravel">YouTube</a></li>
-                    <li><a href="#">Instagram</a></li>
+                    <li><a href="https://www.youtube.com/@NetByTravel" id="youtube">YouTube</a></li>
+                    <li><a href="#" id="instagram">Instagram</a></li>
                 </ul>
             </div>
         </div>
         
         <div class="bottom-footer">
-            <p>&copy; 2025 NetBy Travel - Minden jog fenntartva.</p>
-            <p>Készítette: Csiba Zsombor</p>
+            <p id="copyright">&copy; 2025 ZST - All rights reserved.</p>
+            <p id="keszitette">Created by: Csiba Zsombor</p>
         </div>
     </footer>
     
@@ -108,5 +108,19 @@
     <script src="libs/netby.lib.js"></script>
     <script src="smooth-scroll.js"></script>
     <script src="JS/image-info.js"></script>
+    <script src="JS/language.js"></script>
+    
+    <script>
+      window.onload = loadLanguage;
+
+      // Example of switching language buttons
+      document.getElementById("switch-to-hu").addEventListener('click', function() {
+          switchLanguage('hu');
+      });
+
+      document.getElementById("switch-to-en").addEventListener('click', function() {
+          switchLanguage('en');
+      });
+  </script>
 </body>
 </html>
