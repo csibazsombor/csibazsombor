@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#v0.0.6 change this to force update
+#v0.0.7 change this to force update
 
 CACHE:
 CSS/all.min.css
@@ -33,12 +33,11 @@ JS/loading.js
 JS/pyscript.js
 JS/sütik.js
 JS/validation.js
-JSON/fejlesztők.json
+favicon/favicon 256x256.ico
 képek/2023. 04. 25. logo netby.png
 képek/azisx3 logo.png
 képek/hamarosan.png
 képek/hatterkep7.jpg
-PY/main.py
 index.html
 kezdolap.css
 FONTS/Poppins/Poppins-Bold.ttf

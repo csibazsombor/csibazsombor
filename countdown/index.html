@@ -41,6 +41,9 @@
             font-weight: lighter;
             text-align: center; /* Center text for better mobile viewing */
             padding: 0 10px; /* Add some padding for smaller screens */
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s forwards;
         }
 
         #date {
@@ -49,6 +52,69 @@
             margin-top: 10px;
             font-weight: bold;
             text-align: center; /* Center text for better mobile viewing */
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeIn 1s forwards;
+            animation-delay: 1s; /* Delay date text animation */
+        }
+
+        /* Styling for the circular progress bar */
+        .progress-wrapper {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 20px 0;
+            border-radius: 50%;
+            background: conic-gradient(#3498db 0% 0%, #2c3e50 0% 100%);
+            animation: progressBar 1s ease-in-out forwards;
+        }
+
+        .progress-wrapper span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        /* Styling for the horizontal progress bar */
+        .progress-bar-container {
+            width: 80%;
+            max-width: 500px;
+            margin: 20px 0;
+            position: relative;
+            height: 30px;
+            background-color: #ecf0f1;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #3498db;
+            transition: width 1s ease-in-out;
+            border-radius: 15px;
+        }
+
+        /* Fade-in effect for countdown and date */
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Progress bar animation */
+        @keyframes progressBar {
+            from {
+                background: conic-gradient(#3498db 0% 0%, #2c3e50 0% 100%);
+            }
+            to {
+                background: conic-gradient(#3498db 100% 100%, #2c3e50 100% 100%);
+            }
         }
 
         @media (min-width: 768px) {
@@ -67,12 +133,23 @@
         <img src="../képek/channels4_profile.jpg" alt="">
         <img src="../képek/NetBy Logo new 2023. 10. 06.png" alt="">
     </div>
+
+    <!-- Circular progress bar -->
+    <div class="progress-wrapper">
+        <span id="progress-text">0%</span>
+    </div>
+
     <div id="countdown"></div>
     <div id="date">2024. augusztus 12</div>
 
+    <!-- Horizontal progress bar showing percentage -->
+    <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+
     <script>
         function updateCountdown() {
-            const targetDate = new Date('2024-08-12T00:00:00');
+            const targetDate = new Date('2025-08-12T00:00:00');
             const now = new Date();
             const difference = targetDate - now;
 
@@ -86,6 +163,22 @@
 
             if (difference < 0) {
                 document.getElementById('countdown').innerHTML = "Lejárt az idő!";
+            } else {
+                // Calculate percentage
+                const totalTime = targetDate - new Date('2024-08-12T00:00:00');
+                const elapsedTime = now - new Date('2024-08-12T00:00:00');
+                const percentage = (elapsedTime / totalTime) * 100;
+
+                // Update circular progress bar
+                const progressWrapper = document.querySelector('.progress-wrapper');
+                const progressText = document.getElementById('progress-text');
+                progressWrapper.style.transition = 'background 1s ease-in-out';
+                progressWrapper.style.background = `conic-gradient(#3498db ${percentage}% 100%, #2c3e50 ${percentage}% 100%)`;
+                progressText.innerText = `${Math.floor(percentage)}%`;
+
+                // Update horizontal progress bar
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = `${percentage}%`;
             }
         }
 
