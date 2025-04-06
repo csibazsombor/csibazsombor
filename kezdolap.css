@@ -1,577 +1,138 @@
-@font-face{
-    font-family: TW-Cen-MT-Condensed;
+/* Base styles and font imports */
+@font-face {
+    font-family: 'TW-Cen-MT-Condensed';
     src: url(FONTS/Tw\ Cen\ MT\ Condensed\ Bold.ttf);
 }
-@font-face{
-    font-family: Poppins-Light;
+
+@font-face {
+    font-family: 'Poppins-Light';
     src: url(FONTS/Poppins/Poppins-Medium.ttf);
 }
 
-@font-face{
-    font-family: Poppins-Bold;
+@font-face {
+    font-family: 'Poppins-Bold';
     src: url(FONTS/Poppins/Poppins-Bold.ttf);
 }
-@font-face{
-    font-family: Leoscar;
+
+@font-face {
+    font-family: 'Leoscar';
     src: url(FONTS/Leoscar-Serif.ttf);
 }
-@font-face{
-    font-family: coolvetica;
+
+@font-face {
+    font-family: 'coolvetica';
     src: url(FONTS/coolvetica\ condensed\ rg.otf);
 }
 
-@font-face{
-    font-family: QuickSand-Light;
+@font-face {
+    font-family: 'QuickSand-Light';
     src: url(FONTS/QuickSand/Quicksand-Light.ttf);
 }
 
-@font-face{
-    font-family: QuickSand-Bold;
+@font-face {
+    font-family: 'QuickSand-Bold';
     src: url(FONTS/QuickSand/Quicksand-Medium.ttf);
 }
 
-@font-face{
-    font-family: BRUX;
+@font-face {
+    font-family: 'BRUX';
     src: url(FONTS/Brux-Font/BRUX.otf);
 }
-@font-face{
-    font-family: Gatha;
+
+@font-face {
+    font-family: 'Gatha';
     src: url(FONTS/ZTGatha-SemiBold.ttf);
 }
 
-
-html{
+/* Global styles */
+html {
     scroll-behavior: smooth;
 }
-body{
-    font-family: 'Poppins-Light';
+
+body {
+    font-family: 'Poppins-Light', sans-serif;
     background-image: url("képek/background/background-travel.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-}
-.iframe-mymusic iframe{
-    border-radius: 8px;
-}
-.img img{
-    height: 350px;
-    border-radius: 8px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
-}
-.kuldott-kepet img{
-    height: 150px;
-    border-radius: 9px;
-    margin-left: 0.01cm;
-    float: left;
-    text-align: left;
-    margin-top: 1cm;
-}
-.kuldott-kepet p{
+    margin: 0;
+    padding: 0;
     color: white;
-    float: left;
-    margin-left: -4.2cm;
-    margin-top: 5.1cm;
-}
-.nyelv{
-    
-    border-radius: 15px;
-    font-size: 0.5cm;
-    color: white;
-    padding: auto;
-    float: right;
-    text-decoration: none;
-}
-#countdown {
-	display: flex;
-    font-size: 30px;
-    font-family: 'TW-Cen-MT-Condensed';
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.856);
-    float: left;
-    border-radius: 8px;
 }
 
-.time {
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	margin: 15px;
+/* Header styles */
+header {
+    position: relative;
+    padding: 10px 0;
 }
 
-.time h2 {
-	font-weight: bold;
-	font-size: 36px;
-	line-height: 1;
-	margin: 0 0 5px;
-    font-size: 40px;
-    color: #ffffff;
-    font-family: 'Poppins-Bold';
-}
-#countdown-title{
-    font-family: 'Poppins-Bold';
-    color: white;
-}
-#expired-link{
-    display: none;
-}
-#netby-ai{
-    display: none;
-}
-option{
-    border-radius: 15px;
-    color: white;
-    background-color: rgba(14, 14, 14, 0.13);
-}
-select{
-    color: white;
-    border-radius: 15px;
-    background-color: rgba(14, 14, 14, 0.096);
-}
-.button{
-    background-color: #333;
-    border-radius: 2px;
-    font-size: 0.8cm;
-}
-.gomb a{
+.website-name {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.384);
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 17px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #fff;
-    background-color: black;
-    border: 2px solid black;
-    border-radius: 100px;
-    transition: all 0.5s;
-    cursor: pointer;
-    outline: none;
-    margin-bottom: auto;
+    font-size: 2.5rem;
+    padding: 10px;
+    color: transparent;
+    background-image: linear-gradient(to right, white, rgb(185, 185, 185));
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: animate 3s linear infinite;
+    -webkit-background-size: 500%;
+    background-size: 500%;
 }
-.gomb a:hover{
-    border-radius: 100px;
-    background-color: rgb(224, 224, 224);
-    border-color: rgb(224, 224, 224);
-    transform: translateY(-3px);
-    transition: all 0.5s;
+
+.website-name h1 {
+    margin: 0;
 }
-.gomb a:active{
-    transform: translateY(1px);
-}
-.gombok{
-    font-family: 'TW-Cen-MT-Condensed';
-    float: auto;
-    border-bottom: 5cm;
-    margin-top: -0.5cm;
-    margin-left: -0.1cm;
-    margin-right: -0.1cm;
-    padding-top: 0.5cm;
-    padding-bottom: 0.5cm;
+
+/* Navigation styles */
+.gombok {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    margin: -5px -1px;
+    padding: 15px 0;
     background-color: rgba(255, 255, 255, 0.056);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
     transition: all 0.3s;
-    border-radius: 0px;
-    padding: auto;
     text-align: center;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.gombok:hover{
-    box-shadow: 0 25px 20px rgba(0, 0, 0, 0.39);
-    transition: all 0.3s;
-}
-.gombok a {
-    border-radius: 15px;
-    font-size: 0.8cm;
-    color: white;
-    padding-right: 0.5cm;
-    transition: all 0.5s;
-    padding-left: 0.2cm;
-    padding: auto;
-    text-decoration: none;
-    transition: all 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.gombok a:hover{
-    opacity: 100%;
-    font-size: 1cm;
-    color: white;
-    transition: all 0.3s;
-    padding: auto;
-    border-radius: 0px;
-    transition: all 0.4s;
-    transition: all 0.5s;
+.gombok:hover {
+    box-shadow: 0 25px 20px rgba(0, 0, 0, 0.39);
 }
-.gombok img{
+
+.gombok img {
     height: 120px;
     border-radius: 100px;
-    text-align: center;
-    margin: center;
-    float: center;
+    margin-bottom: 10px;
 }
 
-a{
-    text-decoration: none;
-}
-
-@media screen and (max-width: 1000px){
-body{
-    background-color: rgb(8, 7, 22);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-a{
-    font-size: 0.7cm;
-}
-.gomb a:hover{
-    transition: none;
-}
-.gombok{
-    font-family: 'Poppins-Light';
-    float: center;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
-    transition: all 1s;
-    text-align: center;
+.nav-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .gombok a {
-    display: list-item;
-    font-size: 0.6cm;
-    text-align: center;
-
-}
-
-.gombok a:hover{
-    font-size: 0.7cm;
-    transition: all 0.3s;
-    padding: auto;
-}
-
-.games{
-    float: center;
-    text-align: center;
-    padding-left: 1cm;
-    padding: 1cm;
-    border-radius: 25px;
-    
-    height: 200px;
-    width: 200px;
-}
-
-.games a img:hover{
-    padding: 0.2cm;
-    transition: all 0.2s;
-    height: 200px;
-    width: 200px;
-    
-    
-}
-
-.games a img:hover:after{
-    padding: 0.2cm;
-    background-color: rgb(0, 0, 0);
-    transition: all 0.2s;
-    height: 200px;
-    width: 200px;
-}
-.games a img:before:hover{
-    padding: 0.2cm;
-    background-color: rgb(0, 0, 0);
-    transition: all 0.2s;
-    height: 200px;
-    width: 200px;
-}
-.games a {
-
-transition: all 0.8s;
-height: 200px;
-width: 200px;
-}
-.games a img{
-border-radius: 25px;
-transition: all 0.2s;
-height: 200px;
-width: 200px;
-}
-
-.time {
-	margin: 5px;
-}
-.time h2 {
-	font-size: 30px;
-}
-.time small {
-	font-size: 25px;
-}
-
-}
-.fejlesztesalatt {
-    color: rgb(241, 213, 54);
-    font-size: 0.5cm;
-    padding: auto;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.384);
-    border-radius: 15px;
-    float: center;
-    width: 200px;
-}
-
-.leiras {
-    color: white;
-    font-family: 'QuickSand-Bold';
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.056);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
-    margin: auto;
-    margin-top: 1cm;
-    float: auto;
-    padding: auto;
-    text-align: center;
-}
-
-.leiras h2{
-    font-family: 'TW-Cen-MT-Condensed';
-    color: white;
-    border-radius: 6px;
-    float: auto;
-    padding: auto;
-}
-
-.leiras h3{
-    color: rgb(255, 175, 2);
-    border-radius: 6px;
-    float: auto;
-    padding: auto;
-}
-
-.udvozollek {
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.056);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
-    margin-left: auto;
-    margin-left: right;
-    margin-top: 1cm;
-    float: auto;
-    text-align: center;
-    padding: auto;
-    text-align: center;
-    color: white;
-    font-size: 0.5cm;
-}
-.udvozollek h1{
+    font-size: 1.2rem;
     color: white;
     text-decoration: none;
-}
-.sarokverziokijelzo{
-    font-family: 'Gatha';
-    text-align: center;
-    float: center;
-    background-color: rgba(0, 0, 0, 0.384);
-    color: white;
-    padding: auto;
-    width: 100px;
-    margin-bottom: auto;
-    font-size: 0.4cm;
-    border-radius: 15px;
-}
-.sarokverziokijelzo h4 h5{
-    font-family: 'Leoscar';
-
-}
-.kiemeles{
-    background-color: darkslateblue;
-}
-.egyebweboldalak{
-    font-family: 'TW-Cen-MT-Condensed';
-    color: black;
-    transition: all 1s;
-    float: center;
-    text-align: center;
-    padding: auto;
-    background-color: white;
-    border-radius: 15px;
-}
-
-.egyebweboldalak a {
-    font-size: 0.6cm;
-    color: black;
     transition: all 0.5s;
-    padding: auto;
-    text-decoration: none;
-}
-
-.egyebweboldalak a:hover {
-    font-size: 0.7cm;
-    color: #000000;
-    transition: all 0.4s;
-    padding: auto;
-    border-radius: 15px; 
-    border-radius: 5px;
-}
-
-.games{
-    float: center;
-    text-align: center;
-    padding-left: 1cm;
-    border-radius: 25px;
-   
-}
-
-.games a img:hover{
-    padding: 0.2cm;
-    background-color: rgb(0, 0, 0);
-    transition: all 0.2s;
-    
-}
-
-.games a img:hover:after{
-    padding: 0.2cm;
-    background-color: rgb(0, 0, 0);
-    transition: all 0.2s;
-}
-.games a img:before:hover{
-    padding: 0.2cm;
-    background-color: rgb(0, 0, 0);
-    transition: all 0.2s;
-}
-
-.games a {
-
-transition: all 0.8s;
-}
-.games a img{
-border-radius: 25px;
-transition: all 0.2s;
-image-resolution: 100%;
-}
-
-.red_text{
-    color: red;
-}
-
-.pythontext{
-    color: white;
-}
-
-.nepszeru{
-    float: center;
-    text-align: center;
-    padding-left: 1cm;
-    border-radius: 25px;
-   
-}
-
-.unreal_engine_Jatek{
-    float: center;
-    text-align: center;
-    padding-left: 1cm;
-    border-radius: 25px;
-   
-}
-
-.unreal_engine_Jatek a img:hover{
-    padding: 0.2cm;
-    background-color: white;
-    transition: all 0.2s;
-    
-}
-
-.unreal_engine_Jatek a img:hover{
-    padding: 0.2cm;
-    background-color: white;
-    transition: all 0.2s;
-    
-}
-
-.unreal_engine_Jatek a img:hover:after{
-    padding: 0.2cm;
-    background-color: white;
-    transition: all 0.2s;
-}
-.unreal_engine_Jatek a img:before:hover{
-    padding: 0.2cm;
-    background-color: white;
-    transition: all 0.2s;
-}
-
-.unreal_engine_Jatek a {
-
-    transition: all 0.8s;
-}
-
-.unreal_engine_Jatek a img{
-    border-radius: 25px;
-    transition: all 0.2s;
-    image-resolution: 100%;
-}
-
-
-
-.nepszeru a img:hover{
-    padding: 0.2cm;
-    background-color: rgb(0, 119, 255);
-    transition: all 0.2s;
-    
-}
-
-.nepszeru a img:hover:after{
-    padding: 0.2cm;
-    background-color: rgb(0, 119, 255);
-    transition: all 0.2s;
-}
-.nepszeru a img:before:hover{
-    padding: 0.2cm;
-    background-color: rgb(0, 119, 255);
-    transition: all 0.2s;
-}
-
-.nepszeru a {
-
-    transition: all 0.8s;
-}
-
-.nepszeru a img{
-    border-radius: 25px;
-    transition: all 0.2s;
-    image-resolution: 100%;
-}
-
-.nepszeru_text{
-  background-color: rgba(0, 0, 0, 0.493);
-  float: center;
-  text-align: center;
-  margin-left: 18cm;
-  margin-right: 18cm;
-  color: white;
-  border-radius: 15px;
-}
-
-.unrael_engine_jatek_text{
-    background-color: rgba(0, 0, 0, 0.493);
-    float: center;
-    text-align: center;
-    margin-left: 18cm;
-    margin-right: 18cm;
-    color: white;
-    border-radius: 15px;
-}
-
-a{
-    display: inline-block;
     position: relative;
-    color: #fff
+    padding: 5px 10px;
+    border-radius: 8px;
 }
 
-a::after{
+.gombok a:hover {
+    font-size: 1.3rem;
+    color: white;
+    transition: all 0.3s;
+}
+
+.gombok a::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -579,109 +140,315 @@ a::after{
     height: 2px;
     bottom: 0;
     left: 0;
-    background-color: transparent;
-    transition: transform .25s ease-out
-}
-a:hover{
-  color: white;
-  transform: scale(1, 1);
-  transition: transform 0.3s ease;
+    background-color: white;
+    transition: transform 0.25s ease-out;
 }
 
-a:hover::after{
-    transform: scaleX(1)
-}
-.website-name{
-    font-family: 'TW-Cen-MT-Condensed';
-    text-align: left;
-    font-size: 1cm;
-    border-radius: 6px;
-    float: auto;
-    padding: auto;
-    color: transparent;
-    background-image: linear-gradient(to right, white,rgb(185, 185, 185));
-    -webkit-background-clip: text;
-    animation: animate 3s linear infinite;
-    -webkit-background-size: 500%;
-    background-size: 500%;
+.gombok a:hover::after {
+    transform: scaleX(1);
 }
 
-.underline{
-    font-family: 'QuickSand-Bold';
-    font-size: 0.6cm;
-    box-shadow: 0 16px 16px rgba(0, 0, 0, 0.384);
+.coming-soon {
+    font-size: 0.75rem;
+}
+
+/* Version indicator */
+.sarokverziokijelzo {
+    font-family: 'Gatha', serif;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     text-align: center;
-    float: center;
-    background-color: rgba(31, 30, 30, 0);
-    border-radius: 15px;
-    margin-left: -0.18cm;
-    margin-right: -0.18cm;
-}
-footer {
+    background-color: rgba(0, 0, 0, 0.384);
     color: white;
+    padding: 5px 10px;
+    width: 100px;
+    font-size: 0.8rem;
+    border-radius: 15px;
+}
+
+.sarokverziokijelzo h4, 
+.sarokverziokijelzo h5 {
+    margin: 5px 0;
+}
+
+/* Main content sections */
+main {
     padding: 20px;
-  }
-  
-  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+.udvozollek {
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.056);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
+    padding: 30px;
+    text-align: center;
+    color: white;
+}
+
+.udvozollek h2 {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.button, .social-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    background-color: black;
+    border: 2px solid black;
+    border-radius: 100px;
+    transition: all 0.5s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.384);
+}
+
+.button:hover, .social-button:hover {
+    background-color: rgb(224, 224, 224);
+    border-color: rgb(224, 224, 224);
+    color: black;
+    transform: translateY(-3px);
+}
+
+.button:active, .social-button:active {
+    transform: translateY(1px);
+}
+
+.youtube-button {
+    background-color: #FF0000;
+    border-color: #FF0000;
+}
+
+.youtube-button:hover {
+    background-color: #ffffff;
+    border-color: #FF0000;
+    color: #FF0000;
+}
+
+/* Photo gallery */
+.photo-gallery {
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.056);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.384);
+    padding: 30px;
+    text-align: center;
+}
+
+.photo-gallery h2 {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    font-size: 1.8rem;
+    margin-top: 0;
+}
+
+.gallery-placeholder {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 50px;
+    border-radius: 10px;
+    font-style: italic;
+}
+img{
+    border-radius: 8px;
+    height: 200px;
+}
+/* Footer styles */
+footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 30px 20px;
+    margin-top: 40px;
+}
+
+.footer-container {
     max-width: 960px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-  }
-  
-  .footer-section {
-    margin-right: 40px;
-  }
-  
-  .footer-links {
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-section {
+    min-width: 200px;
+}
+
+.footer-section h3 {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    font-size: 1.5rem;
+    margin-top: 0;
+    position: relative;
+}
+
+.footer-section h3::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background-color: white;
+    margin-top: 5px;
+}
+
+.footer-links,
+.social-media-links {
     list-style: none;
     padding: 0;
     margin: 10px 0;
-  }
-  
-  .footer-links li {
-    margin-bottom: 5px;
-  }
-  
-  .footer-links a {
-    color: #333;
+}
+
+.footer-links li,
+.social-media-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a,
+.social-media-links a {
+    color: #ccc;
     text-decoration: none;
-  }
-  
-  .social-media-links li {
-    display: inline;
-    margin-right: 10px;
-  }
-  
-  .bottom-footer {
-    text-align: center;
-    margin-top: 20px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover,
+.social-media-links a:hover {
     color: white;
-  }
-  .netbylogo{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 200px;
-    border-radius: 200px;
-  }
-  .netbylogo img{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 200px;
-    border-radius: 200px;
-  }
-  .informacio{
-    font-family: 'Poppins-Bold';
-    background-color: rgba(167, 0, 0, 0.829);
+}
+
+.bottom-footer {
     text-align: center;
-    color: white;
-    font-size: 0.7cm;
-    border-radius: 15px;
-  }
-  
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottom-footer p {
+    margin: 5px 0;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1000px) {
+    body {
+        background-color: rgb(8, 7, 22);
+    }
+    
+    .website-name {
+        font-size: 2rem;
+    }
+    
+    .gombok {
+        padding: 10px 0;
+    }
+    
+    .gombok img {
+        height: 100px;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .gombok a {
+        font-size: 1rem;
+        display: block;
+    }
+    
+    .gombok a:hover {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .button, .social-button {
+        width: 80%;
+        text-align: center;
+    }
+    
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+}
+
+/* Animation */
+@keyframes zoomIn {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    animation: zoomIn 0.4s ease-out;
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+    background-color: rgba(255,255,255,0.03);
+    padding: 10px;
+    backdrop-filter: blur(3px);
+}
+
+/* Modern caption layout */
+.modal-caption {
+    text-align: left;
+    max-width: 80%;
+    margin: 20px auto;
+    background-color: rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 12px;
+    color: #eee;
+    font-family: 'Poppins-Light', sans-serif;
+    line-height: 1.6;
+    font-size: 1rem;
+    border-left: 4px solid #FF0000;
+}
+
+
+.close-btn {
+    top: 30px;
+    right: 50px;
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.close-btn:hover {
+    color: #ff5e5e;
+    transform: scale(1.2);
+}
+
