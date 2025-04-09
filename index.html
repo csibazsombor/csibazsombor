@@ -59,24 +59,64 @@
             </div>
         </section>
         
-        <section id="Galeria" class="photo-gallery">
-            <h2 id="galeria-title">Gallery</h2>
-            <div class="gallery-placeholder">
+<!-- HTML Structure -->
+<section id="Galeria" class="photo-gallery">
+    <h2 id="galeria-title">Gallery</h2>
+    
+    <!-- Search and Filter Controls -->
+    <div class="gallery-controls">
+        <div class="search-container">
+            <input type="text" id="gallery-search" placeholder="Search by location or tags...">
+            <button id="search-btn">Search</button>
+        </div>
+        <div class="filter-container">
+            <select id="location-filter">
+                <option value="">All Locations</option>
+                <option value="Hungary">Hungary</option>
+                <option value="Example location">Example location</option>
+                <!-- More locations can be added dynamically -->
+            </select>
+            <select id="year-filter">
+                <option value="">All Years</option>
+                <option value="2024">2024</option>
+                <!-- More years can be added dynamically -->
+            </select>
+            <button id="reset-filters">Reset Filters</button>
+        </div>
+    </div>
+    
+    <!-- Gallery Container -->
+    <div class="gallery-container">
+        <div class="gallery-placeholder" id="empty-gallery">
+            <p id="galeria-text">New travel photos will be uploaded soon!</p>
+        </div>
+        
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Example Images -->
+            <div class="gallery-item" 
+                 data-location="Hungary" 
+                 data-date="2024.08.12"
+                 data-tags="travel,landscape,summer">
                 <img src="képek/NetBy Logo new 2024. 08. 12.png"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image"
-                     data-location="Example location, Hungary"
-                     data-date="2024.08.12">
-                <p id="galeria-text">New travel photos will be uploaded soon!</p>
+                     class="clickable-image">
+                <div class="image-info">
+                    <span class="image-location">Hungary</span>
+                    <span class="image-date">2024.08.12</span>
+                </div>
             </div>
             
-            <!-- Modal structure -->
-            <div id="image-modal" class="modal">
-                <span class="close-btn">&times;</span>
-                <img class="modal-content" id="modal-img">
-                <div class="modal-caption" id="modal-caption"></div>
-            </div>
-        </section>
+            <!-- Additional images can be added here -->
+        </div>
+    </div>
+    
+    <!-- Modal structure -->
+    <div id="image-modal" class="modal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-content" id="modal-img">
+        <div class="modal-caption" id="modal-caption"></div>
+    </div>
+</section>
     </main>
     
     <footer>
