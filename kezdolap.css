@@ -378,7 +378,15 @@ select {
     background-color: rgba(0, 0, 0, 0.9);
     overflow: auto;
 }
-
+.modal img{
+    
+    height: 15cm;
+    width: cm;
+}
+.description{
+    font-family: 'Poppins-Bold';
+    font-size: 0.4cm;
+}
 .modal-content {
     display: block;
     margin: 60px auto;
