@@ -210,32 +210,39 @@ section {
 
 .button, .social-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: 600;
     text-decoration: none;
     color: #fff;
-    background-color: black;
-    border: 2px solid black;
-    border-radius: 100px;
-    transition: all 0.5s;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.384);
+    background-color: #000;
+    border: 2px solid #000;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.2;
+    user-select: none;
 }
 
 .button:hover, .social-button:hover {
-    background-color: rgb(224, 224, 224);
-    border-color: rgb(224, 224, 224);
-    color: black;
-    transform: translateY(-3px);
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
+    color: #000;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
+
 
 .button:active, .social-button:active {
     transform: translateY(1px);
 }
 
 .youtube-button {
-    background-color: #FF0000;
+    background-color: #FF0000; /* YouTube Red */
     border-color: #FF0000;
+    color: #ffffff;
 }
 
 .youtube-button:hover {
@@ -243,6 +250,19 @@ section {
     border-color: #FF0000;
     color: #FF0000;
 }
+
+.instagram-button {
+    background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4);
+    border: none;
+    color: #ffffff;
+}
+
+.instagram-button:hover {
+    background-color: #ffffff;
+    border: 2px solid #DD2A7B; /* One of the main gradient colors */
+    color: #DD2A7B;
+}
+
 
 /* Photo gallery */
 .photo-gallery {
@@ -465,6 +485,14 @@ footer {
     max-width: 900px;
     margin: 50px auto;
     text-align: justify;
+    transition: all 0.5s ease;
+    animation: fadeIn 1.5s ease-out;
+}
+
+.bemutatkozas:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.06);
 }
 
 .bemutatkozas h2 {
@@ -473,6 +501,74 @@ footer {
     text-align: center;
     margin-bottom: 20px;
     color: white;
+    position: relative;
+    animation: slideDown 0.8s ease-out;
+}
+
+.bemutatkozas h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    transform: translateX(-50%);
+    transition: width 0.8s ease;
+    animation: expandLine 1.5s ease-out forwards 0.8s;
+}
+
+.bemutatkozas p {
+    opacity: 0;
+    animation: fadeInText 0.5s ease-out forwards;
+    animation-delay: calc(0.3s * var(--paragraph-index, 1));
+}
+
+/* Pulsing glow effect */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 30px rgba(0, 0, 0, 0.4); }
+    50% { box-shadow: 0 0 40px rgba(86, 124, 228, 0.3); }
+    100% { box-shadow: 0 0 30px rgba(0, 0, 0, 0.4); }
+}
+
+/* Initial fade in animation */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Heading slide down animation */
+@keyframes slideDown {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Divider line expansion animation */
+@keyframes expandLine {
+    0% { width: 0; }
+    100% { width: 60%; }
+}
+
+/* Paragraph text fade in animation */
+@keyframes fadeInText {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Animation trigger classes */
+.bemutatkozas.animated {
+    animation: pulseGlow 3s infinite;
+}
+
+/* For screen readers and accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .bemutatkozas,
+    .bemutatkozas h2,
+    .bemutatkozas h2::after,
+    .bemutatkozas p {
+        animation: none;
+        transition: none;
+    }
 }
 
 .language-switcher {
