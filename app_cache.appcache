@@ -1,5 +1,5 @@
 CACHE MANIFEST
-#v0.0.7 change this to force update
+#v0.0.8 change this to force update
 
 CACHE:
 CSS/all.min.css
@@ -8,13 +8,11 @@ CSS/frissitesek.css
 CSS/kezdolap.css
 CSS/Linkek.css
 CSS/loading.css
-CSS/osz.css
 CSS/scrollbar.css
 CSS/setup.css
 CSS/tartalom.css
-CSS/tel.css
-HTML/Frissítések.html
-HTML/Információk.html
+PAGE/informacio.html
+HTML/notrips.html
 HTML/Játékok.html
 HTML/Képek.html
 HTML/Linkek.html
