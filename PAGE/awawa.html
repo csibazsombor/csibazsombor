@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title_trips">trips</title>
+
+    <link rel="stylesheet" href="../kezdolap.css">    
+    <link rel="stylesheet" href="../CSS/ertekeles.css">
+    <link rel="stylesheet" href="../CSS/scrollbar.css">
+    <link rel="stylesheet" href="../CSS/all.min.css">
+    
+    <script src="../JS/jquery.min.js"></script>
+
+    <link rel="shortcut icon" href="../favicon/favicon 256x256.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav class="gombok">
+            <div class="nav-links">
+                <a href="../index.html" id="home-link" class="kezdolapgomb"><strong>Home</strong></a>
+                <a href="informacio.html" id="info-link" class="informaciokgomb"><strong>Information</strong></a>
+                <a href="#hamarosan" id="coming-soon" class="coming-soon">Coming Soon</a>
+            </div>
+        </nav>
+        
+        <div class="sarokverziokijelzo">
+            <h4 id="verzio" class="Verzió">V4.1</h4>
+            <h5 id="update-info" class="update_info">2025 Update</h5>
+        </div>
+    </header>
+
+    <div class="language-switcher">
+      <button id="switch-to-hu" onclick="switchLanguage('hu')">HU</button>
+      <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
+  </div>
+
+    <main>
+        <section class="current-location">
+            <div class="udvozollek">
+                <h2 id="currently_exploring">CURRENTLY EXPLORING</h2>
+                <div class="current-country">
+                    <img src="/api/placeholder/80/80" alt="Country Flag" class="country-flag">
+                    <h3 id="currently_in">Currently in:</h3>
+                    <p class="country_id">Country</p>
+                    <div class="country-indicator">
+                        <div class="travel-progress-container">
+                            <div class="travel-progress-bar"></div>
+                        </div>
+                        <div class="progress-labels">
+                            <span>City, Country</span>
+                            <span>City, Country</span>
+                            <span>City, Country</span>
+                            <span>City, Country</span>
+                        </div>
+                        <div class="progress-stats">
+                            <p><div id="days_on_road">Days on road: </div><b><p class="days_on_road"></p></b><div id="countries_visited">Countries visited: </div><b><p class="countries_visited"></p></b></p>
+                        </div>
+                    </div>
+            </div>
+        </section>
+
+        <section class="travel-feed">
+            <h2 id="latest_adventures">Latest Adventures</h2>
+            
+            <article class="travel-post">
+                <div class="post-header">
+                    <div class="post-date">Date</div>
+                    <div class="post-location">Location</div>
+                </div>
+                <h3>Title</h3>
+                <div class="post-image">
+                    <img src="locationphoto" alt="Location Photo">
+                </div>
+                <div class="post-content">
+                    <p id="p_desc1">Description1</p>
+                    <p id="p_desc2">Description2</p>
+                    <p id="p_desc3">Description3</p>
+                    <a href="#" class="button">Read More</a>
+                </div>
+            </article>
+
+        </section>
+
+        <section class="pagination">
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">3</a>
+            <span class="ellipsis">...</span>
+            <a href="#" class="page-link">12</a>
+            <a href="#" class="next-page">Next →</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Navigation</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="PAGE/informacio.html">Information</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="social-media-links">
+                    <li><a href="#" target="_blank">Instagram</a></li>
+                    <li><a href="#" target="_blank">YouTube</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#Soon">Travel Tips</a></li>
+                    <li><a href="#Soon">Gear Reviews</a></li>
+                    <li><a href="#Soon">Photography Guide</a></li>
+                    <li><a href="#Soon">Travel Map</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom-footer">
+            <p>&copy; 2025 World Traveler Blog. All rights reserved.</p>
+            <p>Designed with ❤️ from around the world</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const postImages = document.querySelectorAll('.post-image img');
+            postImages.forEach(image => {
+                image.addEventListener('click', function() {
+                    const src = this.src;
+                    const alt = this.alt;
+                    
+                    // Create modal if it doesn't exist
+                    let modal = document.querySelector('.modal');
+                    if (!modal) {
+                        modal = document.createElement('div');
+                        modal.className = 'modal';
+                        document.body.appendChild(modal);
+                        
+                        const modalContent = document.createElement('img');
+                        modalContent.className = 'modal-content';
+                        modal.appendChild(modalContent);
+                        
+                        const caption = document.createElement('div');
+                        caption.className = 'modal-caption';
+                        modal.appendChild(caption);
+                        
+                        const closeBtn = document.createElement('span');
+                        closeBtn.className = 'close-btn';
+                        closeBtn.innerHTML = '&times;';
+                        closeBtn.addEventListener('click', function() {
+                            modal.style.display = 'none';
+                        });
+                        modal.appendChild(closeBtn);
+                    }
+                    
+                    // Update modal content
+                    const modalImg = modal.querySelector('.modal-content');
+                    modalImg.src = src;
+                    
+                    const captionText = modal.querySelector('.modal-caption');
+                    captionText.innerHTML = alt;
+                    
+                    // Display modal
+                    modal.style.display = 'block';
+                });
+            });
+            
+            // Close modal when clicking outside of it
+            window.addEventListener('click', function(e) {
+                const modal = document.querySelector('.modal');
+                if (modal && e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>    
+    
+    <!-- Scripts -->
+    <script src="../JS/page.js"></script>
+    <script src="../JS/engedélyek.js"></script>
+    <script src="../JS/language.js"></script>
+    <script src="../JS/JSON-loader.js"></script>
+
+</body>
+</html>

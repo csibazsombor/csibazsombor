@@ -1,12 +1,13 @@
     const translations = {
         hu: {
-            title: "Információk",
+            title_trips: "Utazások",
+            title_inf: "Információk",
             rolamCim: "Rólam",
-            bekezdes1: "Üdvözöllek! Csiba Zsombor vagyok, 2007. július 13-án születtem, és Szlovákiában élek. 17 éves vagyok, és már fiatal korom óta szenvedélyesen érdeklődöm a technológia, a kreativitás és az önkifejezés iránt.",
-            bekezdes2: "Az egyik legnagyobb hobbim a programozás. Imádok új dolgokat tanulni, rendszereket építeni, problémákat megoldani, és olyan projekteken dolgozni, amelyekben megvalósíthatom a saját ötleteimet.",
-            bekezdes3: "Emellett jelentős tapasztalattal rendelkezem játékfejlesztésben és képszerkesztésben is – ezekkel gyakran foglalkozom szabadidőmben.",
-            bekezdes4: "Szeretek utazni és új kultúrákat megismerni. Az egyik álmom, hogy eljussak Japánba – lenyűgöz a kultúrájuk és az emberek mentalitása.",
-            bekezdes5: "Ez az oldal, a NetBy Travel, egy személyes projektként indult, amellyel másokat is inspirálni szeretnék.",
+            bekezdes1: "Szia! Csiba Zsombor vagyok, Szlovákiában élek és hadd meséljek egy kicsit magamról. Számomra mindíg is vonzottak azok a dolgok, ahol egyszerre jelenik meg a logika és a kreativitás – talán ezért is találtam rá olyan hamar a programozás világára.",
+            bekezdes2: "Számomra a kódolás nem csupán technikai feladat, hanem egyfajta alkotás. Szeretek új rendszereket tervezni, problémák mélyére ásni, és olyan projekteken dolgozni, amelyek az életemet könnyebbé teszik.",
+            bekezdes3: "Emellett szívesen foglalkozom játékfejlesztéssel és természetfotó készítésével – ezekben is azt keresem, hogyan lehet valami belsőt külső formába önteni. A szabadidőm nagy részében ezekkel töltődöm fel.",
+            bekezdes4: "Szeretek utazni és új kultúrákat megismerni. Az egyik álmom, hogy felfedezzem Ázsiát, amely teljesen új és teljesen más számomra.",
+            bekezdes5: "A NetBy Travel egy személyes projektként indult, ahol szeretném megmutatni, hogyan látom a világot – azzal a reménnyel, hogy másokat is elgondolkodtathat vagy motiválhat, hogy bármely célja is van az embernek, csak is önmaga teheti elérhetővé.",
             
             // New translations for header, footer, and main content
             verzio: "V4.1",
@@ -25,16 +26,25 @@
             keszitette: "Készítette: Csiba Zsombor",
             comingSoon: "Hamarosan",
             home: "Főoldal",
-            info: "Információk"
+            galeria_link: "Galéria",
+            trips: "Utazások",
+            info: "Információk",
+            currently_exploring: "JELENLEGI FELFEDEZÉS",
+            currently_in: "Jelenleg itt:",
+            days_on_road: "Utazási napok: ",
+            countries_visited: "Látogatott helyek száma:",
+            latest_adventure: "Legújabb Kalandok",
+            notrip: "Jeleneg Nincsenek aktív utazások."
         },
         en: {
-            title: "Information",
+            title_trips: "Trips",
+            title_inf: "Information",
             rolamCim: "About Me",
-            bekezdes1: "Welcome! I'm Zsombor Csiba, born on July 13, 2007, living in Slovakia. I'm 17 years old and have been passionate about technology, creativity, and self-expression since I was young.",
-            bekezdes2: "One of my biggest hobbies is programming. I love learning new things, building systems, solving problems, and working on projects where I can bring my ideas to life.",
-            bekezdes3: "I also have solid experience in game development and image editing – I often engage in these as a hobby or for creative goals.",
-            bekezdes4: "Traveling is something I enjoy, and I love exploring new cultures. One of my dreams is to visit Japan – I'm fascinated by their culture and the respectful mindset of their people.",
-            bekezdes5: "This site, NetBy Travel, started as a personal project through which I hope to inspire others as well.",
+            bekezdes1: "Hi! I'm Zsombor Csiba, I live in Slovakia and let me tell you a little about myself. I've always been attracted to things where logic and creativity appear at the same time - maybe that's why I found the world of programming so quickly.",
+            bekezdes2: "For me, coding is not just a technical task, but a form of creation. I love designing new systems, digging into problems, and working on projects that make my life easier.",
+            bekezdes3: "I also enjoy game development and nature photography – in these I also look for ways to express something internal in an external form. I fill most of my free time with these.",
+            bekezdes4: "I love to travel and experience new cultures. One of my dreams is to explore Asia, which is completely new and completely different for me.",
+            bekezdes5: "NetBy Travel started as a personal project where I wanted to show how I see the world - with the hope that it might make others think or motivate them, that whatever goal a person has, only they can make it possible.",
             
             // New translations for header, footer, and main content
             verzio: "V4.1",
@@ -53,7 +63,15 @@
             keszitette: "Created by: Csiba Zsombor",
             comingSoon: "Coming Soon",
             home: "Home",
-            info: "Information"
+            galeria_link: "Gallery",
+            trips: "Trips",
+            info: "Information",
+            currently_exploring: "CURRENTLY EXPLORING",
+            currently_in: "Currently in:",
+            days_on_road: "Days on road: ",
+            countries_visited: "Number of places visited",
+            latest_adventure: "Latest Adventures",
+            notrip: "No trips yet."
         }
     };
     function updateElement(id, value, isHTML = false) {
@@ -67,11 +85,14 @@
         const t = translations[lang];
         
         // Update document title
-        document.title = t.title;
         
         // Header
+        updateElement("title_trips", t.title_trips);
+        updateElement("title_inf", t.title_inf);
+        updateElement("galeria_link", t.galeria_link);
         updateElement("home-link", t.home);
         updateElement("info-link", t.info);
+        updateElement("trips-link", t.trips);
         updateElement("coming-soon", t.comingSoon);
     
         // Version info
@@ -89,6 +110,13 @@
         updateElement("udvozles-text", t.udvozlesText);
         updateElement("galeria-title", t.galeria);
         updateElement("galeria-text", t.galeriaText);
+        updateElement("currently_exploring", t.currently_exploring);
+        updateElement("currently_in", t.currently_in);
+        updateElement("days_on_road", t.days_on_road);
+        updateElement("countries_visited", t.countries_visited);
+        updateElement("latest_adventures", t.latest_adventure);
+        updateElement("currently_exploring", t.currently_exploring);
+        updateElement("notrip", t.notrip);
     
         // Footer
         updateElement("kapcsolat", t.kapcsolat);

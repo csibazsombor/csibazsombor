@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Információk - Zsombor Travelling</title>
+    <title id="title_inf">information</title>
     
     <link rel="stylesheet" href="../kezdolap.css">
     <link rel="stylesheet" href="../CSS/ertekeles.css">
@@ -15,11 +15,10 @@
 <body>
     <header>
         <nav class="gombok">
-            <img src="../képek/ViTeLi.png" alt="NetBy Travel Logo" title="NetBy Travel Logo" draggable="false">
             <div class="nav-links">
                 <a href="../index.html" id="home-link" class="kezdolapgomb"><strong>Főoldal</strong></a>
-                <a href="informacio.html" id="info-link" class="informaciokgomb" title="Információk a Weboldalról"><strong>Információk</strong></a>
-                <a href="#hamarosan" id="coming-soon" class="coming-soon">Hamarosan</a>
+                <a href="informacio.html" id="info-link" class="informaciokgomb"><strong>Információk</strong></a>
+                <a href="notrips.html" id="trips-link">Trips</a>
             </div>
         </nav>
 
@@ -69,18 +68,21 @@
             <p id="keszitette">Készítette: Csiba Zsombor</p>
         </div>
     </footer>
-    <script src="../JS/language.js"></script>
-    <script>
-        window.onload = loadLanguage;
+        <!-- Scripts -->
+         
+        <script src="../JS/page.js"></script>
+        <script src="../JS/language.js"></script>
+        <script>
+            window.onload = loadLanguage;
 
-        // Example of switching language buttons
-        document.getElementById("switch-to-hu").addEventListener('click', function() {
-            switchLanguage('hu');
-        });
+            // Example of switching language buttons
+            document.getElementById("switch-to-hu").addEventListener('click', function() {
+                switchLanguage('hu');
+            });
 
-        document.getElementById("switch-to-en").addEventListener('click', function() {
-            switchLanguage('en');
-        });
-    </script>
+            document.getElementById("switch-to-en").addEventListener('click', function() {
+                switchLanguage('en');
+            });
+        </script>
 </body>
 </html>

@@ -50,6 +50,7 @@ html {
 }
 
 body {
+    opacity: 1;
     overflow-x: hidden; /* Hides horizontal scrollbar */
     overflow-y: auto;   /* Ensures vertical scrollbar is still visible */
     font-family: 'Poppins-Light', sans-serif;
@@ -61,6 +62,29 @@ body {
     margin: 0;
     padding: 0;
     color: white;
+}
+body.page-transition {
+    opacity: 0;
+}
+
+/* Animation keyframes for page entering effect */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply this to the main content when page loads */
+main {
+    animation: fadeInUp 0.8s ease-out forwards;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* Header styles */
@@ -174,12 +198,7 @@ header {
     margin: 5px 0;
 }
 
-/* Main content sections */
-main {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+
 
 section {
     margin-bottom: 40px;
@@ -625,6 +644,7 @@ footer {
 }
 
 .bemutatkozas {
+    text-align: center;
     background-color: rgba(255, 255, 255, 0.04);
     padding: 40px;
     border-radius: 20px;
@@ -638,7 +658,9 @@ footer {
     transition: all 0.5s ease;
     animation: fadeIn 1.5s ease-out;
 }
-
+.bemutatkozas p {
+    text-align: center;
+}
 .bemutatkozas:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
@@ -765,4 +787,334 @@ footer {
   .coming-soon p {
     font-size: 1.5rem;
   }
-  
+  /* Current Location Section Styles */
+.current-location {
+    margin-bottom: 40px;
+}
+
+.current-country {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.country-flag {
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    width: 80px; /* Set explicit width */
+    height: 80px; /* Set explicit height */
+    object-fit: cover; /* Ensure proper image display */
+    margin-bottom: 10px; /* Reduced margin from 20px to 10px */
+}
+
+.current-country h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.current-country p {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* Country Indicator and Progress Bar */
+.country-indicator {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 5px; /* Added small top margin instead */
+}
+
+/* Travel Progress Bar */
+.travel-progress-container {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 3px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.travel-progress-bar {
+    height: 15px;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 20px;
+    width: 0%; /* Set this dynamically based on your travel progress */
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    position: relative;
+    transition: width 1.5s ease-in-out;
+}
+
+.travel-progress-bar::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    width: 30px;
+    height: 30px;
+    background-color: #4CAF50;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+    color: #e0e0e0;
+    font-size: 0.85rem;
+}
+
+.progress-stats {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+    font-size: 0.9rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.progress-stats p{
+    color: #8BC34A;
+}
+
+/* Travel Feed Section Styles */
+.travel-feed {
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.travel-feed h2 {
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    color: white;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.travel-feed h2::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    transform: translateX(-50%);
+}
+
+/* Travel Post Styles */
+.travel-post {
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.travel-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.post-date {
+    position: relative;
+    padding-left: 20px;
+}
+
+.post-date::before {
+    content: '\1F4C5'; /* Calendar emoji */
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.post-location {
+    position: relative;
+    padding-left: 20px;
+}
+
+.post-location::before {
+    content: '\1F4CD'; /* Pin emoji */
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.travel-post h3 {
+    margin: 0;
+    padding: 20px;
+    font-family: 'TW-Cen-MT-Condensed', sans-serif;
+    font-size: 1.8rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.post-image {
+    position: relative;
+    overflow: hidden;
+    max-height: 250px;
+}
+
+.post-image::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.post-image:hover img {
+    transform: scale(1.05);
+}
+
+.post-content {
+    padding: 25px;
+    color: #f1f1f1;
+    line-height: 1.7;
+}
+
+.post-content p {
+    margin-bottom: 15px;
+}
+
+.post-content .button {
+    margin-top: 15px;
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: rgba(76, 175, 80, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.post-content .button:hover {
+    background-color: rgba(76, 175, 80, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+    gap: 8px;
+}
+
+.page-link, .next-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.next-page {
+    width: auto;
+    padding: 0 15px;
+    border-radius: 20px;
+}
+
+.page-link.active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.6);
+}
+
+.page-link:hover, .next-page:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.page-link.active:hover {
+    background-color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+.ellipsis {
+    color: white;
+    padding: 0 5px;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .travel-feed {
+        padding: 15px;
+    }
+    
+    .travel-feed h2 {
+        font-size: 1.8rem;
+    }
+    
+    .post-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .travel-post h3 {
+        font-size: 1.5rem;
+        padding: 15px;
+    }
+    
+    .post-content {
+        padding: 15px;
+    }
+    
+    .pagination {
+        gap: 5px;
+    }
+    
+    .page-link, .next-page {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
