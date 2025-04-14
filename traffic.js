@@ -1,13 +1,7 @@
 // Firebase konfiguráció
 const firebaseConfig = {
-  apiKey: "AIzaSyA3cmymea7b95RNhtLPqEIh_aKGI0KTJks",
-  authDomain: "netby-web-traffic.firebaseapp.com",
-  databaseURL: "https://netby-web-traffic-default-rtdb.firebaseio.com",
-  projectId: "netby-web-traffic",
-  storageBucket: "netby-web-traffic.appspot.com",
-  messagingSenderId: "1005760908215",
-  appId: "1:1005760908215:web:7baf02a24340c7f7217632",
-  measurementId: "G-T4NLY6136Q"
+      // Insert your Firebase configuration data here
+      databaseURL: "https://zsombor-travelling-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
 // Firebase inicializálása
