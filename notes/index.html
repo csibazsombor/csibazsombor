@@ -279,7 +279,7 @@ body {
           </h2>
           <form id="noteForm" class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700" id="nametype" class="message-input">Name*</label>
+              <label for="name" class="block text-sm font-medium text-gray-700" class="message-input">Name*</label>
               <div class="mt-1 relative rounded-md shadow-sm">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fas fa-user text-gray-400"></i>
@@ -343,8 +343,8 @@ body {
             </div>
             
             <div class="flex justify-end">
-            <button id="send-btn" class="send-btn" type="submit">
-                <span>Send Message</span>
+            <button id="send-btn" type="submit" class="send-btn">
+                <span>Submit</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="22" y1="2" x2="11" y2="13"></line>
                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -353,6 +353,7 @@ body {
             </button>
             <div class="paper-plane" id="paper-plane"></div>
         </div>
+      </form>
     </div>
 
     <div class="alert-popup" id="alert-popup">
@@ -471,7 +472,6 @@ body {
         <ul class="list-disc pl-5 mb-4 space-y-1">
           <li>Post messages in different categories</li>
           <li>React to others' messages</li>
-          <li>Dark mode & light mode</li>
           <li>Customize your message appearance</li>
           <li>Search and filter functionality</li>
         </ul>
@@ -486,7 +486,7 @@ body {
         const sendBtn = document.getElementById('send-btn');
         const alertPopup = document.getElementById('alert-popup');
         const paperPlane = document.getElementById('paper-plane');
-        const messageTextarea = document.getElementById('nametype');
+        const messageTextarea = document.getElementById('message'); 
         
         // Initially disable the send button
         sendBtn.disabled = true;
@@ -500,57 +500,18 @@ body {
             }
         });
 
-        sendBtn.addEventListener('click', function() {
-            const button = this;
-            
-            // If already in sending state or no text, do nothing
-            if (button.classList.contains('sending') || messageTextarea.value.trim() === '') {
-                return;
-            }
-            
-            // Switch to sending state
-            button.classList.add('sending');
-            button.disabled = true;
-            
-            // Get button position for the paper plane animation
-            const rect = button.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            
-            // Position paper plane at the button's center
-            paperPlane.style.left = `${centerX}px`;
-            paperPlane.style.top = `${centerY}px`;
-            
-            // Trigger the fly away animation with a slight delay
-            setTimeout(() => {
-                // Animate the paper plane flying away
-                paperPlane.style.animation = 'flyAway 1.5s ease-in-out forwards';
-            }, 500);
-            
-            // Reset the button and show success after animation
-            setTimeout(() => {
-                button.classList.remove('sending');
-                
-                // Show the alert popup
-                alertPopup.classList.add('show');
-                
-                // Clear the textarea
-                messageTextarea.value = '';
-                button.disabled = true;
-                
-                // Hide the alert after 3 seconds
-                setTimeout(() => {
-                    alertPopup.classList.remove('show');
-                }, 3000);
-                
-                // Reset the paper plane animation
-                paperPlane.style.animation = 'none';
-            }, 2000);
-        });
+    
+
     // Firebase configuration
     const firebaseConfig = {
-      // Insert your Firebase configuration data here
-      databaseURL: "https://public-notes-uzenofal-default-rtdb.europe-west1.firebasedatabase.app/"
+      apiKey: "AIzaSyDp7Xidvvy9v7uwPpn9HzSnbwyap-DSpLU",
+      authDomain: "public-notes-uzenofal.firebaseapp.com",
+      databaseURL: "https://public-notes-uzenofal-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "public-notes-uzenofal",
+      storageBucket: "public-notes-uzenofal.firebasestorage.app",
+      messagingSenderId: "369325544655",
+      appId: "1:369325544655:web:91e638425d66fd869613ba",
+      measurementId: "G-XBEM69QMG6"
     };
     
     // Initialize Firebase
@@ -586,10 +547,7 @@ body {
     const aboutModal = document.getElementById('aboutModal');
     const showAbout = document.getElementById('showAbout');
     const closeAboutModal = document.getElementById('closeAboutModal');
-    const toggleLanguage = document.getElementById('toggleLanguage');
     
-    // App state
-    let darkMode = false;
     let currentLanguage = 'en';
     let currentPage = 1;
     let messagesPerPage = 5;
@@ -664,45 +622,68 @@ body {
     // Send message
     noteForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
+      if (sendBtn.classList.contains('sending')) return;
+
       const name = nameInput.value.trim() || 'Anonymous';
       const message = messageInput.value.trim();
       const category = categorySelect.value;
       const bgColor = bgColorInput.value;
       
-      if (message) {
-        if (message.length > 300) {
-          showNotification("Message is too long. Maximum 300 characters allowed.", "error");
-          return;
-        }
-        
+    if (!message || message.length > 300) {
+        showNotification("Please write a valid message under 300 characters.", "error");
+        return;
+    }
+     
+    sendBtn.classList.add('sending');
+    sendBtn.disabled = true;
+
+    // Paper plane animation setup
+    const rect = sendBtn.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    paperPlane.style.left = `${centerX}px`;
+    paperPlane.style.top = `${centerY}px`;
+
+    setTimeout(() => {
+        paperPlane.style.animation = 'flyAway 1.5s ease-in-out forwards';
+    }, 500);
+
         // Add new message to Firebase
         messagesRef.push({
-          name,
-          message,
-          category,
-          bgColor,
-          timestamp: Date.now(),
-          likes: 0,
-          reactionEmojis: selectedEmojis,
-          reactions: {}
-        }).then(() => {
-          // Clear form
-          nameInput.value = '';
-          messageInput.value = '';
-          categorySelect.value = 'general';
-          bgColorInput.value = 'white';
-          charCount.textContent = '0';
-          selectedEmojis = [];
-          updateSelectedEmojisDisplay();
-          colorOptions.forEach(o => o.classList.remove('border-indigo-500', 'border-4'));
-          colorOptions[0].classList.add('border-indigo-500', 'border-4');
-          
-          showConfetti();
-          showNotification("Your message has been posted successfully!", "success");
-        });
-      }
+        name,
+        message,
+        category,
+        bgColor,
+        timestamp: Date.now(),
+        likes: 0,
+        reactionEmojis: selectedEmojis,
+        reactions: {}
+    }).then(() => {
+        // Reset UI after send
+        setTimeout(() => {
+            sendBtn.classList.remove('sending');
+            messageInput.value = '';
+            charCount.textContent = '0';
+            sendBtn.disabled = true;
+
+            alertPopup.classList.add('show');
+            setTimeout(() => alertPopup.classList.remove('show'), 3000);
+            paperPlane.style.animation = 'none';
+
+            // Clear the rest of the form
+            nameInput.value = '';
+            categorySelect.value = 'general';
+            bgColorInput.value = 'white';
+            selectedEmojis = [];
+            updateSelectedEmojisDisplay();
+            colorOptions.forEach(o => o.classList.remove('border-indigo-500', 'border-4'));
+            colorOptions[0].classList.add('border-indigo-500', 'border-4');
+
+            showConfetti();
+        }, 2000);
     });
+});
     
     // Load and display messages
     messagesRef.on('value', (snapshot) => {
