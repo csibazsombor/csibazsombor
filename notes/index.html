@@ -11,17 +11,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <style>
-/* Bulletin Board Background */
+
 body {
-  background: url('https://www.transparenttextures.com/patterns/cork-board.png');
-  background-size: cover;
   padding: 2rem;
   font-family: sans-serif;
 }
 
 /* Message card looks like pinned notes */
 .message-card {
-  background-color: #fff8dc;
+  background-color: #fff8dcc0;
   border: 2px solid #d4a373;
   border-radius: 8px;
   padding: 1rem;
@@ -51,7 +49,7 @@ body {
 .category-pill {
   background-color: #fdf6e3;
   border: 1px solid #e2c799;
-  color: #5b3a29;
+  color: #b48429;
   border-radius: 9999px;
   padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
@@ -114,7 +112,151 @@ body {
 .wave-bottom {
   display: none;
 }
+.send-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 0 auto;
+        }
 
+        .send-btn:hover:not(:disabled) {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .send-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        
+        .send-btn:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .send-btn.sending {
+            width: 50px;
+            border-radius: 25px;
+            padding: 0.75rem;
+        }
+
+        .send-btn span {
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn.sending span {
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .send-btn svg {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .send-btn.sending svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .paper-plane {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #3b82f6;
+            clip-path: polygon(0% 0%, 100% 50%, 0% 100%, 25% 50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        @keyframes flyAway {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            70% {
+                transform: translate(100px, -100px) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(200px, -150px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .alert-popup {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .alert-popup.show {
+            top: 20px;
+            opacity: 1;
+        }
+
+        .alert-popup .icon {
+            font-size: 1.5rem;
+        }
+
+        .alert-popup .message {
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .send-btn.sending .loading-spinner {
+            opacity: 1;
+            transform: scale(1);
+        }
   </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 to-pink-50 min-h-screen transition-colors duration-500">
@@ -123,14 +265,8 @@ body {
   <div class="container mx-auto px-4 py-8 relative z-10">
     <header class="mb-8 text-center animate__animated animate__fadeInDown">
       <h1 class="text-4xl font-bold gradient-text mb-2">Public Notes</h1>
-      <p class="text-gray-600 text-lg">Share your thoughts with the world - no registration required!</p>
+      <p class="text-gray-600 text-lg">Share your thoughts with the world</p>
       <div class="flex justify-center mt-4 space-x-2">
-        <button id="toggleTheme" class="p-2 rounded-md bg-white hover:bg-gray-100 transition-colors shadow-md">
-          <i class="fas fa-moon"></i>
-        </button>
-        <button id="toggleLanguage" class="p-2 rounded-md bg-white hover:bg-gray-100 transition-colors shadow-md">
-          <i class="fas fa-language"></i> EN
-        </button>
       </div>
     </header>
 
@@ -143,7 +279,7 @@ body {
           </h2>
           <form id="noteForm" class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-700">Name*</label>
+              <label for="name" class="block text-sm font-medium text-gray-700" id="nametype" class="message-input">Name*</label>
               <div class="mt-1 relative rounded-md shadow-sm">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <i class="fas fa-user text-gray-400"></i>
@@ -207,13 +343,22 @@ body {
             </div>
             
             <div class="flex justify-end">
-              <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors shadow-md flex items-center">
-                <i class="fas fa-paper-plane mr-2"></i>
-                <span>Submit</span>
-              </button>
-            </div>
-          </form>
+            <button id="send-btn" class="send-btn" type="submit">
+                <span>Send Message</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+                <div class="loading-spinner"></div>
+            </button>
+            <div class="paper-plane" id="paper-plane"></div>
         </div>
+    </div>
+
+    <div class="alert-popup" id="alert-popup">
+        <div class="icon">✓</div>
+        <div class="message">Message sent successfully!</div>
+    </div>
         
         <div class="bg-white rounded-xl shadow-xl p-6 animate__animated animate__fadeInLeft">
           <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
@@ -338,6 +483,70 @@ body {
   </div>
 
   <script>
+        const sendBtn = document.getElementById('send-btn');
+        const alertPopup = document.getElementById('alert-popup');
+        const paperPlane = document.getElementById('paper-plane');
+        const messageTextarea = document.getElementById('nametype');
+        
+        // Initially disable the send button
+        sendBtn.disabled = true;
+        
+        // Check if message has content and enable/disable button accordingly
+        messageTextarea.addEventListener('input', function() {
+            if (this.value.trim() !== '') {
+                sendBtn.disabled = false;
+            } else {
+                sendBtn.disabled = true;
+            }
+        });
+
+        sendBtn.addEventListener('click', function() {
+            const button = this;
+            
+            // If already in sending state or no text, do nothing
+            if (button.classList.contains('sending') || messageTextarea.value.trim() === '') {
+                return;
+            }
+            
+            // Switch to sending state
+            button.classList.add('sending');
+            button.disabled = true;
+            
+            // Get button position for the paper plane animation
+            const rect = button.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Position paper plane at the button's center
+            paperPlane.style.left = `${centerX}px`;
+            paperPlane.style.top = `${centerY}px`;
+            
+            // Trigger the fly away animation with a slight delay
+            setTimeout(() => {
+                // Animate the paper plane flying away
+                paperPlane.style.animation = 'flyAway 1.5s ease-in-out forwards';
+            }, 500);
+            
+            // Reset the button and show success after animation
+            setTimeout(() => {
+                button.classList.remove('sending');
+                
+                // Show the alert popup
+                alertPopup.classList.add('show');
+                
+                // Clear the textarea
+                messageTextarea.value = '';
+                button.disabled = true;
+                
+                // Hide the alert after 3 seconds
+                setTimeout(() => {
+                    alertPopup.classList.remove('show');
+                }, 3000);
+                
+                // Reset the paper plane animation
+                paperPlane.style.animation = 'none';
+            }, 2000);
+        });
     // Firebase configuration
     const firebaseConfig = {
       // Insert your Firebase configuration data here
@@ -847,229 +1056,12 @@ body {
         });
       });
     });
-    
-    // Theme toggle
-    toggleThemeBtn.addEventListener('click', () => {
-      darkMode = !darkMode;
-      
-      if (darkMode) {
-        document.body.classList.remove('bg-gradient-to-br', 'from-indigo-50', 'to-pink-50');
-        document.body.classList.add('bg-gray-900');
-        toggleThemeBtn.innerHTML = '<i class="fas fa-sun"></i>';
-      } else {
-        document.body.classList.add('bg-gradient-to-br', 'from-indigo-50', 'to-pink-50');
-        document.body.classList.remove('bg-gray-900');
-        toggleThemeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-      }
-      
-      // Toggle dark mode classes on all elements
-      const elementsToToggle = document.querySelectorAll('.bg-white, .text-gray-700, .text-gray-600, .text-gray-500, .text-gray-800');
-      
-      elementsToToggle.forEach(el => {
-        if (darkMode) {
-          if (el.classList.contains('bg-white')) {
-            el.classList.remove('bg-white');
-            el.classList.add('bg-gray-800');
-          }
-          
-          if (el.classList.contains('text-gray-700')) {
-            el.classList.remove('text-gray-700');
-            el.classList.add('text-gray-300');
-          }
-          
-          if (el.classList.contains('text-gray-600')) {
-            el.classList.remove('text-gray-600');
-            el.classList.add('text-gray-400');
-          }
-          
-          if (el.classList.contains('text-gray-500')) {
-            el.classList.remove('text-gray-500');
-            el.classList.add('text-gray-400');
-          }
-          
-          if (el.classList.contains('text-gray-800')) {
-            el.classList.remove('text-gray-800');
-            el.classList.add('text-gray-200');
-          }
-        } else {
-          if (el.classList.contains('bg-gray-800')) {
-            el.classList.remove('bg-gray-800');
-            el.classList.add('bg-white');
-          }
-          
-          if (el.classList.contains('text-gray-300')) {
-            el.classList.remove('text-gray-300');
-            el.classList.add('text-gray-700');
-          }
-          
-          if (el.classList.contains('text-gray-400')) {
-            el.classList.remove('text-gray-400');
-            if (el.classList.contains('text-gray-500-light')) {
-              el.classList.add('text-gray-500');
-            } else {
-              el.classList.add('text-gray-600');
-            }
-          }
-          
-          if (el.classList.contains('text-gray-200')) {
-            el.classList.remove('text-gray-200');
-            el.classList.add('text-gray-800');
-          }
-        }
-      });
-    });
-    
-    // Language toggle
-    toggleLanguage.addEventListener('click', () => {
-      if (currentLanguage === 'en') {
-        currentLanguage = 'es';
-        toggleLanguage.innerHTML = '<i class="fas fa-language"></i> ES';
-        translateUI('es');
-      } else {
-        currentLanguage = 'en';
-        toggleLanguage.innerHTML = '<i class="fas fa-language"></i> EN';
-        translateUI('en');
-      }
-    });
-    
-    function translateUI(lang) {
-      const translations = {
-        en: {
-          title: 'Public Notes',
-          subtitle: 'Share your thoughts with the world - no registration required!',
-          createNote: 'Create a Note',
-          name: 'Name (optional)',
-          message: 'Message*',
-          category: 'Category',
-          bgColor: 'Background Color (optional)',
-          addReactions: 'Add Reaction Emojis',
-          submit: 'Submit',
-          statistics: 'Statistics',
-          totalMessages: 'Total Messages',
-          popularCategory: 'Most Popular Category',
-          mostRecent: 'Most Recent',
-          messages: 'Messages',
-          search: 'Search...',
-          newestFirst: 'Newest first',
-          oldestFirst: 'Oldest first',
-          mostPopular: 'Most popular',
-          allCategories: 'All categories',
-          noMessages: 'No messages yet. Be the first to share your thoughts!',
-          noResults: 'No messages to display with the current filters.',
-          clearFilters: 'Clear filters',
-          about: 'About',
-          madeWith: 'Made with',
-          messageActions: 'Message Actions',
-          copyLink: 'Copy Link',
-          share: 'Share',
-          report: 'Report',
-          close: 'Close',
-          aboutTitle: 'About Public Notes',
-          aboutText: 'Public Notes is a platform where you can share thoughts, ideas, advice, or anything else with the world, anonymously and without registration.',
-          features: 'Features include:',
-          feature1: 'Post messages in different categories',
-          feature2: 'React to others\' messages',
-          feature3: 'Dark mode & light mode',
-          feature4: 'Customize your message appearance',
-          feature5: 'Search and filter functionality',
-          gotIt: 'Got it!'
-        },
-        es: {
-          title: 'Notas Públicas',
-          subtitle: 'Comparte tus pensamientos con el mundo - sin registro necesario!',
-          createNote: 'Crear Nota',
-          name: 'Nombre (opcional)',
-          message: 'Mensaje*',
-          category: 'Categoría',
-          bgColor: 'Color de Fondo (opcional)',
-          addReactions: 'Añadir Emojis de Reacción',
-          submit: 'Enviar',
-          statistics: 'Estadísticas',
-          totalMessages: 'Mensajes Totales',
-          popularCategory: 'Categoría más Popular',
-          mostRecent: 'Más Reciente',
-          messages: 'Mensajes',
-          search: 'Buscar...',
-          newestFirst: 'Más recientes primero',
-          oldestFirst: 'Más antiguos primero',
-          mostPopular: 'Más populares',
-          allCategories: 'Todas las categorías',
-          noMessages: '¡No hay mensajes aún. Sé el primero en compartir tus pensamientos!',
-          noResults: 'No hay mensajes para mostrar con los filtros actuales.',
-          clearFilters: 'Borrar filtros',
-          about: 'Acerca de',
-          madeWith: 'Hecho con',
-          messageActions: 'Acciones del Mensaje',
-          copyLink: 'Copiar Enlace',
-          share: 'Compartir',
-          report: 'Reportar',
-          close: 'Cerrar',
-          aboutTitle: 'Acerca de Notas Públicas',
-          aboutText: 'Notas Públicas es una plataforma donde puedes compartir pensamientos, ideas, consejos o cualquier otra cosa con el mundo, de forma anónima y sin registro.',
-          features: 'Las características incluyen:',
-          feature1: 'Publicar mensajes en diferentes categorías',
-          feature2: 'Reaccionar a los mensajes de otros',
-          feature3: 'Modo oscuro y claro',
-          feature4: 'Personalizar la apariencia de tu mensaje',
-          feature5: 'Funcionalidad de búsqueda y filtrado',
-          gotIt: '¡Entendido!'
-        }
-      };
-      
-      document.querySelector('h1').textContent = translations[lang].title;
-      document.querySelector('header p').textContent = translations[lang].subtitle;
-      // And so on for all other UI elements...
-      
-      // Update category options
-      if (lang === 'es') {
-        categorySelect.innerHTML = `
-          <option value="general">General</option>
-          <option value="advice">Consejo</option>
-          <option value="secret">Secreto</option>
-          <option value="positive">Pensamiento Positivo</option>
-          <option value="question">Pregunta</option>
-          <option value="idea">Idea</option>
-          <option value="funny">Divertido</option>
-        `;
-        
-        filterCategory.innerHTML = `
-          <option value="all">Todas las categorías</option>
-          <option value="general">General</option>
-          <option value="advice">Consejo</option>
-          <option value="secret">Secreto</option>
-          <option value="positive">Pensamiento Positivo</option>
-          <option value="question">Pregunta</option>
-          <option value="idea">Idea</option>
-          <option value="funny">Divertido</option>
-        `;
-      } else {
-        categorySelect.innerHTML = `
-          <option value="general">General</option>
-          <option value="advice">Advice</option>
-          <option value="secret">Secret</option>
-          <option value="positive">Positive Thought</option>
-          <option value="question">Question</option>
-          <option value="idea">Idea</option>
-          <option value="funny">Funny</option>
-        `;
-        
-        filterCategory.innerHTML = `
-          <option value="all">All categories</option>
-          <option value="general">General</option>
-          <option value="advice">Advice</option>
-          <option value="secret">Secret</option>
-          <option value="positive">Positive Thought</option>
-          <option value="question">Question</option>
-          <option value="idea">Idea</option>
-          <option value="funny">Funny</option>
-        `;
-      }
-      
+
       // Refresh message display to update timestamps and category labels
       messagesRef.once('value', snapshot => {
         displayMessages(snapshot.val(), currentPage);
       });
-    }
+    
     
     // Modal functionality
     closeModal.addEventListener('click', () => {
