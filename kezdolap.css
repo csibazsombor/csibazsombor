@@ -644,7 +644,6 @@ footer {
 }
 
 .bemutatkozas {
-    text-align: center;
     background-color: rgba(255, 255, 255, 0.04);
     padding: 40px;
     border-radius: 20px;
@@ -660,6 +659,7 @@ footer {
 }
 .bemutatkozas p {
     text-align: center;
+    color: white;
 }
 .bemutatkozas:hover {
     transform: translateY(-10px);
@@ -691,7 +691,6 @@ footer {
 }
 
 .bemutatkozas p {
-    opacity: 0;
     animation: fadeInText 0.5s ease-out forwards;
     animation-delay: calc(0.3s * var(--paragraph-index, 1));
 }
