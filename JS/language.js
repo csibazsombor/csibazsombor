@@ -7,7 +7,7 @@
             bekezdes2: "Számomra a kódolás nem csupán technikai feladat, hanem egyfajta alkotás. Szeretek új rendszereket tervezni, problémák mélyére ásni, és olyan projekteken dolgozni, amelyek az életemet könnyebbé teszik.",
             bekezdes3: "Emellett szívesen foglalkozom játékfejlesztéssel és természetfotó készítésével – ezekben is azt keresem, hogyan lehet valami belsőt külső formába önteni. A szabadidőm nagy részében ezekkel töltődöm fel.",
             bekezdes4: "Szeretek utazni és új kultúrákat megismerni. Az egyik álmom, hogy felfedezzem Ázsiát, amely teljesen új és teljesen más számomra.",
-            bekezdes5: "A NetBy Travel egy személyes projektként indult, ahol szeretném megmutatni, hogyan látom a világot – azzal a reménnyel, hogy másokat is elgondolkodtathat vagy motiválhat, hogy bármely célja is van az embernek, csak is önmaga teheti elérhetővé.",
+            bekezdes5: "A Zsombor Travel egy személyes projektként indult, ahol szeretném megmutatni, hogyan látom a világot – azzal a reménnyel, hogy másokat is elgondolkodtathat vagy motiválhat, hogy bármely célja is van az embernek, csak is önmaga teheti elérhetővé.",
             
             // New translations for header, footer, and main content
             verzio: "V4.1",
@@ -22,7 +22,7 @@
             kovess: "Kövessen minket",
             youtube: "YouTube",
             instagram: "Instagram",
-            copyright: "&copy; 2025 NetBy Travel - Minden jog fenntartva.",
+            copyright: "&copy; 2025 Zsombor Travel - Minden jog fenntartva.",
             keszitette: "Készítette: Csiba Zsombor",
             comingSoon: "Hamarosan",
             home: "Főoldal",
@@ -44,7 +44,7 @@
             bekezdes2: "For me, coding is not just a technical task, but a form of creation. I love designing new systems, digging into problems, and working on projects that make my life easier.",
             bekezdes3: "I also enjoy game development and nature photography – in these I also look for ways to express something internal in an external form. I fill most of my free time with these.",
             bekezdes4: "I love to travel and experience new cultures. One of my dreams is to explore Asia, which is completely new and completely different for me.",
-            bekezdes5: "NetBy Travel started as a personal project where I wanted to show how I see the world - with the hope that it might make others think or motivate them, that whatever goal a person has, only they can make it possible.",
+            bekezdes5: "Zsombor Travel started as a personal project where I wanted to show how I see the world - with the hope that it might make others think or motivate them, that whatever goal a person has, only they can make it possible.",
             
             // New translations for header, footer, and main content
             verzio: "V4.1",
@@ -59,7 +59,7 @@
             kovess: "Follow us",
             youtube: "YouTube",
             instagram: "Instagram",
-            copyright: "&copy; 2025 NetBy Travel - All rights reserved.",
+            copyright: "&copy; 2025 Zsombor Travel - All rights reserved.",
             keszitette: "Created by: Csiba Zsombor",
             comingSoon: "Coming Soon",
             home: "Home",
@@ -72,6 +72,43 @@
             countries_visited: "Number of places visited",
             latest_adventure: "Latest Adventures",
             notrip: "No trips yet."
+        },
+        jp: {
+            title_trips: "旅行",
+            title_inf: "情報",
+            rolamCim: "私について",
+            bekezdes1: "こんにちは！スロバキアに住んでいます、Zsombor Csibaです。少し自己紹介させてください。論理と創造性が同時に現れるものにずっと惹かれてきました。それが、プログラミングの世界にすぐに出会った理由かもしれません。",
+            bekezdes2: "私にとって、コーディングは単なる技術的な作業ではなく、創造的なプロセスです。新しいシステムを設計したり、問題を深く掘り下げたり、生活をより便利にするプロジェクトに取り組んだりするのが大好きです。",
+            bekezdes3: "ゲーム開発と自然写真も好きで、これらの活動を通じて、内面にある何かを外に表現する方法を探っています。自由時間のほとんどを、こうした活動に費やしています。",
+            bekezdes4: "旅行や新しい文化を体験することが大好きです。私にとってまったく新しく、まったく異なる世界であるアジアを探索することは、夢のひとつです。",
+            bekezdes5: "「Zsombor Travel」は、私が世界をどのように見ているかを表現したいという思いから始めた個人的なプロジェクトです。このプロジェクトを通じて、どんな目標を持っていても、それを実現できるのは自分自身なのだと感じてもらえたり、前向きな気持ちになってもらえたら嬉しいです。",
+            
+            // New translations for header, footer, and main content
+            verzio: "V4.1",
+            update: "2025年アップデート",
+            udvozles: "いらっしゃいませ!",
+            udvozlesText: "いっしょに世界のすごいところを見つけに行こう！",
+            galeria: "ギャラリー",
+            galeriaText: "新しい旅行写真も近々アップロード予定です！",
+            kapcsolat: "接触",
+            elerhetosegek: "連絡先",
+            irjon: "私たちに手紙を書いてください",
+            kovess: "私たちに従ってください",
+            youtube: "YouTube",
+            instagram: "Instagram",
+            copyright: "&copy; 2025 Zsombor Travel - 全著作権所有",
+            keszitette: "作成者: Zsombor Csiba",
+            comingSoon: "近日公開",
+            home: "ホームページ",
+            galeria_link: "ギャラリー",
+            trips: "旅行",
+            info: "情報",
+            currently_exploring: "探検する",
+            currently_in: "現在ここ: ",
+            days_on_road: "旅の日数: ",
+            countries_visited: "訪問した場所の数",
+            latest_adventure: " 最新の冒険",
+            notrip: "まだ旅行はありません。"
         }
     };
     function updateElement(id, value, isHTML = false) {
@@ -150,5 +187,8 @@
     
     document.getElementById("switch-to-en")?.addEventListener('click', function() {
         switchLanguage('en');
+    });
+    document.getElementById("switch-to-jp")?.addEventListener('click', function() {
+        switchLanguage('jp');
     });
     
