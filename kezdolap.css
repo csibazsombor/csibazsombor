@@ -299,47 +299,334 @@ section {
 }
 
 /* Gallery controls */
+/* Gallery Controls - 2025 Cutting-Edge Design */
 .gallery-controls {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    position: relative;
+    background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.95) 0%, 
+        rgba(30, 41, 59, 0.9) 35%,
+        rgba(51, 65, 85, 0.85) 100%);
+    backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 24px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 8px 32px -8px rgba(0, 0, 0, 0.4),
+        0 24px 64px -12px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: morphIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
 }
 
-.search-container, .filter-container {
+/* Animated mesh gradient background */
+.gallery-controls::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        rgba(139, 92, 246, 0.1) 0deg,
+        rgba(59, 130, 246, 0.1) 90deg,
+        rgba(16, 185, 129, 0.1) 180deg,
+        rgba(245, 101, 101, 0.1) 270deg,
+        rgba(139, 92, 246, 0.1) 360deg
+    );
+    animation: rotateGradient 20s linear infinite;
+    z-index: -1;
+}
+
+.search-container {
     display: flex;
-    justify-content: center;
-    gap: 10px;
+    gap: 1rem;
+    margin-bottom: 2rem;
     flex-wrap: wrap;
 }
 
+.filter-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Neumorphic Input Styles with Floating Labels */
+#gallery-search,
+#location-filter,
+#year-filter {
+    position: relative;
+    padding: 1rem 1.25rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 16px;
+    color: #f8fafc;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    backdrop-filter: blur(12px);
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
 #gallery-search {
-    padding: 8px 12px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 250px;
-    background-color: rgba(255, 255, 255, 0.8);
+    flex: 1;
+    min-width: 280px;
+    background: linear-gradient(135deg, 
+        rgba(15, 23, 42, 0.8) 0%,
+        rgba(30, 41, 59, 0.6) 100%);
 }
 
-#search-btn, #reset-filters {
-    padding: 8px 15px;
-    border-radius: 5px;
-    border: none;
-    background-color: #4a6fa5;
-    color: white;
+#location-filter,
+#year-filter {
+    min-width: 160px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
 }
 
-#search-btn:hover, #reset-filters:hover {
-    background-color: #3a5982;
+/* Focus States with Holographic Effect */
+#gallery-search:focus,
+#location-filter:focus,
+#year-filter:focus {
+    border-color: rgba(139, 92, 246, 0.6);
+    box-shadow: 
+        0 0 0 1px rgba(139, 92, 246, 0.3),
+        0 0 24px rgba(139, 92, 246, 0.2),
+        0 0 48px rgba(139, 92, 246, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.9) 0%,
+        rgba(51, 65, 85, 0.8) 100%);
 }
 
-select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: rgba(255, 255, 255, 0.8);
+/* Next-Gen Button Styles */
+#search-btn,
+#reset-filters {
+    position: relative;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+#search-btn {
+    background: linear-gradient(135deg, 
+        #10b981 0%, 
+        #059669 50%, 
+        #047857 100%);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+#search-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.5s;
+}
+
+#reset-filters {
+    background: linear-gradient(135deg, 
+        #ef4444 0%, 
+        #dc2626 50%, 
+        #b91c1c 100%);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Button Hover Effects */
+#search-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 32px rgba(16, 185, 129, 0.3),
+        0 0 24px rgba(16, 185, 129, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+#search-btn:hover::before {
+    left: 100%;
+}
+
+#reset-filters:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 8px 32px rgba(239, 68, 68, 0.3),
+        0 0 24px rgba(239, 68, 68, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Active States */
+#search-btn:active,
+#reset-filters:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Placeholder Styling */
+#gallery-search::placeholder {
+    color: rgba(148, 163, 184, 0.7);
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* Select Options */
+#location-filter option,
+#year-filter option {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 0.75rem;
+    border: none;
+}
+
+/* Responsive Design for 2025 */
+@media (max-width: 768px) {
+    .gallery-controls {
+        padding: 2rem;
+        border-radius: 20px;
+    }
+    
+    .search-container,
+    .filter-container {
+        flex-direction: column;
+    }
+    
+    #gallery-search,
+    #location-filter,
+    #year-filter,
+    #search-btn,
+    #reset-filters {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-controls {
+        padding: 1.5rem;
+        border-radius: 16px;
+        margin: 1rem;
+    }
+    
+    #gallery-search,
+    #location-filter,
+    #year-filter,
+    #search-btn,
+    #reset-filters {
+        padding: 0.875rem 1rem;
+        font-size: 0.95rem;
+        border-radius: 12px;
+    }
+}
+
+/* Light Mode Override */
+@media (prefers-color-scheme: light) {
+    .gallery-controls {
+        background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.95) 0%, 
+            rgba(248, 250, 252, 0.9) 35%,
+            rgba(241, 245, 249, 0.85) 100%);
+        border-color: rgba(15, 23, 42, 0.08);
+    }
+    
+    #gallery-search,
+    #location-filter,
+    #year-filter {
+        background: rgba(255, 255, 255, 0.8);
+        color: #0f172a;
+        border-color: rgba(15, 23, 42, 0.1);
+    }
+    
+    #gallery-search::placeholder {
+        color: rgba(100, 116, 139, 0.7);
+    }
+    
+    #location-filter option,
+    #year-filter option {
+        background: #ffffff;
+        color: #0f172a;
+    }
+}
+
+/* Advanced Animations */
+@keyframes morphIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes rotateGradient {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Micro-interactions */
+.gallery-controls:hover {
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 12px 40px -8px rgba(0, 0, 0, 0.5),
+        0 32px 80px -12px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Accessibility enhancements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .gallery-controls {
+        border: 2px solid #ffffff;
+    }
+    
+    #gallery-search,
+    #location-filter,
+    #year-filter {
+        border: 2px solid #ffffff;
+    }
 }
 
 /* Gallery grid */
