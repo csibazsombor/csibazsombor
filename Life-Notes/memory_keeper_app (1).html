@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head onload="updateStats()">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Keeper - Your Digital Life Journal</title>
+    
+<!-- Firebase App (core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+
+
+
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sage-50: #f6f7f6;
+            --sage-100: #e8ebe8;
+            --sage-200: #d1d7d1;
+            --sage-300: #a8b5a8;
+            --sage-400: #7a8e7a;
+            --sage-500: #5d735d;
+            --sage-600: #4a5d4a;
+            --sage-700: #3e4d3e;
+            --sage-800: #2f3d2f;
+            --sage-900: #1f2a1f;
+            
+            --earth-50: #fdf7f0;
+            --earth-100: #f7e6d1;
+            --earth-200: #f0d0a3;
+            --earth-300: #e6b472;
+            --earth-400: #d99c4a;
+            --earth-500: #c8842a;
+            --earth-600: #b06b1e;
+            --earth-700: #8f4f19;
+            --earth-800: #744019;
+            --earth-900: #5e3518;
+
+            --rose-50: #fef7f6;
+            --rose-100: #fde8e6;
+            --rose-200: #fad5d2;
+            --rose-300: #f5b6b1;
+            --rose-400: #ed8c85;
+            --rose-500: #e06960;
+            --rose-600: #cc4a3e;
+            --rose-700: #ab3d32;
+            --rose-800: #8d352e;
+            --rose-900: #75322b;
+
+            --neutral-50: #fafafa;
+            --neutral-100: #f5f5f5;
+            --neutral-200: #e5e5e5;
+            --neutral-300: #d4d4d4;
+            --neutral-400: #a3a3a3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--sage-50) 0%, var(--earth-50) 50%, var(--rose-50) 100%);
+            background-attachment: fixed;
+            color: var(--neutral-800);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--sage-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 32px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--sage-700);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo::before {
+            content: '🌿';
+            font-size: 1.8rem;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .auth-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--sage-600);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: var(--sage-700);
+            transform: translateY(-1px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--neutral-600);
+            font-size: 0.9rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--sage-50);
+            padding: 0.5rem;
+            border-radius: 30px;
+            border: 1px solid var(--sage-200);
+        }
+
+        .nav-tab {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            background: transparent;
+            color: var(--neutral-600);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: var(--sage-700);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Main Content */
+        main {
+            padding: 3rem 0;
+            min-height: calc(100vh - 120px);
+        }
+
+        .section {
+            display: none;
+            animation: slideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 600;
+            color: var(--sage-800);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-subtitle {
+            color: var(--neutral-500);
+            font-size: 1.2rem;
+            max-width: 650px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Cards and Grid */
+        .masonry-grid {
+            columns: 3;
+            column-gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            display: inline-block;
+            width: 100%;
+            background: white;
+            border: 1px solid var(--sage-100);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sage-400), var(--earth-400), var(--rose-400));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+            border-color: var(--sage-200);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .card-date {
+            color: var(--neutral-400);
+            font-size: 0.8rem;
+            background: var(--sage-50);
+            padding: 0.4rem 0.8rem;
+            border-radius: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .card-content {
+            color: var(--neutral-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .card-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--sage-600);
+            font-weight: 500;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .tag {
+            background: var(--sage-100);
+            color: var(--sage-700);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid var(--sage-200);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--sage-500), var(--earth-500));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(93, 115, 93, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 50;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 48px rgba(93, 115, 93, 0.4);
+        }
+
+        .fab::before {
+            content: '✦';
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 3rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--sage-100);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--sage-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: var(--neutral-500);
+            font-size: 1rem;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--sage-50);
+            border: none;
+            color: var(--neutral-500);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: var(--sage-100);
+            color: var(--sage-700);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            font-size: 0.95rem;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            background: var(--sage-50);
+            border: 2px solid var(--sage-100);
+            border-radius: 16px;
+            color: var(--neutral-800);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--sage-400);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(93, 115, 93, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, var(--sage-600), var(--earth-600));
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(93, 115, 93, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--sage-100);
+            border-radius: 24px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage-400), var(--earth-400));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--sage-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--neutral-500);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Empty States */
+        .empty-state {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--neutral-400);
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            opacity: 0.6;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--neutral-500);
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            font-weight: 500;
+        }
+
+        .add-btn {  
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50%;
+            color: black;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            z-index: 50;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 2px 8px rgba(119, 129, 91, 0.486);
+        }
+
+        /* Loading and Status */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--sage-200);
+            border-radius: 50%;
+            border-top-color: var(--sage-600);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-message {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--sage-600);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.4s ease;
+            z-index: 1001;
+        }
+
+        .status-message.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .masonry-grid {
+                columns: 1;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+                gap: 0.3rem;
+            }
+
+            .nav-tab {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 2.4rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                width: 95%;
+                border-radius: 24px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .masonry-grid {
+                columns: 2;
+            }
+        }
+
+        /* Firebase specific styles */
+        .auth-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 24px;
+            border: 1px solid var(--sage-100);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .auth-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--sage-800);
+            margin-bottom: 1rem;
+        }
+
+        .auth-description {
+            color: var(--neutral-500);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .memory-type-memory::before { background: linear-gradient(90deg, var(--sage-400), var(--earth-400)); }
+        .memory-type-travel::before { background: linear-gradient(90deg, var(--earth-400), var(--rose-400)); }
+        .memory-type-friend::before { background: linear-gradient(90deg, var(--rose-400), var(--sage-400)); }
+        .memory-type-note::before { background: linear-gradient(90deg, var(--sage-400), var(--neutral-400)); }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Memory Keeper</div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" onclick="showSection('dashboard')">Dashboard</button>
+                    <button class="nav-tab" onclick="showSection('memories')">Life Memories</button>
+                    <button class="nav-tab" onclick="showSection('travel')">Travel</button>
+                    <button class="nav-tab" onclick="showSection('friends')">Friends</button>
+                    <button class="nav-tab" onclick="showSection('notes')">Notes</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="section-header">
+                    <h1 class="section-title">Your Life Dashboard</h1>
+                    <p class="section-subtitle">Welcome to your personal memory keeper. Capture, organize, and cherish your life's moments.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-memories">0</div>
+                        <div class="stat-label">Life Memories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-travels">0</div>
+                        <div class="stat-label">Travel Adventures</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-friends">0</div>
+                        <div class="stat-label">Friends</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-notes">0</div>
+                        <div class="stat-label">Notes</div>
+                    </div>
+                </div>
+
+                <div class="grid" id="recent-items">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>Start Your Journey</h3>
+                        <p>Begin by adding your first memory, travel experience, or note using the + button below.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Life Memories Section -->
+            <section id="memories" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Life Memories</h1>
+                    <p class="section-subtitle">Capture and preserve your most precious life moments</p>
+                </div>
+                <div class="grid" id="memories-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">💭</div>
+                        <h3>No memories yet</h3>
+                        <p>Start documenting your life's beautiful moments</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Travel Section -->
+            <section id="travel" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Travel Adventures</h1>
+                    <p class="section-subtitle">Document your journeys around the world</p>
+                </div>
+                <div class="grid" id="travel-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">✈️</div>
+                        <h3>No travels recorded</h3>
+                        <p>Share your amazing travel experiences and adventures</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Friends Section -->
+            <section id="friends" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Friends & Relationships</h1>
+                    <p class="section-subtitle">Keep track of the special people in your life</p>
+                </div>
+                <div class="grid" id="friends-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">👥</div>
+                        <h3>No friends added</h3>
+                        <p>Add information about your friends and relationships</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notes Section -->
+            <section id="notes" class="section">
+                <div class="section-header">
+                    <h1 class="section-title">Personal Notes</h1>
+                    <p class="section-subtitle">Your digital notepad for thoughts, ideas, and reminders</p>
+                </div>
+                <div class="grid" id="notes-grid">
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>No notes yet</h3>
+                        <p>Start writing down your thoughts and ideas</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Add Button -->
+    <button class="add-btn" onclick="openModal()">+</button>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Entry</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="entry-form">
+                <div class="form-group">
+                    <label class="form-label">Type</label>
+                    <select class="form-select" id="entry-type" onchange="updateFormFields()">
+                        <option value="memory">Life Memory</option>
+                        <option value="travel">Travel Experience</option>
+                        <option value="friend">Friend</option>
+                        <option value="note">Note</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="entry-title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-textarea" id="entry-description" required></textarea>
+                </div>
+                <div class="form-group" id="location-group" style="display: none;">
+                    <label class="form-label">Location</label>
+                    <input type="text" class="form-input" id="entry-location">
+                </div>
+                <div class="form-group" id="contact-group" style="display: none;">
+                    <label class="form-label">Contact Info</label>
+                    <input type="text" class="form-input" id="entry-contact" placeholder="Phone, email, etc.">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tags (comma separated)</label>
+                    <input type="text" class="form-input" id="entry-tags" placeholder="happy, family, vacation">
+                </div>
+                <button type="submit" class="btn">Save Entry</button>
+            </form>
+        </div>
+    </div>
+    <script>
+  
+const firebaseConfig = {
+      apiKey: "AIzaSyCmfBilSi1wB566wWPEJFiSptdtmVY4ZTo",
+      authDomain: "memory-keeper-daefe.firebaseapp.com",
+      databaseURL: "https://memory-keeper-daefe-default-rtdb.firebaseio.com/",
+      projectId: "memory-keeper-daefe",
+      storageBucket: "memory-keeper-daefe.firebasestorage.app",
+      messagingSenderId: "957376229693",
+      appId: "1:957376229693:web:df9734fb49a7c82ed29554",
+      measurementId: "G-Q9RZ1HNNC6"
+};
+
+// Firebase inicializálása
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.firestore();
+
+
+
+  let currentSection = 'dashboard';
+
+  async function init() {
+    await updateStats();
+    await updateDashboard();
+  }
+
+  async function showSection(section) {
+    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(section).classList.add('active');
+
+    currentSection = section;
+    await renderSection(section);
+  }
+
+  async function renderSection(section) {
+    if (section === 'dashboard') {
+      await updateDashboard();
+      return;
+    }
+
+    const grid = document.getElementById(section + '-grid');
+    const querySnapshot = await database.collection(section).get();
+    const items = querySnapshot.docs.map(doc => doc.data());
+
+    if (items.length === 0) return;
+
+    grid.innerHTML = items.map(item => createCard(item, section)).join('');
+  }
+
+  function createCard(item, type) {
+    const typeIcons = {
+      memory: '💭',
+      travel: '✈️',
+      friend: '👤',
+      note: '📝'
+    };
+
+    let extraContent = '';
+    if (type === 'travel' && item.location) {
+      extraContent = `<p><strong>📍 ${item.location}</strong></p>`;
+    } else if (type === 'friend' && item.contact) {
+      extraContent = `<p><strong>📞 ${item.contact}</strong></p>`;
+    }
+
+    return `
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">${typeIcons[type]} ${item.title}</h3>
+          <span class="card-date">${item.date}</span>
+        </div>
+        <div class="card-content">
+          ${extraContent}
+          <p>${item.description}</p>
+        </div>
+        ${item.tags ? `<div class="card-tags">${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
+      </div>
+    `;
+  }
+
+async function updateStats() {
+  const types = ['memories', 'travel', 'friends', 'notes'];
+  for (const type of types) {
+    const snapshot = await database.collection(type).get();
+    const element = document.getElementById(`total-${type}`);
+    if (element) {
+      element.textContent = snapshot.size;
+    }
+  }
+}
+
+
+  async function updateDashboard() {
+    const recentItems = [];
+
+    const types = ['memories', 'travel', 'friends', 'notes'];
+    for (const type of types) {
+      const snapshot = await database.collection(type).orderBy("dateCreated", "desc").limit(6).get();
+      snapshot.forEach(doc => {
+        recentItems.push({ ...doc.data(), type: type.slice(0, -1) });
+      });
+    }
+
+    recentItems.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
+    const topItems = recentItems.slice(0, 6);
+
+    const container = document.getElementById('recent-items');
+    if (topItems.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3>Start Your Journey</h3>
+          <p>Begin by adding your first memory, travel experience, or note using the + button below.</p>
+        </div>
+      `;
+    } else {
+      container.innerHTML = topItems.map(item => createCard(item, item.type)).join('');
+    }
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('active');
+    updateFormFields();
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.getElementById('entry-form').reset();
+  }
+
+  function updateFormFields() {
+    const type = document.getElementById('entry-type').value;
+    document.getElementById('location-group').style.display = (type === 'travel' || type === 'memory') ? 'block' : 'none';
+    document.getElementById('contact-group').style.display = type === 'friend' ? 'block' : 'none';
+  }
+
+  document.getElementById('entry-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const type = document.getElementById('entry-type').value;
+    const title = document.getElementById('entry-title').value;
+    const description = document.getElementById('entry-description').value;
+    const location = document.getElementById('entry-location').value;
+    const contact = document.getElementById('entry-contact').value;
+    const tags = document.getElementById('entry-tags').value;
+
+    const newEntry = {
+      title,
+      description,
+      date: new Date().toLocaleDateString(),
+      dateCreated: new Date().toISOString(),
+      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
+    };
+
+    if (location) newEntry.location = location;
+    if (contact) newEntry.contact = contact;
+
+    const sectionKey = type === 'memory' ? 'memories' : type;
+
+    await database.collection(sectionKey).add(newEntry);
+
+    await updateStats();
+    await renderSection(currentSection);
+    await updateDashboard();
+    closeModal();
+  });
+
+  document.getElementById('modal').addEventListener('click', function (e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>
