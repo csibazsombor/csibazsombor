@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head onload="updateStats()">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Keeper - Your Digital Life Journal</title>
     
-<!-- Firebase App (core SDK) -->
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-
-
-
-
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
@@ -846,182 +840,8 @@
             </form>
         </div>
     </div>
-    <script>
-  
-const firebaseConfig = {
-      apiKey: "AIzaSyCmfBilSi1wB566wWPEJFiSptdtmVY4ZTo",
-      authDomain: "memory-keeper-daefe.firebaseapp.com",
-      databaseURL: "https://memory-keeper-daefe-default-rtdb.firebaseio.com/",
-      projectId: "memory-keeper-daefe",
-      storageBucket: "memory-keeper-daefe.firebasestorage.app",
-      messagingSenderId: "957376229693",
-      appId: "1:957376229693:web:df9734fb49a7c82ed29554",
-      measurementId: "G-Q9RZ1HNNC6"
-};
+    <!-- Latest Modular SDK -->
 
-// Firebase inicializálása
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.firestore();
-
-
-
-  let currentSection = 'dashboard';
-
-  async function init() {
-    await updateStats();
-    await updateDashboard();
-  }
-
-  async function showSection(section) {
-    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
-    event.target.classList.add('active');
-
-    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-    document.getElementById(section).classList.add('active');
-
-    currentSection = section;
-    await renderSection(section);
-  }
-
-  async function renderSection(section) {
-    if (section === 'dashboard') {
-      await updateDashboard();
-      return;
-    }
-
-    const grid = document.getElementById(section + '-grid');
-    const querySnapshot = await database.collection(section).get();
-    const items = querySnapshot.docs.map(doc => doc.data());
-
-    if (items.length === 0) return;
-
-    grid.innerHTML = items.map(item => createCard(item, section)).join('');
-  }
-
-  function createCard(item, type) {
-    const typeIcons = {
-      memory: '💭',
-      travel: '✈️',
-      friend: '👤',
-      note: '📝'
-    };
-
-    let extraContent = '';
-    if (type === 'travel' && item.location) {
-      extraContent = `<p><strong>📍 ${item.location}</strong></p>`;
-    } else if (type === 'friend' && item.contact) {
-      extraContent = `<p><strong>📞 ${item.contact}</strong></p>`;
-    }
-
-    return `
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">${typeIcons[type]} ${item.title}</h3>
-          <span class="card-date">${item.date}</span>
-        </div>
-        <div class="card-content">
-          ${extraContent}
-          <p>${item.description}</p>
-        </div>
-        ${item.tags ? `<div class="card-tags">${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>` : ''}
-      </div>
-    `;
-  }
-
-async function updateStats() {
-  const types = ['memories', 'travel', 'friends', 'notes'];
-  for (const type of types) {
-    const snapshot = await database.collection(type).get();
-    const element = document.getElementById(`total-${type}`);
-    if (element) {
-      element.textContent = snapshot.size;
-    }
-  }
-}
-
-
-  async function updateDashboard() {
-    const recentItems = [];
-
-    const types = ['memories', 'travel', 'friends', 'notes'];
-    for (const type of types) {
-      const snapshot = await database.collection(type).orderBy("dateCreated", "desc").limit(6).get();
-      snapshot.forEach(doc => {
-        recentItems.push({ ...doc.data(), type: type.slice(0, -1) });
-      });
-    }
-
-    recentItems.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
-    const topItems = recentItems.slice(0, 6);
-
-    const container = document.getElementById('recent-items');
-    if (topItems.length === 0) {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">📝</div>
-          <h3>Start Your Journey</h3>
-          <p>Begin by adding your first memory, travel experience, or note using the + button below.</p>
-        </div>
-      `;
-    } else {
-      container.innerHTML = topItems.map(item => createCard(item, item.type)).join('');
-    }
-  }
-
-  function openModal() {
-    document.getElementById('modal').classList.add('active');
-    updateFormFields();
-  }
-
-  function closeModal() {
-    document.getElementById('modal').classList.remove('active');
-    document.getElementById('entry-form').reset();
-  }
-
-  function updateFormFields() {
-    const type = document.getElementById('entry-type').value;
-    document.getElementById('location-group').style.display = (type === 'travel' || type === 'memory') ? 'block' : 'none';
-    document.getElementById('contact-group').style.display = type === 'friend' ? 'block' : 'none';
-  }
-
-  document.getElementById('entry-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const type = document.getElementById('entry-type').value;
-    const title = document.getElementById('entry-title').value;
-    const description = document.getElementById('entry-description').value;
-    const location = document.getElementById('entry-location').value;
-    const contact = document.getElementById('entry-contact').value;
-    const tags = document.getElementById('entry-tags').value;
-
-    const newEntry = {
-      title,
-      description,
-      date: new Date().toLocaleDateString(),
-      dateCreated: new Date().toISOString(),
-      tags: tags ? tags.split(',').map(tag => tag.trim()) : []
-    };
-
-    if (location) newEntry.location = location;
-    if (contact) newEntry.contact = contact;
-
-    const sectionKey = type === 'memory' ? 'memories' : type;
-
-    await database.collection(sectionKey).add(newEntry);
-
-    await updateStats();
-    await renderSection(currentSection);
-    await updateDashboard();
-    closeModal();
-  });
-
-  document.getElementById('modal').addEventListener('click', function (e) {
-    if (e.target === this) {
-      closeModal();
-    }
-  });
-
-  init();
-</script>
+    <script src="database.js"></script>
 </body>
 </html>
