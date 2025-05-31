@@ -346,11 +346,11 @@ section {
 .gallery-controls {
     position: relative;
     background: linear-gradient(135deg, 
-        rgba(15, 23, 42, 0.95) 0%, 
-        rgba(30, 41, 59, 0.9) 35%,
-        rgba(51, 65, 85, 0.85) 100%);
+        rgba(46, 39, 22, 0.562) 0%, 
+        rgba(70, 61, 43, 0.521) 35%,
+        rgba(85, 71, 51, 0.568) 100%);
     backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(148, 163, 184, 0.12);
+    border: 1px solid rgba(184, 176, 148, 0.12);
     border-radius: 24px;
     padding: 2.5rem;
     margin-bottom: 2rem;
@@ -373,11 +373,11 @@ section {
     height: 200%;
     background: conic-gradient(
         from 0deg at 50% 50%,
-        rgba(139, 92, 246, 0.1) 0deg,
-        rgba(59, 130, 246, 0.1) 90deg,
-        rgba(16, 185, 129, 0.1) 180deg,
-        rgba(245, 101, 101, 0.1) 270deg,
-        rgba(139, 92, 246, 0.1) 360deg
+        rgba(245, 215, 132, 0.1) 0deg,
+        rgba(246, 202, 59, 0.1) 90deg,
+        rgba(255, 233, 133, 0.1) 180deg,
+        rgba(255, 225, 126, 0.1) 270deg,
+        rgba(245, 217, 127, 0.1) 360deg
     );
     animation: rotateGradient 20s linear infinite;
     z-index: -1;
