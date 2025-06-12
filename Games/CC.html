@@ -287,7 +287,7 @@
                     <strong>Score: <span id="gameScore">0</span></strong>
                 </div>
                 <div class="stat-box">
-                    <strong>Lives: <span id="gameLives">3</span></strong>
+                    <strong>Lives: <span id="gameLives">1</span></strong>
                 </div>
                 <div class="stat-box">
                     <strong>Level: <span id="gameLevel">1</span></strong>
@@ -483,7 +483,7 @@
                         crystals: [],
                         obstacles: [],
                         score: 0,
-                        lives: 3,
+                        lives: 1,
                         level: 1,
                         gameStarted: true,
                         lastUpdate: Date.now()
@@ -903,7 +903,7 @@ function copyToClipboard(text) {
         // Reset game
         function resetGame(room) {
             room.score = 0;
-            room.lives = 3;
+            room.lives = 1;
             room.level = 1;
             room.crystals = [];
             room.obstacles = [];
