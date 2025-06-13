@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Game selector</title>
+        <style>
+
+
+
+                body {
+                        font-family: Arial, sans-serif;
+                        background-color: #313131;
+                        color: #333;
+                        
+                }
+                h1 {
+                        font-size: 1cm;
+                        color: white;
+                        text-align: center;
+                        margin-top: 50px;
+                }
+
+                h1:hover {
+                        color: #ffcc00;
+                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                        transition: color 0.3s, text-shadow 0.3s;
+                } 
+
+
+                div a {
+                        display: inline-block;
+                        width: 200px;
+                        height: 200px;
+                        margin: 20px;
+                        background-color: #4e4e4e;
+                        color: white;
+                        text-decoration: none;
+                        text-align: center;
+                        line-height: 200px;
+                        font-size: 1.5em;
+                        border-radius: 10px;
+                        transition: transform 0.3s, background-color 0.3s;
+                }
+
+                .games div a:hover {
+                        transform: scale(1.05);
+                        background-color: #6e6e6e;
+                }
+                .games {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        margin-top: 50px;
+                }
+        </style>
+</head>
+<body>
+        <h1 style="text-align: center;">Game Selector</h1>
+        <div class="games"> 
+        <a href="CC.html">CC</a>
+        <a href="CK.html">CK</a>
+</div>
+</body>
+</html>
