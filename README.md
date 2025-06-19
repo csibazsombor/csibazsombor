@@ -1,5 +1,5 @@
-# NetByWeboldal
-# v4.2
+# Csiba Zsombor weboldala
+# v1.1.0
 
 ### Karbantartó és Fejlesztő
 Ez a projekt **Csiba Zsombor** által lett fejlesztve és karbantartva.
