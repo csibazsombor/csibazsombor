@@ -130,11 +130,11 @@
 
         // --- SHOP ITEMS ---
         const SHOP_ITEMS = [
-                { id: "color_red", name: "Red Name", price: 200, type: "color", color: "#FF4444" },
-                { id: "color_blue", name: "Blue Name", price: 200, type: "color", color: "#44AADD" },
-                { id: "color_gold", name: "Gold Name", price: 500, type: "color", color: "#FFD700" },
-                { id: "rank_pro", name: "Pro Rank", price: 1000, type: "rank", rank: "PRO" },
-                { id: "rank_legend", name: "Legend Rank", price: 2500, type: "rank", rank: "LEGEND" }
+                { id: "color_red", name: "Red Name", price: 200, type: "color", color: "#FF4444", desc: "Your name will be red on the leaderboard." },
+                { id: "color_blue", name: "Blue Name", price: 200, type: "color", color: "#44AADD", desc: "Your name will be blue on the leaderboard." },
+                { id: "color_gold", name: "Gold Name", price: 500, type: "color", color: "#FFD700", desc: "Your name will be gold on the leaderboard." },
+                { id: "rank_pro", name: "Pro Rank", price: 1000, type: "rank", rank: "PRO", desc: "Show off your PRO status!" },
+                { id: "rank_legend", name: "Legend Rank", price: 2500, type: "rank", rank: "LEGEND", desc: "Become a LEGEND on the leaderboard!" }
         ];
 
         // --- LEADERBOARD UI ---
@@ -153,11 +153,20 @@
                 });
                 document.body.innerHTML = "";
 
+                // Title
                 const title = document.createElement("h2");
                 title.textContent = "🏆 Leaderboard";
                 title.style.letterSpacing = "1px";
                 title.style.marginBottom = "8px";
+                title.style.fontSize = "2.2rem";
+                title.style.color = "#FFD700";
                 document.body.appendChild(title);
+
+                // Leaderboard info
+                const info = document.createElement("div");
+                info.innerHTML = `<span style="color:#aaa;font-size:1rem;">Top 15 players by <b>Total Score</b>. <br>Ranks and colors are shown next to names.<br>Earn more by playing and spending in the shop!</span>`;
+                info.style.marginBottom = "10px";
+                document.body.appendChild(info);
 
                 // Refresh button
                 const refreshBtn = document.createElement("button");
@@ -181,13 +190,14 @@
                 leaderboardDiv.style.margin = "16px";
                 leaderboardDiv.style.fontSize = "1.1rem";
                 leaderboardDiv.style.width = "100%";
-                leaderboardDiv.style.maxWidth = "400px";
+                leaderboardDiv.style.maxWidth = "500px";
                 leaderboardDiv.style.background = "#232526";
-                leaderboardDiv.style.borderRadius = "10px";
-                leaderboardDiv.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
-                leaderboardDiv.style.padding = "12px 0";
+                leaderboardDiv.style.borderRadius = "14px";
+                leaderboardDiv.style.boxShadow = "0 2px 12px rgba(0,0,0,0.25)";
+                leaderboardDiv.style.padding = "18px 0";
                 leaderboardDiv.style.overflowX = "auto";
                 leaderboardDiv.style.marginBottom = "12px";
+                leaderboardDiv.style.border = "2px solid #FFD700";
                 document.body.appendChild(leaderboardDiv);
 
                 // Username input
@@ -205,7 +215,7 @@
                 input.placeholder = "Username";
                 input.style.padding = "6px";
                 input.style.borderRadius = "6px";
-                input.style.border = "1px solid #444";
+                input.style.border = "1px solid #FFD700";
                 input.style.fontSize = "1rem";
                 input.style.background = "#18191A";
                 input.style.color = "#fff";
@@ -241,7 +251,8 @@
                         borderRadius: "8px",
                         background: "#232526",
                         color: "#fff",
-                        cursor: "pointer"
+                        cursor: "pointer",
+                        border: "2px solid #FFD700"
                 });
                 restartBtn.onclick = onRestart;
                 document.body.appendChild(restartBtn);
@@ -251,7 +262,7 @@
                 scoreDiv.textContent = "Your Score: " + score;
                 scoreDiv.style.margin = "12px";
                 scoreDiv.style.fontWeight = "bold";
-                scoreDiv.style.fontSize = "1.1rem";
+                scoreDiv.style.fontSize = "1.2rem";
                 scoreDiv.style.color = "#FFD700";
                 document.body.appendChild(scoreDiv);
 
@@ -259,12 +270,14 @@
                 const shopDiv = document.createElement("div");
                 shopDiv.style.margin = "18px 0";
                 shopDiv.style.background = "#232526";
-                shopDiv.style.borderRadius = "10px";
-                shopDiv.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
-                shopDiv.style.padding = "12px";
-                shopDiv.style.maxWidth = "400px";
+                shopDiv.style.borderRadius = "14px";
+                shopDiv.style.boxShadow = "0 2px 12px rgba(0,0,0,0.25)";
+                shopDiv.style.padding = "18px";
+                shopDiv.style.maxWidth = "500px";
                 shopDiv.style.width = "100%";
-                shopDiv.innerHTML = "<b>Shop</b> (Spend your total score to buy items!)";
+                shopDiv.style.border = "2px solid #2196F3";
+                shopDiv.innerHTML = `<div style="font-size:1.2rem;font-weight:bold;color:#2196F3;margin-bottom:8px;">🛒 Game Shop</div>
+                <div style="color:#aaa;font-size:1rem;margin-bottom:10px;">Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.</div>`;
                 document.body.appendChild(shopDiv);
 
                 // Save score to Firebase (add to previous score, not overwrite)
@@ -324,15 +337,15 @@
                                                 leaderboardDiv.innerHTML = "<div style='color:#aaa;'>No scores yet.</div>";
                                                 return;
                                         }
-                                        let table = `<table style="width:100%;border-collapse:collapse;">
+                                        let table = `<table style="width:100%;border-collapse:separate;border-spacing:0 4px;">
                                                 <thead>
                                                         <tr style="background:#18191A;">
-                                                                <th style="padding:6px;color:#FFD700;">#</th>
-                                                                <th style="padding:6px;text-align:left;">Name</th>
-                                                                <th style="padding:6px;color:#FFD700;">Score</th>
-                                                                <th style="padding:6px;color:#FFD700;">Total</th>
-                                                                <th style="padding:6px;color:#aaa;">Rank</th>
-                                                                <th style="padding:6px;color:#aaa;">Time</th>
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">#</th>
+                                                                <th style="padding:8px 6px;text-align:left;font-size:1.1rem;">Name</th>
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">Score</th>
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">Total</th>
+                                                                <th style="padding:8px 6px;color:#aaa;font-size:1.1rem;">Rank</th>
+                                                                <th style="padding:8px 6px;color:#aaa;font-size:1.1rem;">Time</th>
                                                         </tr>
                                                 </thead>
                                                 <tbody>`;
@@ -356,15 +369,17 @@
                                                 } else if (rank) {
                                                         rankHtml = `<span style="color:#FFD700;font-weight:bold;">[${rank}]</span>`;
                                                 }
-                                                table += `<tr style="background:${i%2===0?'#232526':'#292b2d'};">
-                                                        <td style="padding:6px;font-weight:bold;text-align:center;">${i + 1}</td>
-                                                        <td style="padding:6px;text-align:left;">
-                                                                <span style="color:${color};font-weight:bold;">${safeUsername}</span> ${rankHtml}
+                                                // Highlight current user row
+                                                let highlight = (currentUser && entry.username && entry.username.toLowerCase() === currentUser.toLowerCase()) ? "box-shadow:0 0 0 2px #2196F3 inset;background:#232526;" : "";
+                                                table += `<tr style="background:${i%2===0?'#232526':'#292b2d'};${highlight}">
+                                                        <td style="padding:8px 6px;font-weight:bold;text-align:center;font-size:1.1rem;">${i + 1}</td>
+                                                        <td style="padding:8px 6px;text-align:left;">
+                                                                <span style="color:${color};font-weight:bold;font-size:1.1rem;">${safeUsername}</span> ${rankHtml}
                                                         </td>
-                                                        <td style="padding:6px;text-align:center;color:#FFD700;font-weight:bold;">${entry.score || 0}</td>
-                                                        <td style="padding:6px;text-align:center;color:#FFD700;">${entry.totalScore || entry.score || 0}</td>
-                                                        <td style="padding:6px;text-align:center;color:#FFD700;">${rankHtml}</td>
-                                                        <td style="padding:6px;text-align:center;color:#aaa;font-size:0.95em;">${timeStr}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-weight:bold;font-size:1.1rem;">${entry.score || 0}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-size:1.1rem;">${entry.totalScore || entry.score || 0}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-size:1.1rem;">${rankHtml}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#aaa;font-size:1rem;">${timeStr}</td>
                                                 </tr>`;
                                         });
                                         table += "</tbody></table>";
@@ -377,67 +392,111 @@
                                 });
                 }
 
-                // Shop rendering and logic
+                // Shop rendering and logic (improved)
                 function renderShop(username, totalScore, ownedItems, userRank, userColor) {
-                        shopDiv.innerHTML = "<b>Shop</b> (Spend your total score to buy items!)<br>";
-                        SHOP_ITEMS.forEach(item => {
-                                const owned = ownedItems && ownedItems.includes(item.id);
-                                const btn = document.createElement("button");
-                                btn.textContent = owned ? "Owned" : `Buy (${item.price})`;
-                                btn.disabled = owned || totalScore < item.price;
-                                btn.style.margin = "6px";
-                                btn.style.padding = "6px 14px";
-                                btn.style.borderRadius = "6px";
-                                btn.style.border = "none";
-                                btn.style.background = owned ? "#888" : (totalScore >= item.price ? "#4CAF50" : "#aaa");
-                                btn.style.color = "#fff";
-                                btn.style.cursor = owned ? "default" : (totalScore >= item.price ? "pointer" : "not-allowed");
-                                btn.style.fontWeight = "bold";
-                                btn.style.fontSize = "1rem";
-                                btn.style.marginRight = "12px";
-                                btn.style.marginBottom = "6px";
-                                btn.onclick = function() {
-                                        if (owned || totalScore < item.price) return;
-                                        // Deduct price, add item, update Firebase
-                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
-                                                let prev = snap.val();
-                                                let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
-                                                let prevItems = (prev && prev.items) ? prev.items : [];
-                                                let prevRank = (prev && prev.rank) ? prev.rank : "";
-                                                let prevColor = (prev && prev.color) ? prev.color : "";
-                                                let newTotal = prevTotal - item.price;
-                                                let newItems = prevItems.concat(item.id);
-                                                let newRank = prevRank;
-                                                let newColor = prevColor;
-                                                if (item.type === "rank") newRank = item.rank;
-                                                if (item.type === "color") newColor = item.color;
-                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
-                                                        totalScore: newTotal,
-                                                        items: newItems,
-                                                        rank: newRank,
-                                                        color: newColor
-                                                }).then(() => {
-                                                        loadLeaderboard(username, newTotal, newItems, newRank, newColor);
-                                                });
-                                        });
-                                };
-                                let desc = "";
-                                if (item.type === "color") {
-                                        desc = `<span style="color:${item.color};font-weight:bold;">${item.name}</span>`;
-                                } else if (item.type === "rank") {
-                                        desc = `<span style="color:#FFD700;font-weight:bold;">[${item.rank}]</span> ${item.name}`;
-                                }
-                                shopDiv.innerHTML += `${desc} - <span style="color:#FFD700;">${item.price} pts</span> `;
-                                shopDiv.appendChild(btn);
-                                shopDiv.innerHTML += "<br>";
-                        });
+                        shopDiv.innerHTML = `<div style="font-size:1.2rem;font-weight:bold;color:#2196F3;margin-bottom:8px;">🛒 Game Shop</div>
+                        <div style="color:#aaa;font-size:1rem;margin-bottom:10px;">Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.</div>`;
+
                         // Show current equipped
                         let equipped = "";
                         if (userColor) equipped += `<span style="color:${userColor};font-weight:bold;">Name Color</span> `;
                         if (userRank) equipped += `<span style="color:#FFD700;font-weight:bold;">[${userRank}]</span>`;
                         if (equipped) {
-                                shopDiv.innerHTML += `<div style="margin-top:10px;color:#aaa;">Equipped: ${equipped}</div>`;
+                                shopDiv.innerHTML += `<div style="margin-bottom:10px;color:#aaa;">Equipped: ${equipped}</div>`;
                         }
+
+                        // Shop grid
+                        const grid = document.createElement("div");
+                        grid.style.display = "grid";
+                        grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(210px, 1fr))";
+                        grid.style.gap = "14px";
+                        grid.style.marginTop = "8px";
+                        SHOP_ITEMS.forEach(item => {
+                                const owned = ownedItems && ownedItems.includes(item.id);
+                                const equippedNow = (item.type === "color" && userColor === item.color) || (item.type === "rank" && userRank === item.rank);
+                                const canBuy = totalScore >= item.price;
+                                const card = document.createElement("div");
+                                card.style.background = owned ? "#1e2224" : "#18191A";
+                                card.style.borderRadius = "10px";
+                                card.style.padding = "14px";
+                                card.style.boxShadow = equippedNow ? "0 0 0 2px #4CAF50 inset" : "0 1px 6px rgba(0,0,0,0.12)";
+                                card.style.border = owned ? "2px solid #4CAF50" : "2px solid #444";
+                                card.style.display = "flex";
+                                card.style.flexDirection = "column";
+                                card.style.alignItems = "center";
+                                card.style.justifyContent = "center";
+                                card.style.transition = "box-shadow 0.2s,border 0.2s";
+                                // Name
+                                let desc = "";
+                                if (item.type === "color") {
+                                        desc = `<span style="color:${item.color};font-weight:bold;font-size:1.1rem;">${item.name}</span>`;
+                                } else if (item.type === "rank") {
+                                        desc = `<span style="color:#FFD700;font-weight:bold;font-size:1.1rem;">[${item.rank}]</span> ${item.name}`;
+                                }
+                                card.innerHTML = `
+                                        <div style="margin-bottom:6px;">${desc}</div>
+                                        <div style="color:#FFD700;font-size:1.1rem;margin-bottom:4px;">${item.price} pts</div>
+                                        <div style="color:#aaa;font-size:0.95rem;margin-bottom:8px;min-height:32px;">${item.desc}</div>
+                                `;
+                                // Button
+                                const btn = document.createElement("button");
+                                btn.style.padding = "7px 18px";
+                                btn.style.borderRadius = "6px";
+                                btn.style.border = "none";
+                                btn.style.background = owned ? (equippedNow ? "#4CAF50" : "#888") : (canBuy ? "#2196F3" : "#aaa");
+                                btn.style.color = "#fff";
+                                btn.style.cursor = owned ? (equippedNow ? "default" : "pointer") : (canBuy ? "pointer" : "not-allowed");
+                                btn.style.fontWeight = "bold";
+                                btn.style.fontSize = "1rem";
+                                btn.style.marginTop = "4px";
+                                btn.textContent = owned ? (equippedNow ? "Equipped" : "Equip") : `Buy`;
+                                btn.disabled = owned ? equippedNow : !canBuy;
+
+                                btn.onclick = function() {
+                                        if (owned && !equippedNow) {
+                                                // Equip
+                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                                        let prev = snap.val();
+                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                                        let prevItems = (prev && prev.items) ? prev.items : [];
+                                                        let newRank = prev.rank || "";
+                                                        let newColor = prev.color || "";
+                                                        if (item.type === "rank") newRank = item.rank;
+                                                        if (item.type === "color") newColor = item.color;
+                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
+                                                                rank: newRank,
+                                                                color: newColor
+                                                        }).then(() => {
+                                                                loadLeaderboard(username, prevTotal, prevItems, newRank, newColor);
+                                                        });
+                                                });
+                                        } else if (!owned && canBuy) {
+                                                // Buy and equip
+                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                                        let prev = snap.val();
+                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                                        let prevItems = (prev && prev.items) ? prev.items : [];
+                                                        let newTotal = prevTotal - item.price;
+                                                        let newItems = prevItems.concat(item.id);
+                                                        let newRank = prev.rank || "";
+                                                        let newColor = prev.color || "";
+                                                        if (item.type === "rank") newRank = item.rank;
+                                                        if (item.type === "color") newColor = item.color;
+                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
+                                                                totalScore: newTotal,
+                                                                items: newItems,
+                                                                rank: newRank,
+                                                                color: newColor
+                                                        }).then(() => {
+                                                                loadLeaderboard(username, newTotal, newItems, newRank, newColor);
+                                                        });
+                                                });
+                                        }
+                                };
+                                card.appendChild(btn);
+                                grid.appendChild(card);
+                        });
+                        shopDiv.appendChild(grid);
                 }
 
                 // Initial leaderboard load
