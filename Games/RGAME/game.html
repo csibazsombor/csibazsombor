@@ -35,7 +35,19 @@
 
         // Step 2: Show author
         setTimeout(() => {
-                document.body.textContent = "Made By Csiba Zsombor";
+                document.body.innerHTML = `<span id="author-glow" style="font-size:2rem;font-weight:bold;">Made By Csiba Zsombor</span>`;
+                const style = document.createElement("style");
+                style.textContent = `
+                @keyframes glow {
+                        0% { text-shadow: 0 0 8px #00eaff, 0 0 16px #00eaff, 0 0 32px #00eaff; color: #fff; }
+                        50% { text-shadow: 0 0 24px #00eaff, 0 0 48px #00eaff, 0 0 96px #00eaff; color: #00eaff; }
+                        100% { text-shadow: 0 0 8px #00eaff, 0 0 16px #00eaff, 0 0 32px #00eaff; color: #fff; }
+                }
+                #author-glow {
+                        animation: glow 1.5s infinite alternate;
+                }
+                `;
+                document.head.appendChild(style);
         }, 1500);
 
         // Step 3: Fun message
@@ -164,7 +176,7 @@
 
                 // Leaderboard info
                 const info = document.createElement("div");
-                info.innerHTML = `<span style="color:#aaa;font-size:1rem;">Top 15 players by <b>Total Score</b>. <br>Ranks and colors are shown next to names.<br>Earn more by playing and spending in the shop!</span>`;
+                info.innerHTML = `<span style="color:#aaa;font-size:1rem;">Top 15 players by <b>Best Score</b>. <br>Ranks and colors are shown next to names.<br>Earn more by playing and spending in the shop!</span>`;
                 info.style.marginBottom = "10px";
                 document.body.appendChild(info);
 
@@ -293,15 +305,18 @@
                         // Read previous data, then add score
                         window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
                                 let prev = snap.val();
-                                let totalScore = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                let prevScore = (prev && prev.score) ? prev.score : 0;
+                                let totalScore = (prev && prev.totalScore) ? prev.totalScore : prevScore;
                                 let userItems = (prev && prev.items) ? prev.items : [];
                                 let userRank = (prev && prev.rank) ? prev.rank : "";
                                 let userColor = (prev && prev.color) ? prev.color : "";
                                 let newTotal = totalScore + score;
+                                // Save the highest score
+                                let newScore = Math.max(score, prevScore);
                                 // Only include 'dev' property if isDev is true
                                 const data = {
                                         username: username,
-                                        score: score,
+                                        score: newScore,
                                         totalScore: newTotal,
                                         timestamp: window.firebase.database.ServerValue.TIMESTAMP,
                                         items: userItems,
@@ -330,8 +345,8 @@
                                         snap.forEach(child => {
                                                 arr.push(child.val());
                                         });
-                                        // Sort by totalScore, fallback to score
-                                        arr.sort((a, b) => (b.totalScore || b.score || 0) - (a.totalScore || a.score || 0) || a.timestamp - b.timestamp);
+                                        // Sort by best score (highest score), fallback to totalScore
+                                        arr.sort((a, b) => (b.score || 0) - (a.score || 0) || (b.totalScore || 0) - (a.totalScore || 0) || a.timestamp - b.timestamp);
                                         // Build table
                                         if (arr.length === 0) {
                                                 leaderboardDiv.innerHTML = "<div style='color:#aaa;'>No scores yet.</div>";
