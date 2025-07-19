@@ -128,6 +128,15 @@
                 document.head.appendChild(script1);
         }
 
+        // --- SHOP ITEMS ---
+        const SHOP_ITEMS = [
+                { id: "color_red", name: "Red Name", price: 200, type: "color", color: "#FF4444" },
+                { id: "color_blue", name: "Blue Name", price: 200, type: "color", color: "#44AADD" },
+                { id: "color_gold", name: "Gold Name", price: 500, type: "color", color: "#FFD700" },
+                { id: "rank_pro", name: "Pro Rank", price: 1000, type: "rank", rank: "PRO" },
+                { id: "rank_legend", name: "Legend Rank", price: 2500, type: "rank", rank: "LEGEND" }
+        ];
+
         // --- LEADERBOARD UI ---
         function showLeaderboard(score, onRestart) {
                 setBodyStyles({
@@ -246,10 +255,21 @@
                 scoreDiv.style.color = "#FFD700";
                 document.body.appendChild(scoreDiv);
 
-                // Save score to Firebase (overwrite if username exists)
+                // Shop UI
+                const shopDiv = document.createElement("div");
+                shopDiv.style.margin = "18px 0";
+                shopDiv.style.background = "#232526";
+                shopDiv.style.borderRadius = "10px";
+                shopDiv.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+                shopDiv.style.padding = "12px";
+                shopDiv.style.maxWidth = "400px";
+                shopDiv.style.width = "100%";
+                shopDiv.innerHTML = "<b>Shop</b> (Spend your total score to buy items!)";
+                document.body.appendChild(shopDiv);
+
+                // Save score to Firebase (add to previous score, not overwrite)
                 saveBtn.onclick = function() {
                         let username = input.value.trim().substring(0, 16) || "Anonymous";
-                        // If username is "toyeee", save as "dev"
                         let isDev = false;
                         if (username.toLowerCase() === "Toyaaa".toLowerCase()) {
                                 username = "Toyaaa";
@@ -257,27 +277,39 @@
                         }
                         saveBtn.disabled = true;
                         saveBtn.textContent = "Saving...";
-                        // Use username as key, overwrite if exists
-                        // Only include 'dev' property if isDev is true
-                        const data = {
-                                username: username,
-                                score: score,
-                                timestamp: window.firebase.database.ServerValue.TIMESTAMP
-                        };
-                        if (isDev) {
-                                data.dev = true;
-                        }
-                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).set(data).then(() => {
-                                saveBtn.textContent = "Saved!";
-                                input.disabled = true;
-                                loadLeaderboard();
-                        }).catch(() => {
-                                saveBtn.textContent = "Error!";
+                        // Read previous data, then add score
+                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                let prev = snap.val();
+                                let totalScore = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                let userItems = (prev && prev.items) ? prev.items : [];
+                                let userRank = (prev && prev.rank) ? prev.rank : "";
+                                let userColor = (prev && prev.color) ? prev.color : "";
+                                let newTotal = totalScore + score;
+                                // Only include 'dev' property if isDev is true
+                                const data = {
+                                        username: username,
+                                        score: score,
+                                        totalScore: newTotal,
+                                        timestamp: window.firebase.database.ServerValue.TIMESTAMP,
+                                        items: userItems,
+                                        rank: userRank,
+                                        color: userColor
+                                };
+                                if (isDev) {
+                                        data.dev = true;
+                                }
+                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).set(data).then(() => {
+                                        saveBtn.textContent = "Saved!";
+                                        input.disabled = true;
+                                        loadLeaderboard(username, newTotal, userItems, userRank, userColor);
+                                }).catch(() => {
+                                        saveBtn.textContent = "Error!";
+                                });
                         });
                 };
 
                 // Load leaderboard from Firebase
-                function loadLeaderboard() {
+                function loadLeaderboard(currentUser, currentTotalScore, userItems, userRank, userColor) {
                         leaderboardDiv.textContent = "Loading leaderboard...";
                         window.firebase.database().ref("leaderboard")
                                 .once("value", snap => {
@@ -285,7 +317,8 @@
                                         snap.forEach(child => {
                                                 arr.push(child.val());
                                         });
-                                        arr.sort((a, b) => b.score - a.score || a.timestamp - b.timestamp);
+                                        // Sort by totalScore, fallback to score
+                                        arr.sort((a, b) => (b.totalScore || b.score || 0) - (a.totalScore || a.score || 0) || a.timestamp - b.timestamp);
                                         // Build table
                                         if (arr.length === 0) {
                                                 leaderboardDiv.innerHTML = "<div style='color:#aaa;'>No scores yet.</div>";
@@ -297,6 +330,8 @@
                                                                 <th style="padding:6px;color:#FFD700;">#</th>
                                                                 <th style="padding:6px;text-align:left;">Name</th>
                                                                 <th style="padding:6px;color:#FFD700;">Score</th>
+                                                                <th style="padding:6px;color:#FFD700;">Total</th>
+                                                                <th style="padding:6px;color:#aaa;">Rank</th>
                                                                 <th style="padding:6px;color:#aaa;">Time</th>
                                                         </tr>
                                                 </thead>
@@ -312,20 +347,100 @@
                                                         const d = new Date(entry.timestamp);
                                                         timeStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                                                 }
+                                                // Color and rank
+                                                let color = entry.color || "#fff";
+                                                let rank = entry.rank || "";
+                                                let rankHtml = "";
+                                                if (isDev) {
+                                                        rankHtml = '<span style="color:#4CAF50;font-weight:bold;">[DEV]</span>';
+                                                } else if (rank) {
+                                                        rankHtml = `<span style="color:#FFD700;font-weight:bold;">[${rank}]</span>`;
+                                                }
                                                 table += `<tr style="background:${i%2===0?'#232526':'#292b2d'};">
                                                         <td style="padding:6px;font-weight:bold;text-align:center;">${i + 1}</td>
                                                         <td style="padding:6px;text-align:left;">
-                                                                ${isDev ? 'Toyaaa <span style="color:#4CAF50;font-weight:bold;">[DEV]</span>' : safeUsername}
+                                                                <span style="color:${color};font-weight:bold;">${safeUsername}</span> ${rankHtml}
                                                         </td>
-                                                        <td style="padding:6px;text-align:center;color:#FFD700;font-weight:bold;">${entry.score}</td>
+                                                        <td style="padding:6px;text-align:center;color:#FFD700;font-weight:bold;">${entry.score || 0}</td>
+                                                        <td style="padding:6px;text-align:center;color:#FFD700;">${entry.totalScore || entry.score || 0}</td>
+                                                        <td style="padding:6px;text-align:center;color:#FFD700;">${rankHtml}</td>
                                                         <td style="padding:6px;text-align:center;color:#aaa;font-size:0.95em;">${timeStr}</td>
                                                 </tr>`;
                                         });
                                         table += "</tbody></table>";
                                         leaderboardDiv.innerHTML = table;
+
+                                        // If user is logged in, show shop
+                                        if (currentUser) {
+                                                renderShop(currentUser, currentTotalScore, userItems || [], userRank || "", userColor || "");
+                                        }
                                 });
                 }
 
+                // Shop rendering and logic
+                function renderShop(username, totalScore, ownedItems, userRank, userColor) {
+                        shopDiv.innerHTML = "<b>Shop</b> (Spend your total score to buy items!)<br>";
+                        SHOP_ITEMS.forEach(item => {
+                                const owned = ownedItems && ownedItems.includes(item.id);
+                                const btn = document.createElement("button");
+                                btn.textContent = owned ? "Owned" : `Buy (${item.price})`;
+                                btn.disabled = owned || totalScore < item.price;
+                                btn.style.margin = "6px";
+                                btn.style.padding = "6px 14px";
+                                btn.style.borderRadius = "6px";
+                                btn.style.border = "none";
+                                btn.style.background = owned ? "#888" : (totalScore >= item.price ? "#4CAF50" : "#aaa");
+                                btn.style.color = "#fff";
+                                btn.style.cursor = owned ? "default" : (totalScore >= item.price ? "pointer" : "not-allowed");
+                                btn.style.fontWeight = "bold";
+                                btn.style.fontSize = "1rem";
+                                btn.style.marginRight = "12px";
+                                btn.style.marginBottom = "6px";
+                                btn.onclick = function() {
+                                        if (owned || totalScore < item.price) return;
+                                        // Deduct price, add item, update Firebase
+                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                                let prev = snap.val();
+                                                let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                                let prevItems = (prev && prev.items) ? prev.items : [];
+                                                let prevRank = (prev && prev.rank) ? prev.rank : "";
+                                                let prevColor = (prev && prev.color) ? prev.color : "";
+                                                let newTotal = prevTotal - item.price;
+                                                let newItems = prevItems.concat(item.id);
+                                                let newRank = prevRank;
+                                                let newColor = prevColor;
+                                                if (item.type === "rank") newRank = item.rank;
+                                                if (item.type === "color") newColor = item.color;
+                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
+                                                        totalScore: newTotal,
+                                                        items: newItems,
+                                                        rank: newRank,
+                                                        color: newColor
+                                                }).then(() => {
+                                                        loadLeaderboard(username, newTotal, newItems, newRank, newColor);
+                                                });
+                                        });
+                                };
+                                let desc = "";
+                                if (item.type === "color") {
+                                        desc = `<span style="color:${item.color};font-weight:bold;">${item.name}</span>`;
+                                } else if (item.type === "rank") {
+                                        desc = `<span style="color:#FFD700;font-weight:bold;">[${item.rank}]</span> ${item.name}`;
+                                }
+                                shopDiv.innerHTML += `${desc} - <span style="color:#FFD700;">${item.price} pts</span> `;
+                                shopDiv.appendChild(btn);
+                                shopDiv.innerHTML += "<br>";
+                        });
+                        // Show current equipped
+                        let equipped = "";
+                        if (userColor) equipped += `<span style="color:${userColor};font-weight:bold;">Name Color</span> `;
+                        if (userRank) equipped += `<span style="color:#FFD700;font-weight:bold;">[${userRank}]</span>`;
+                        if (equipped) {
+                                shopDiv.innerHTML += `<div style="margin-top:10px;color:#aaa;">Equipped: ${equipped}</div>`;
+                        }
+                }
+
+                // Initial leaderboard load
                 loadLeaderboard();
 
                 refreshBtn.onclick = function() {
