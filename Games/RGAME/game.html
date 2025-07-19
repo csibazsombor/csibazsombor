@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+        </style>
+</head>
+<body>
+        Loading...
+</body>
+<script>
+(function() {
+        // Utility function to set body styles
+        function setBodyStyles(styles) {
+                Object.assign(document.body.style, styles);
+        }
+
+        // Step 1: Initial loading state
+        setBodyStyles({
+                backgroundColor: "#18191A",
+                color: "#fff",
+                fontFamily: "'Segoe UI', Arial, sans-serif",
+                textAlign: "center",
+                margin: "0",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "background-color 0.5s, color 0.5s"
+        });
+        document.body.textContent = "Loading...";
+
+        // Step 2: Show author
+        setTimeout(() => {
+                document.body.textContent = "Made By Csiba Zsombor";
+        }, 1500);
+
+        // Step 3: Fun message
+        setTimeout(() => {
+                document.body.textContent = "ommaggaa 😱😱";
+        }, 2500);
+
+        // Step 4: Fade out message
+        setTimeout(() => {
+                setBodyStyles({
+                        color: "#232526",
+                        opacity: "0.5"
+                });
+                document.body.textContent = "ommaggaa";
+        }, 3500);
+
+        // Step 5: Show start button
+        setTimeout(() => {
+                setBodyStyles({
+                        backgroundColor: "#232526",
+                        color: "#fff",
+                        opacity: "1",
+                        transition: "background-color 0.5s, color 0.5s, opacity 0.5s"
+                });
+                document.body.textContent = "Welcome to My Random Game! (Sometimes it have bug on spawning, but it works fine on the second try)";
+                const button = document.createElement("button");
+                button.textContent = "START";
+                Object.assign(button.style, {
+                        marginTop: "24px",
+                        padding: "12px 32px",
+                        fontSize: "1.2rem",
+                        border: "none",
+                        borderRadius: "8px",
+                        background: "linear-gradient(90deg, #232526 0%, #414345 100%)",
+                        color: "#fff",
+                        cursor: "pointer",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
+                });
+                button.onmouseenter = () => {
+                        button.style.background = "linear-gradient(90deg, #414345 0%, #232526 100%)";
+                };
+                button.onmouseleave = () => {
+                        button.style.background = "linear-gradient(90deg, #232526 0%, #414345 100%)";
+                };
+                document.body.appendChild(button);
+
+                button.onclick = () => {
+                        startGame();
+                };
+        }, 4200);
+
+        // Game object
+        const game = {
+                name: "My random game",
+                version: "1.1",
+                description: "A random game by toye",
+                author: "toye"
+        };
+
+        // Log game details
+        console.log("Game loaded:", game.name, game.version, game.description, "by", game.author);
+
+        // --- FIREBASE CONFIGURATION ---
+        // Add your Firebase config here
+        const firebaseConfig = {
+                apiKey: "AIzaSyBKo_e9h5MpstKF5wrtrzr1GeZhlF_E6-0",
+                authDomain: "leaderboard-catchgame.firebaseapp.com",
+                projectId: "leaderboard-catchgame",
+                storageBucket: "leaderboard-catchgame.appspot.com",
+                messagingSenderId: "506946916728",
+                appId: "1:506946916728:web:6c2416ff49b125e6b6788d",
+                measurementId: "G-4FENJP02VS",
+                databaseURL: "https://leaderboard-catchgame-default-rtdb.europe-west1.firebasedatabase.app"
+        };
+
+        // Load Firebase scripts dynamically if not present
+        function loadFirebaseScripts(callback) {
+                if (window.firebase && window.firebase.apps && window.firebase.apps.length) {
+                        callback();
+                        return;
+                }
+                const script1 = document.createElement("script");
+                script1.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+                script1.onload = () => {
+                        const script2 = document.createElement("script");
+                        script2.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js";
+                        script2.onload = callback;
+                        document.head.appendChild(script2);
+                };
+                document.head.appendChild(script1);
+        }
+
+        // --- LEADERBOARD UI ---
+        function showLeaderboard(score, onRestart) {
+                setBodyStyles({
+                        backgroundColor: "#18191A",
+                        color: "#fff",
+                        fontFamily: "'Segoe UI', Arial, sans-serif",
+                        textAlign: "center",
+                        margin: "0",
+                        minHeight: "100vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                });
+                document.body.innerHTML = "";
+
+                const title = document.createElement("h2");
+                title.textContent = "🏆 Leaderboard";
+                title.style.letterSpacing = "1px";
+                title.style.marginBottom = "8px";
+                document.body.appendChild(title);
+
+                // Refresh button
+                const refreshBtn = document.createElement("button");
+                refreshBtn.textContent = "🔄 Refresh";
+                Object.assign(refreshBtn.style, {
+                        marginBottom: "12px",
+                        padding: "6px 18px",
+                        fontSize: "1rem",
+                        border: "none",
+                        borderRadius: "6px",
+                        background: "#2196F3",
+                        color: "#fff",
+                        cursor: "pointer",
+                        marginLeft: "8px"
+                });
+                document.body.appendChild(refreshBtn);
+
+                // Leaderboard table
+                const leaderboardDiv = document.createElement("div");
+                leaderboardDiv.textContent = "Loading leaderboard...";
+                leaderboardDiv.style.margin = "16px";
+                leaderboardDiv.style.fontSize = "1.1rem";
+                leaderboardDiv.style.width = "100%";
+                leaderboardDiv.style.maxWidth = "400px";
+                leaderboardDiv.style.background = "#232526";
+                leaderboardDiv.style.borderRadius = "10px";
+                leaderboardDiv.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+                leaderboardDiv.style.padding = "12px 0";
+                leaderboardDiv.style.overflowX = "auto";
+                leaderboardDiv.style.marginBottom = "12px";
+                document.body.appendChild(leaderboardDiv);
+
+                // Username input
+                const inputDiv = document.createElement("div");
+                inputDiv.style.margin = "16px";
+                inputDiv.style.display = "flex";
+                inputDiv.style.justifyContent = "center";
+                inputDiv.style.alignItems = "center";
+                const label = document.createElement("label");
+                label.textContent = "Enter your name: ";
+                label.style.marginRight = "8px";
+                const input = document.createElement("input");
+                input.type = "text";
+                input.maxLength = 16;
+                input.placeholder = "Username";
+                input.style.padding = "6px";
+                input.style.borderRadius = "6px";
+                input.style.border = "1px solid #444";
+                input.style.fontSize = "1rem";
+                input.style.background = "#18191A";
+                input.style.color = "#fff";
+                input.style.marginRight = "8px";
+                inputDiv.appendChild(label);
+                inputDiv.appendChild(input);
+
+                // Save button
+                const saveBtn = document.createElement("button");
+                saveBtn.textContent = "💾 Save Score";
+                Object.assign(saveBtn.style, {
+                        marginLeft: "4px",
+                        padding: "6px 18px",
+                        fontSize: "1rem",
+                        border: "none",
+                        borderRadius: "6px",
+                        background: "#4CAF50",
+                        color: "#fff",
+                        cursor: "pointer"
+                });
+                inputDiv.appendChild(saveBtn);
+
+                document.body.appendChild(inputDiv);
+
+                // Restart button
+                const restartBtn = document.createElement("button");
+                restartBtn.textContent = "Restart Game";
+                Object.assign(restartBtn.style, {
+                        marginTop: "18px",
+                        padding: "10px 32px",
+                        fontSize: "1.1rem",
+                        border: "none",
+                        borderRadius: "8px",
+                        background: "#232526",
+                        color: "#fff",
+                        cursor: "pointer"
+                });
+                restartBtn.onclick = onRestart;
+                document.body.appendChild(restartBtn);
+
+                // Show your score
+                const scoreDiv = document.createElement("div");
+                scoreDiv.textContent = "Your Score: " + score;
+                scoreDiv.style.margin = "12px";
+                scoreDiv.style.fontWeight = "bold";
+                scoreDiv.style.fontSize = "1.1rem";
+                scoreDiv.style.color = "#FFD700";
+                document.body.appendChild(scoreDiv);
+
+                // Save score to Firebase (overwrite if username exists)
+                saveBtn.onclick = function() {
+                        let username = input.value.trim().substring(0, 16) || "Anonymous";
+                        // If username is "toyeee", save as "dev"
+                        let isDev = false;
+                        if (username.toLowerCase() === "Toyaaa".toLowerCase()) {
+                                username = "Toyaaa";
+                                isDev = true;
+                        }
+                        saveBtn.disabled = true;
+                        saveBtn.textContent = "Saving...";
+                        // Use username as key, overwrite if exists
+                        // Only include 'dev' property if isDev is true
+                        const data = {
+                                username: username,
+                                score: score,
+                                timestamp: window.firebase.database.ServerValue.TIMESTAMP
+                        };
+                        if (isDev) {
+                                data.dev = true;
+                        }
+                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).set(data).then(() => {
+                                saveBtn.textContent = "Saved!";
+                                input.disabled = true;
+                                loadLeaderboard();
+                        }).catch(() => {
+                                saveBtn.textContent = "Error!";
+                        });
+                };
+
+                // Load leaderboard from Firebase
+                function loadLeaderboard() {
+                        leaderboardDiv.textContent = "Loading leaderboard...";
+                        window.firebase.database().ref("leaderboard")
+                                .once("value", snap => {
+                                        const arr = [];
+                                        snap.forEach(child => {
+                                                arr.push(child.val());
+                                        });
+                                        arr.sort((a, b) => b.score - a.score || a.timestamp - b.timestamp);
+                                        // Build table
+                                        if (arr.length === 0) {
+                                                leaderboardDiv.innerHTML = "<div style='color:#aaa;'>No scores yet.</div>";
+                                                return;
+                                        }
+                                        let table = `<table style="width:100%;border-collapse:collapse;">
+                                                <thead>
+                                                        <tr style="background:#18191A;">
+                                                                <th style="padding:6px;color:#FFD700;">#</th>
+                                                                <th style="padding:6px;text-align:left;">Name</th>
+                                                                <th style="padding:6px;color:#FFD700;">Score</th>
+                                                                <th style="padding:6px;color:#aaa;">Time</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>`;
+                                        arr.slice(0, 15).forEach((entry, i) => {
+                                                // Show [DEV] tag after name if username is "Toyaaa" (case-insensitive)
+                                                const isDev = entry.username && entry.username.toLowerCase() === "toyaaa";
+                                                // Sanitize username to prevent XSS
+                                                const safeUsername = (entry.username || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                                                // Format time
+                                                let timeStr = "";
+                                                if (entry.timestamp) {
+                                                        const d = new Date(entry.timestamp);
+                                                        timeStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                                                }
+                                                table += `<tr style="background:${i%2===0?'#232526':'#292b2d'};">
+                                                        <td style="padding:6px;font-weight:bold;text-align:center;">${i + 1}</td>
+                                                        <td style="padding:6px;text-align:left;">
+                                                                ${isDev ? 'Toyaaa <span style="color:#4CAF50;font-weight:bold;">[DEV]</span>' : safeUsername}
+                                                        </td>
+                                                        <td style="padding:6px;text-align:center;color:#FFD700;font-weight:bold;">${entry.score}</td>
+                                                        <td style="padding:6px;text-align:center;color:#aaa;font-size:0.95em;">${timeStr}</td>
+                                                </tr>`;
+                                        });
+                                        table += "</tbody></table>";
+                                        leaderboardDiv.innerHTML = table;
+                                });
+                }
+
+                loadLeaderboard();
+
+                refreshBtn.onclick = function() {
+                        refreshBtn.textContent = "Refreshing...";
+                        refreshBtn.disabled = true;
+                        setTimeout(() => {
+                                loadLeaderboard();
+                                refreshBtn.textContent = "🔄 Refresh";
+                                refreshBtn.disabled = false;
+                        }, 500);
+                };
+        }
+
+        // Game start logic
+        function startGame() {
+                document.body.innerHTML = ""; // Clear body
+                setBodyStyles({
+                        backgroundColor: "#18191A",
+                        color: "#fff",
+                        fontFamily: "'Segoe UI', Arial, sans-serif",
+                        textAlign: "center",
+                        margin: "0",
+                        minHeight: "100vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                });
+
+                // Responsive canvas size
+                const CANVAS_WIDTH = Math.min(700, window.innerWidth - 40);
+                const CANVAS_HEIGHT = Math.min(500, window.innerHeight - 160);
+
+                // Create canvas
+                const canvas = document.createElement("canvas");
+                canvas.width = CANVAS_WIDTH;
+                canvas.height = CANVAS_HEIGHT;
+                Object.assign(canvas.style, {
+                        border: "2px solid #fff",
+                        background: "#232526",
+                        borderRadius: "12px"
+                });
+                document.body.appendChild(canvas);
+
+                // Modern optimized context
+                const ctx = canvas.getContext("2d", { alpha: false });
+
+                // Smaller player
+                let x = CANVAS_WIDTH / 2 - 10, y = CANVAS_HEIGHT / 2 - 10, size = 20, speed = 4;
+                const keysPressed = {};
+
+                // More collectibles and obstacles
+                const collectibles = [];
+                const obstacles = [];
+                const powerups = [];
+                let score = 0;
+
+                // Generate collectibles (coins)
+                for (let i = 0; i < 12; i++) {
+                        collectibles.push({
+                                x: Math.random() * (CANVAS_WIDTH - 16),
+                                y: Math.random() * (CANVAS_HEIGHT - 16),
+                                size: 16,
+                                collected: false
+                        });
+                }
+
+                // Generate obstacles (red blocks)
+                for (let i = 0; i < 7; i++) {
+                        obstacles.push({
+                                x: Math.random() * (CANVAS_WIDTH - 60),
+                                y: Math.random() * (CANVAS_HEIGHT - 60),
+                                width: 60,
+                                height: 20
+                        });
+                }
+
+                // Generate powerups (blue circles)
+                for (let i = 0; i < 3; i++) {
+                        powerups.push({
+                                x: Math.random() * (CANVAS_WIDTH - 18),
+                                y: Math.random() * (CANVAS_HEIGHT - 18),
+                                size: 18,
+                                active: true
+                        });
+                }
+
+                // Enemy (inactive for 2s, then slow and "stupid" movement)
+                const enemy = {
+                        x: Math.random() * (CANVAS_WIDTH - 24),
+                        y: Math.random() * (CANVAS_HEIGHT - 24),
+                        size: 24,
+                        speed: 1.5, // slightly faster for more challenge
+                        direction: Math.random() * Math.PI * 2,
+                        talkTimer: 0,
+                        message: "",
+                        messageTimer: 0,
+                        messages: [
+                                "Hey you!",
+                                "Catch me if you can!",
+                                "Stay away!",
+                                "Nice moves!",
+                                "You can't win!",
+                                "Watch out!"
+                        ],
+                        active: false, // inactive at start
+                        stupidTimer: 0 // for random direction changes
+                };
+
+                // Activate enemy after 2 seconds
+                setTimeout(() => {
+                        enemy.active = true;
+                }, 2000);
+
+                // --- RANDOM EVENTS SETUP ---
+                // List of random events
+                const randomEvents = [
+                        {
+                                name: "Extra Coin",
+                                chance: 0.01, // ~0.1% per frame (much less frequent)
+                                trigger: function() {
+                                        collectibles.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 16),
+                                                y: Math.random() * (CANVAS_HEIGHT - 16),
+                                                size: 16,
+                                                collected: false
+                                        });
+                                        showEventMessage("A bonus coin appeared!");
+                                }
+                        },
+                        {
+                                name: "Obstacle Drop",
+                                chance: 0.0007, // ~0.07% per frame
+                                trigger: function() {
+                                        obstacles.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 60),
+                                                y: Math.random() * (CANVAS_HEIGHT - 60),
+                                                width: 60,
+                                                height: 20
+                                        });
+                                        showEventMessage("A new obstacle dropped!");
+                                }
+                        },
+                        {
+                                name: "Speed Boost",
+                                chance: 0.000005, // ~0.005% per frame
+                                trigger: function() {
+                                        speed += 2;
+                                        showEventMessage("Speed boost! (+2)");
+                                        setTimeout(() => { speed -= 2; }, 2500);
+                                }
+                        },
+                        {
+                                name: "Enemy Freeze",
+                                chance: 0.0005, // ~0.05% per frame
+                                trigger: function() {
+                                        const oldSpeed = enemy.speed;
+                                        enemy.speed = 0;
+                                        showEventMessage("Enemy frozen!");
+                                        setTimeout(() => { enemy.speed = oldSpeed; }, 2000);
+                                }
+                        },
+                        {
+                                name: "Powerup Spawn",
+                                chance: 0.0007, // ~0.07% per frame
+                                trigger: function() {
+                                        powerups.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 18),
+                                                y: Math.random() * (CANVAS_HEIGHT - 18),
+                                                size: 18,
+                                                active: true
+                                        });
+                                        showEventMessage("A powerup appeared!");
+                                }
+                        },
+                        {
+                                name: "Reverse Controls",
+                                chance: 0.0003, // ~0.03% per frame
+                                trigger: function() {
+                                        reverseControls = true;
+                                        showEventMessage("Controls reversed!");
+                                        setTimeout(() => { reverseControls = false; }, 2000);
+                                }
+                        }
+                ];
+
+                // State for random events
+                let eventMessage = "";
+                let eventMessageTimer = 0;
+                let reverseControls = false;
+
+                function showEventMessage(msg) {
+                        eventMessage = msg;
+                        eventMessageTimer = 90; // show for 1.5s
+                }
+
+                function draw() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        // Draw obstacles
+                        ctx.fillStyle = "#e74c3c";
+                        obstacles.forEach(ob => {
+                                ctx.fillRect(ob.x, ob.y, ob.width, ob.height);
+                        });
+
+                        ctx.restore();
+
+                        // Draw collectibles
+                        collectibles.forEach(c => {
+                                if (!c.collected) {
+                                        ctx.save();
+                                        ctx.shadowColor = "#FFD700";
+                                        ctx.shadowBlur = 8;
+                                        ctx.fillStyle = "#FFD700";
+                                        ctx.beginPath();
+                                        ctx.arc(c.x + c.size / 2, c.y + c.size / 2, c.size / 2, 0, Math.PI * 2);
+                                        ctx.fill();
+                                        ctx.restore();
+                                }
+                        });
+
+                        // Draw powerups
+                        powerups.forEach(p => {
+                                if (p.active) {
+                                        ctx.save();
+                                        ctx.shadowColor = "#00BFFF";
+                                        ctx.shadowBlur = 8;
+                                        ctx.fillStyle = "#00BFFF";
+                                        ctx.beginPath();
+                                        ctx.arc(p.x + p.size / 2, p.y + p.size / 2, p.size / 2, 0, Math.PI * 2);
+                                        ctx.fill();
+                                        ctx.restore();
+                                }
+                        });
+
+                        // Draw enemy
+                        ctx.save();
+                        ctx.globalAlpha = enemy.active ? 1 : 0.4;
+                        ctx.fillStyle = "#9b59b6";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, enemy.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+
+                        // Enemy face
+                        ctx.save();
+                        ctx.globalAlpha = enemy.active ? 1 : 0.4;
+                        ctx.fillStyle = "#fff";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2 - 4, enemy.y + enemy.size / 2 - 2, 2, 0, Math.PI * 2);
+                        ctx.arc(enemy.x + enemy.size / 2 + 4, enemy.y + enemy.size / 2 - 2, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.strokeStyle = "#fff";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2 + 4, 5, Math.PI * 0.1, Math.PI * 0.9);
+                        ctx.stroke();
+                        ctx.restore();
+
+                        // Enemy speech bubble
+                        if (enemy.message && enemy.messageTimer > 0) {
+                                ctx.save();
+                                ctx.font = "bold 15px Segoe UI, Arial";
+                                ctx.textAlign = "center";
+                                ctx.fillStyle = "#fff";
+                                ctx.strokeStyle = "#232526";
+                                ctx.lineWidth = 4;
+                                const msgX = enemy.x + enemy.size / 2;
+                                const msgY = enemy.y - 10;
+                                ctx.strokeText(enemy.message, msgX, msgY);
+                                ctx.fillText(enemy.message, msgX, msgY);
+                                ctx.restore();
+                        }
+
+                        // Draw player
+                        ctx.save();
+                        ctx.fillStyle = "#4CAF50";
+                        ctx.shadowColor = "#4CAF50";
+                        ctx.shadowBlur = 8;
+                        ctx.fillRect(x, y, size, size);
+                        ctx.restore();
+
+                        // Draw score
+                        ctx.save();
+                        ctx.fillStyle = "#fff";
+                        ctx.font = "18px Segoe UI, Arial";
+                        ctx.textAlign = "left";
+                        ctx.fillText("Score: " + score, 10, 24);
+                        ctx.restore();
+
+                        // Draw random event message
+                        if (eventMessage && eventMessageTimer > 0) {
+                                ctx.save();
+                                ctx.font = "bold 22px Segoe UI, Arial";
+                                ctx.textAlign = "center";
+                                ctx.fillStyle = "#FFD700";
+                                ctx.strokeStyle = "#232526";
+                                ctx.lineWidth = 5;
+                                ctx.globalAlpha = Math.min(1, eventMessageTimer / 30);
+                                ctx.strokeText(eventMessage, canvas.width / 2, 48);
+                                ctx.fillText(eventMessage, canvas.width / 2, 48);
+                                ctx.restore();
+                        }
+                }
+
+                function isColliding(ax, ay, asize, bx, by, bsize) {
+                        return ax < bx + bsize && ax + asize > bx && ay < by + bsize && ay + asize > by;
+                }
+
+                function isRectColliding(ax, ay, aw, ah, bx, by, bw, bh) {
+                        return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+                }
+
+                function update() {
+                        // --- RANDOM EVENTS TRIGGER ---
+                        // Only allow one event per 2 seconds max
+                        if (!update.lastEventTime) update.lastEventTime = 0;
+                        if (performance.now() - update.lastEventTime > 2000) {
+                                for (const event of randomEvents) {
+                                        if (Math.random() < event.chance) {
+                                                event.trigger();
+                                                update.lastEventTime = performance.now();
+                                                break;
+                                        }
+                                }
+                        }
+                        if (eventMessageTimer > 0) eventMessageTimer--;
+
+                        let moved = false;
+                        let up = reverseControls ? "ArrowDown" : "ArrowUp";
+                        let down = reverseControls ? "ArrowUp" : "ArrowDown";
+                        let left = reverseControls ? "ArrowRight" : "ArrowLeft";
+                        let right = reverseControls ? "ArrowLeft" : "ArrowRight";
+
+                        // Try to move vertically
+                        let nextY = y;
+                        if (keysPressed[up] && y > 0) {
+                                let tryY = y - speed;
+                                let blocked = false;
+                                // Check wall
+                                if (tryY < 0) blocked = true;
+                                // Check obstacles
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(x, tryY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextY = tryY;
+                                        moved = true;
+                                }
+                        }
+                        if (keysPressed[down] && y < canvas.height - size) {
+                                let tryY = y + speed;
+                                let blocked = false;
+                                if (tryY > canvas.height - size) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(x, tryY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextY = tryY;
+                                        moved = true;
+                                }
+                        }
+
+                        // Try to move horizontally
+                        let nextX = x;
+                        if (keysPressed[left] && x > 0) {
+                                let tryX = x - speed;
+                                let blocked = false;
+                                if (tryX < 0) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(tryX, nextY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextX = tryX;
+                                        moved = true;
+                                }
+                        }
+                        if (keysPressed[right] && x < canvas.width - size) {
+                                let tryX = x + speed;
+                                let blocked = false;
+                                if (tryX > canvas.width - size) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(tryX, nextY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextX = tryX;
+                                        moved = true;
+                                }
+                        }
+
+                        x = nextX;
+                        y = nextY;
+
+                        // Collect collectibles
+                        collectibles.forEach(c => {
+                                if (!c.collected && isColliding(x, y, size, c.x, c.y, c.size)) {
+                                        c.collected = true;
+                                        score += 10;
+                                }
+                        });
+
+                        // Collect powerups
+                        powerups.forEach(p => {
+                                if (p.active && isColliding(x, y, size, p.x, p.y, p.size)) {
+                                        p.active = false;
+                                        score += 25;
+                                        speed += 1;
+                                        showEventMessage("Powerup! (+1 speed)");
+                                        setTimeout(() => { speed -= 1; }, 2000);
+                                }
+                        });
+
+                        // Enemy AI movement
+                        if (enemy.active) {
+                                // "Stupid" movement: sometimes chase, sometimes random
+                                if (enemy.stupidTimer <= 0) {
+                                        let dx = x - enemy.x, dy = y - enemy.y;
+                                        let dist = Math.sqrt(dx * dx + dy * dy);
+                                        if (dist < 200 && Math.random() < 0.7) {
+                                                enemy.direction = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.5;
+                                        } else {
+                                                enemy.direction = Math.random() * Math.PI * 2;
+                                        }
+                                        enemy.stupidTimer = 25 + Math.random() * 30;
+                                } else {
+                                        enemy.stupidTimer--;
+                                }
+                                let ex = enemy.x + Math.cos(enemy.direction) * enemy.speed;
+                                let ey = enemy.y + Math.sin(enemy.direction) * enemy.speed;
+                                // Check wall boundaries
+                                let wallCollision = false;
+                                if (ex < 0 || ex > canvas.width - enemy.size) {
+                                        wallCollision = true;
+                                }
+                                if (ey < 0 || ey > canvas.height - enemy.size) {
+                                        wallCollision = true;
+                                }
+                                // Check obstacles
+                                let enemyCollision = false;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(ex, ey, enemy.size, enemy.size, ob.x, ob.y, ob.width, ob.height)) {
+                                                enemyCollision = true;
+                                                break;
+                                        }
+                                }
+                                if (!enemyCollision && !wallCollision) {
+                                        enemy.x = ex;
+                                        enemy.y = ey;
+                                } else {
+                                        // Change direction to avoid getting stuck
+                                        enemy.direction += Math.PI / 2 + (Math.random() - 0.5) * Math.PI / 2;
+                                }
+
+                                // Enemy talks randomly or when close
+                                let dx = x - enemy.x, dy = y - enemy.y;
+                                let dist = Math.sqrt(dx * dx + dy * dy);
+                                if (enemy.messageTimer > 0) {
+                                        enemy.messageTimer--;
+                                } else if (Math.random() < 0.01 || dist < 60) {
+                                        enemy.message = enemy.messages[Math.floor(Math.random() * enemy.messages.length)];
+                                        enemy.messageTimer = 80 + Math.random() * 40;
+                                } else {
+                                        enemy.message = "";
+                                }
+
+                                // If enemy touches player, show message and reset
+                                if (isColliding(x, y, size, enemy.x, enemy.y, enemy.size)) {
+                                        if (!gameEnded) {
+                                                gameEnded = true;
+                                                setTimeout(() => {
+                                                        alert("YOU NOOB! 😂🫵🫵");
+                                                        loadFirebaseScripts(() => {
+                                                                if (!window.firebase.apps.length) {
+                                                                        window.firebase.initializeApp(firebaseConfig);
+                                                                }
+                                                                showLeaderboard(score, () => location.reload());
+                                                        });
+                                                }, 100);
+                                        }
+                                        return;
+                                }
+                        }
+
+                        if (moved && window.navigator.vibrate) {
+                                window.navigator.vibrate(10);
+                        }
+                }
+
+                window.addEventListener("keydown", e => {
+                        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                                keysPressed[e.key] = true;
+                                e.preventDefault();
+                        }
+                });
+
+                window.addEventListener("keyup", e => {
+                        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                                keysPressed[e.key] = false;
+                                e.preventDefault();
+                        }
+                });
+
+                let gameEnded = false;
+
+                function gameLoop() {
+                        if (gameEnded) return;
+                        update();
+                        draw();
+                        // Win condition
+                        if (collectibles.every(c => c.collected)) {
+                                gameEnded = true;
+                                setTimeout(() => {
+                                        // Show leaderboard instead of alert
+                                        loadFirebaseScripts(() => {
+                                                if (!window.firebase.apps.length) {
+                                                        window.firebase.initializeApp(firebaseConfig);
+                                                }
+                                                showLeaderboard(score, () => location.reload());
+                                        });
+                                }, 100);
+                                return;
+                        }
+                        requestAnimationFrame(gameLoop);
+                }
+                gameLoop();
+
+                // Show info
+                const info = document.createElement("div");
+                info.textContent = "Use arrow keys or tap the buttons to move the square! Collect all the coins, grab blue powerups, avoid red obstacles, moving obstacles, and the purple enemy!";
+                Object.assign(info.style, {
+                        marginTop: "18px",
+                        fontSize: "1rem",
+                        color: "#aaa"
+                });
+                document.body.appendChild(info);
+
+                // Add on-screen arrow keys for mobile
+                const arrows = document.createElement("div");
+                Object.assign(arrows.style, {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: "24px"
+                });
+
+                // Up arrow
+                const upRow = document.createElement("div");
+                upRow.style.display = "flex";
+                upRow.style.justifyContent = "center";
+                const upBtn = createArrowButton("▲", "ArrowUp");
+                upRow.appendChild(upBtn);
+
+                // Middle row (left, blank, right)
+                const midRow = document.createElement("div");
+                midRow.style.display = "flex";
+                midRow.style.justifyContent = "center";
+                const leftBtn = createArrowButton("◀", "ArrowLeft");
+                const blank = document.createElement("div");
+                blank.style.width = "48px";
+                const rightBtn = createArrowButton("▶", "ArrowRight");
+                midRow.appendChild(leftBtn);
+                midRow.appendChild(blank);
+                midRow.appendChild(rightBtn);
+
+                // Down arrow
+                const downRow = document.createElement("div");
+                downRow.style.display = "flex";
+                downRow.style.justifyContent = "center";
+                const downBtn = createArrowButton("▼", "ArrowDown");
+                downRow.appendChild(downBtn);
+
+                arrows.appendChild(upRow);
+                arrows.appendChild(midRow);
+                arrows.appendChild(downRow);
+                document.body.appendChild(arrows);
+
+                function createArrowButton(symbol, key) {
+                        const btn = document.createElement("button");
+                        btn.textContent = symbol;
+                        Object.assign(btn.style, {
+                                width: "48px",
+                                height: "48px",
+                                margin: "6px",
+                                fontSize: "2rem",
+                                border: "none",
+                                borderRadius: "8px",
+                                background: "#414345",
+                                color: "#fff",
+                                cursor: "pointer",
+                                boxShadow: "0 1px 4px rgba(0,0,0,0.15)"
+                        });
+                        let intervalId = null;
+
+                        btn.onpointerdown = function() {
+                                keysPressed[key] = true;
+                                btn.style.background = "#232526";
+                                // For mobile: keep moving while pressed
+                                if (!intervalId) {
+                                        intervalId = setInterval(() => {
+                                                keysPressed[key] = true;
+                                        }, 16);
+                                }
+                        };
+                        btn.onpointerup = function() {
+                                keysPressed[key] = false;
+                                btn.style.background = "#414345";
+                                if (intervalId) {
+                                        clearInterval(intervalId);
+                                        intervalId = null;
+                                }
+                        };
+                        btn.onpointerleave = function() {
+                                keysPressed[key] = false;
+                                btn.style.background = "#414345";
+                                if (intervalId) {
+                                        clearInterval(intervalId);
+                                        intervalId = null;
+                                }
+                        };
+                        return btn;
+                }
+        }
+})();
+</script>
+</html>

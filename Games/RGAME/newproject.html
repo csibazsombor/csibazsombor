@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My random game</title>
+<style>
+        make good style for with animations h1 and body
+        body {
+                font-family: 'Segoe UI', Arial, sans-serif;
+                background: linear-gradient(135deg, #232526 0%, #414345 100%);
+                color: #f5f5f5;
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                animation: bodyFadeIn 1.2s ease;
+        }
+
+        @keyframes bodyFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+        }
+
+        h1 {
+                font-size: 2.5rem;
+                color: #fff;
+                text-align: center;
+                margin-top: 0;
+                letter-spacing: 2px;
+                background: linear-gradient(90deg, #ffcc00 30%, #ff5e62 70%);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                animation: h1PopIn 1s cubic-bezier(.68,-0.55,.27,1.55);
+                transition: transform 0.3s, text-shadow 0.3s;
+                text-shadow: 0 4px 24px rgba(255, 94, 98, 0.2);
+        }
+
+        @keyframes h1PopIn {
+                0% {
+                        transform: scale(0.7) translateY(-40px);
+                        opacity: 0;
+                }
+                80% {
+                        transform: scale(1.1) translateY(10px);
+                        opacity: 1;
+                }
+                100% {
+                        transform: scale(1) translateY(0);
+                        opacity: 1;
+                }
+        }
+
+        h1:hover {
+                transform: scale(1.07) rotate(-2deg);
+                text-shadow: 0 8px 32px #ffcc00, 0 2px 8px #ff5e62;
+                filter: brightness(1.15);
+        }
+        button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 30px auto 0 auto;
+                padding: 15px 30px;
+                font-size: 1.2rem;
+                cursor: pointer;
+                border: none;
+                border-radius: 8px;
+                background: linear-gradient(90deg, #ffcc00 30%, #ff5e62 70%);
+                color: #232526;
+                font-weight: bold;
+                box-shadow: 0 4px 16px rgba(255, 94, 98, 0.15);
+                transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 8px 32px #ffcc00, 0 2px 8px #ff5e62;
+        }
+</style>
+</head>
+<body>
+        <h1>A random game by toye</h1>
+        <button onclick="PLAY()">PLAY</button>
+</body>
+<script>
+function PLAY() {
+                window.location.href = "game.html";
+        }
+</script>
+</html>
