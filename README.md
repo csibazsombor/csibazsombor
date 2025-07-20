@@ -6,4 +6,4 @@ Ez a projekt **Csiba Zsombor** által lett fejlesztve és karbantartva.
 
 ### Kapcsolat
 - **Email**: netbyofficial@gmail.com
-- **Instagram**: @csibazsombor
+- **Instagram**: [@csibazsombor](https://www.instagram.com/csibazsombor)
