@@ -1,66 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Game selector</title>
-        <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Selector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: #1a1a1a;
+            overflow-x: hidden;
+            position: relative;
+        }
 
+        /* Subtle animated background mesh */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 118, 117, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 204, 112, 0.02) 0%, transparent 50%);
+            animation: float 25s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-                body {
-                        font-family: Arial, sans-serif;
-                        background-color: #313131;
-                        color: #333;
-                        
-                }
-                h1 {
-                        font-size: 1cm;
-                        color: white;
-                        text-align: center;
-                        margin-top: 50px;
-                }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            33% { transform: translate(-10px, -20px) rotate(1deg); opacity: 0.8; }
+            66% { transform: translate(10px, 10px) rotate(-1deg); opacity: 0.9; }
+        }
 
-                h1:hover {
-                        color: #ffcc00;
-                        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                        transition: color 0.3s, text-shadow 0.3s;
-                } 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
 
+        h1 {
+            font-size: clamp(3rem, 10vw, 5.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin: 2rem 0 4rem;
+            color: #1a1a1a;
+            letter-spacing: -0.04em;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 50%, #1a1a1a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
 
-                div a {
-                        display: inline-block;
-                        width: 200px;
-                        height: 200px;
-                        margin: 20px;
-                        background-color: #4e4e4e;
-                        color: white;
-                        text-decoration: none;
-                        text-align: center;
-                        line-height: 200px;
-                        font-size: 1.5em;
-                        border-radius: 10px;
-                        transition: transform 0.3s, background-color 0.3s;
-                }
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: expandLine 1.5s ease-out forwards;
+        }
 
-                .games div a:hover {
-                        transform: scale(1.05);
-                        background-color: #6e6e6e;
-                }
-                .games {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        flex-wrap: wrap;
-                        margin-top: 50px;
-                }
-        </style>
+        @keyframes expandLine {
+            from { width: 0; }
+            to { width: 100px; }
+        }
+
+        .games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .game-card {
+            position: relative;
+            height: 280px;
+            border-radius: 24px;
+            overflow: hidden;
+            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 
+                0 4px 12px rgba(0, 0, 0, 0.05),
+                0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .game-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem;
+            text-align: center;
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+            transform: rotate(45deg) translate(-100%, -100%);
+            transition: transform 0.6s ease;
+        }
+
+        .game-card:hover .game-icon::before {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .game-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+        }
+
+        .game-description {
+            font-size: 1rem;
+            color: #666666;
+            line-height: 1.5;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.12),
+                0 8px 16px rgba(0, 0, 0, 0.08);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.1);
+        }
+
+        .game-card:hover .game-title {
+            color: #000000;
+        }
+
+        .game-card:hover .game-description {
+            color: #444444;
+        }
+
+        /* Unique gradient backgrounds for icons */
+        .game-card:nth-child(1) .game-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-card:nth-child(2) .game-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .game-card:nth-child(3) .game-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .game-card:nth-child(4) .game-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        /* Entrance animations */
+        .game-card {
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .game-card:nth-child(1) { animation-delay: 0s; }
+        .game-card:nth-child(2) { animation-delay: 0.1s; }
+        .game-card:nth-child(3) { animation-delay: 0.2s; }
+        .game-card:nth-child(4) { animation-delay: 0.3s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Add micro-interactions */
+        .game-card:active {
+            transform: translateY(-4px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+            
+            h1 {
+                margin: 1rem 0 3rem;
+            }
+            
+            .games {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .game-card {
+                height: 240px;
+            }
+
+            .game-content {
+                padding: 2rem;
+            }
+
+            .game-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            .game-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Ultra-clean focus states */
+        .game-card:focus-within {
+            outline: 3px solid rgba(102, 126, 234, 0.3);
+            outline-offset: 4px;
+        }
+
+        /* Subtle background pattern */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -2;
+        }
+    </style>
 </head>
 <body>
-        <h1 style="text-align: center;">Game Selector</h1>
-        <div class="games"> 
-        <a href="CC.html">CC</a>
-        <a href="CK.html">CK</a>
-</div>
+    <div class="container">
+        <h1>Game Selector</h1>
+        <div class="games">
+            <div class="game-card">
+                <a href="RGAME/index.html" class="game-link">
+                    <div class="game-content">
+                        <div class="game-icon">🎮</div>
+                        <div class="game-title">RGAME</div>
+                        <div class="game-description">Collect coin and be the #1 best player!</div>
+                    </div>
+                </a>
+            </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
