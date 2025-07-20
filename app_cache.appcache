@@ -2,41 +2,20 @@ CACHE MANIFEST
 #v1.1.0 change this to force update
 
 CACHE:
-CSS/all.min.css
-CSS/ertekeles.css
-CSS/frissitesek.css
-CSS/kezdolap.css
-CSS/Linkek.css
-CSS/loading.css
-CSS/scrollbar.css
-CSS/setup.css
-CSS/tartalom.css
+kezdolap.css
+index.html
 PAGE/informacio.html
-HTML/notrips.html
-HTML/Játékok.html
-HTML/Képek.html
-HTML/Linkek.html
-HTML/Linkek-YT.html
-HTML/setup.html
-JS/nyelv/nyelvdata
-JS/Setup/programs.js
 JS/engedélyek.js
-JS/ionicons.esm.js
-JS/ionicons.js
 JS/jquery.min.js
 JS/jsdelivr.js
-JS/JsonIndito.js
-JS/JsonIndito2.js
 JS/loading.js
-JS/pyscript.js
 JS/sütik.js
 JS/validation.js
 favicon/favicon 256x256.ico
-képek/2023. 04. 25. logo netby.png
-képek/azisx3 logo.png
-képek/hamarosan.png
-képek/hatterkep7.jpg
-index.html
-kezdolap.css
+képek/background/2025 logo.png
+képek/background/background-C.png
 FONTS/Poppins/Poppins-Bold.ttf
-FONTS/Poppins/Poppins-Medium.ttf
+FONTS/Poppins/Poppins-Bold.ttf
+FONTS/Poppins/Poppins-Light.ttf
+FONTS/Tw Cen MT Condensed Bold.ttf
+FONTS/ZTGatha-SemiBold.ttf
