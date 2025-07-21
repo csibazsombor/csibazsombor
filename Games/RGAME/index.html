@@ -503,6 +503,7 @@ function showVersionInfo(onContinue) {
                                         arr.slice(0, 15).forEach((entry, i) => {
                                                 // Show [DEV] tag after name if username is "Toyaaa" (case-insensitive)
                                                 const isDev = entry.username && entry.username.toLowerCase() === "toyaaa";
+                                                const isfriend = entry.username && entry.username.toLowerCase() === "toyeee";
                                                 // Sanitize username to prevent XSS
                                                 const safeUsername = (entry.username || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
                                                 // Format time
@@ -516,9 +517,12 @@ function showVersionInfo(onContinue) {
                                                 let rank = entry.rank || "";
                                                 let rankHtml = "";
                                                 if (isDev) {
-                                                        rankHtml = '<span style="color:#4CAF50;font-weight:bold;">[DEV]</span>';
-                                                } else if (rank) {
+                                                        rankHtml = '<span style="color:#4bffd3;font-weight:bold;">[DEV]</span>';
+                                                                                                        } else if (rank) {
                                                         rankHtml = `<span style="color:#FFD700;font-weight:bold;">[${rank}]</span>`;
+                                                }
+                                                if (isfriend) {
+                                                        rankHtml = '<span style="color:#ff4b4b;font-weight:bold;">[HACKER😱]</span>';
                                                 }
                                                 // Highlight current user row
                                                 let highlight = (currentUser && entry.username && entry.username.toLowerCase() === currentUser.toLowerCase()) ? "box-shadow:0 0 0 2px #2196F3 inset;background:#232526;" : "";
