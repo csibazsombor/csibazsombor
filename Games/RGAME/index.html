@@ -4,90 +4,1443 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>RGAME</title>
-<style>
-        make good style for with animations h1 and body
-        body {
-                font-family: 'Segoe UI', Arial, sans-serif;
-                background: linear-gradient(135deg, #232526 0%, #414345 100%);
-                color: #f5f5f5;
-                margin: 0;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                animation: bodyFadeIn 1.2s ease;
-        }
-
-        @keyframes bodyFadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-        }
-
-        h1 {
-                font-size: 2.5rem;
-                color: #fff;
-                text-align: center;
-                margin-top: 0;
-                letter-spacing: 2px;
-                background: linear-gradient(90deg, #ffcc00 30%, #ff5e62 70%);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                animation: h1PopIn 1s cubic-bezier(.68,-0.55,.27,1.55);
-                transition: transform 0.3s, text-shadow 0.3s;
-                text-shadow: 0 4px 24px rgba(255, 94, 98, 0.2);
-        }
-
-        @keyframes h1PopIn {
-                0% {
-                        transform: scale(0.7) translateY(-40px);
-                        opacity: 0;
-                }
-                80% {
-                        transform: scale(1.1) translateY(10px);
-                        opacity: 1;
-                }
-                100% {
-                        transform: scale(1) translateY(0);
-                        opacity: 1;
-                }
-        }
-
-        h1:hover {
-                transform: scale(1.07) rotate(-2deg);
-                text-shadow: 0 8px 32px #ffcc00, 0 2px 8px #ff5e62;
-                filter: brightness(1.15);
-        }
-        button {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 30px auto 0 auto;
-                padding: 15px 30px;
-                font-size: 1.2rem;
-                cursor: pointer;
-                border: none;
-                border-radius: 8px;
-                background: linear-gradient(90deg, #ffcc00 30%, #ff5e62 70%);
-                color: #232526;
-                font-weight: bold;
-                box-shadow: 0 4px 16px rgba(255, 94, 98, 0.15);
-                transition: transform 0.2s, box-shadow 0.2s;
-        }
-        button:hover {
-                transform: scale(1.05);
-                box-shadow: 0 8px 32px #ffcc00, 0 2px 8px #ff5e62;
-        }
-</style>
+        <meta name="description" content="Shooting game with a leaderboard. Collect coins and be the #1 best player!">
+        <meta> name="keywords" content="game, shooting, leaderboard, collect coins, best player">
+        <meta name="author" content="Csiba Zsombor">
+        <style>
+        </style>
 </head>
 <body>
-        <h1>A random game by toyaaa</h1>
-        <button onclick="PLAY()">PLAY</button>
+        Loading...
 </body>
 <script>
-function PLAY() {
-                window.location.href = "game.html";
+(function() {
+
+        let gameStarted = false;
+
+        // Utility function to set body styles
+        function setBodyStyles(styles) {
+                Object.assign(document.body.style, styles);
         }
+
+        // Step 1: Initial loading state
+        setBodyStyles({         
+                backgroundColor: "#18191A",
+                color: "#fff",
+                fontFamily: "'Segoe UI', Arial, sans-serif",
+                textAlign: "center",
+                margin: "0",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "background-color 0.5s, color 0.5s"
+        });
+        document.body.textContent = "Loading...";
+
+        // Step 2: Show author
+        setTimeout(() => {
+                document.body.innerHTML = `<span id="author-glow" style="font-size:2rem;font-weight:bold;">Made By Csiba Zsombor</span>`;
+                const style = document.createElement("style");
+                style.textContent = `
+                @keyframes glow {
+                        0% { text-shadow: 0 0 8px #00eaff, 0 0 16px #00eaff, 0 0 32px #00eaff; color: #fff; }
+                        50% { text-shadow: 0 0 24px #00eaff, 0 0 48px #00eaff, 0 0 96px #00eaff; color: #00eaff; }
+                        100% { text-shadow: 0 0 8px #00eaff, 0 0 16px #00eaff, 0 0 32px #00eaff; color: #fff; }
+                }
+                #author-glow {
+                        animation: glow 1.5s infinite alternate;
+                }
+                `;
+                document.head.appendChild(style);
+        }, 1500);
+
+        
+        // Step 3: Fun message
+        setTimeout(() => {
+                document.body.textContent = "ommaggaa 😱😱";
+        }, 2500);
+
+        // Step 4: Fade out message
+        setTimeout(() => {
+                setBodyStyles({
+                        color: "#232526",
+                        opacity: "0.5"
+                });
+                document.body.textContent = "ommaggaa";
+        }, 3500);
+
+// Step 5: Show version info first, then start button
+setTimeout(() => {
+     showVersionInfo(() => {
+                setBodyStyles({
+                        backgroundColor: "#232526",
+                        color: "#fff",
+                        opacity: "1",
+                        transition: "background-color 0.5s, color 0.5s, opacity 0.5s"
+                });
+                document.body.textContent = "Welcome to My Random Game! (Sometimes it have bug on spawning, but it works fine on the second try)";
+                const button = document.createElement("button");
+                button.textContent = "START";
+                Object.assign(button.style, {
+                        marginTop: "24px",
+                        padding: "12px 32px",
+                        fontSize: "1.2rem",
+                        border: "none",
+                        borderRadius: "8px",
+                        background: "linear-gradient(90deg, #232526 0%, #414345 100%)",
+                        color: "#fff",
+                        cursor: "pointer",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.2)"
+                });
+
+                let continueTriggered = false;
+                button.onclick = () => {
+                    if (continueTriggered) return;
+                    continueTriggered = true;
+                    onContinue();
+                };
+                
+                button.onmouseenter = () => {
+                        button.style.background = "linear-gradient(90deg, #414345 0%, #232526 100%)";
+                };
+                button.onmouseleave = () => {
+                        button.style.background = "linear-gradient(90deg, #232526 0%, #414345 100%)";
+                };
+                document.body.appendChild(button);
+
+                button.onclick = () => {
+                        startGame();
+                };
+
+
+
+        });
+}, 4200);
+// Show version and updates
+function showVersionInfo(onContinue) {
+        setBodyStyles({
+                backgroundColor: "#18191A",
+                color: "#fff",
+                fontFamily: "'Segoe UI', Arial, sans-serif",
+                textAlign: "center",
+                margin: "0",
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center"
+        });
+        document.body.innerHTML = "";
+
+        // Title with version
+        const title = document.createElement("h1");
+        title.innerHTML = `🎮 ${game.name} <span style="color:#00eaff;">v${gameUpdates.currentVersion}</span>`;
+        title.style.marginBottom = "20px";
+        title.style.fontSize = "2.5rem";
+        document.body.appendChild(title);
+
+        // Updates container
+        const updatesContainer = document.createElement("div");
+        updatesContainer.style.maxWidth = "600px";
+        updatesContainer.style.width = "90%";
+        updatesContainer.style.background = "#232526";
+        updatesContainer.style.borderRadius = "12px";
+        updatesContainer.style.padding = "20px";
+        updatesContainer.style.marginBottom = "20px";
+        updatesContainer.style.border = "2px solid #00eaff";
+        updatesContainer.style.boxShadow = "0 4px 16px rgba(0,234,255,0.3)";
+
+        const updatesTitle = document.createElement("h2");
+        updatesTitle.textContent = "📋 What's New";
+        updatesTitle.style.color = "#00eaff";
+        updatesTitle.style.marginBottom = "15px";
+        updatesContainer.appendChild(updatesTitle);
+
+        // Show last 2 versions
+        gameUpdates.updates.slice(0, 2).forEach((update, index) => {
+                const versionDiv = document.createElement("div");
+                versionDiv.style.marginBottom = "15px";
+                versionDiv.style.textAlign = "left";
+                
+                const versionHeader = document.createElement("h3");
+                versionHeader.innerHTML = `Version ${update.version} ${index === 0 ? '<span style="color:#4CAF50;">(Current)</span>' : ''}`;
+                versionHeader.style.color = "#FFD700";
+                versionHeader.style.marginBottom = "8px";
+                versionDiv.appendChild(versionHeader);
+
+                const changesList = document.createElement("ul");
+                changesList.style.listStyle = "none";
+                changesList.style.padding = "0";
+                changesList.style.margin = "0";
+                update.changes.forEach(change => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `• ${change}`;
+                        li.style.marginBottom = "4px";
+                        li.style.color = "#aaa";
+                        changesList.appendChild(li);
+                });
+                versionDiv.appendChild(changesList);
+                updatesContainer.appendChild(versionDiv);
+        });
+
+        document.body.appendChild(updatesContainer);
+
+        // Continue button
+        const continueBtn = document.createElement("button");
+        continueBtn.textContent = "Continue to Game";
+        Object.assign(continueBtn.style, {
+                padding: "12px 32px",
+                fontSize: "1.2rem",
+                border: "none",
+                borderRadius: "8px",
+                background: "linear-gradient(90deg, #00eaff 0%, #0099cc 100%)",
+                color: "#fff",
+                cursor: "pointer",
+                boxShadow: "0 4px 12px rgba(0,234,255,0.4)",
+                fontWeight: "bold"
+        });
+        continueBtn.onclick = onContinue;
+        document.body.appendChild(continueBtn);
+
+        // Skip timer
+        const skipInfo = document.createElement("div");
+        skipInfo.textContent = "Auto-continue in 8 seconds...";
+        skipInfo.style.marginTop = "10px";
+        skipInfo.style.color = "#888";
+        skipInfo.style.fontSize = "0.9rem";
+        document.body.appendChild(skipInfo);
+
+        let countdown = 8;
+        const timer = setInterval(() => {
+                countdown--;
+                skipInfo.textContent = `Auto-continue in ${countdown} seconds...`;
+                if (countdown <= 0) {
+                    clearInterval(timer);
+                    if (!continueTriggered) {
+                        continueTriggered = true;
+                        onContinue();
+                    }
+                }
+
+        }, 1000);
+}
+        // Version and update info
+        const gameUpdates = {
+                currentVersion: "1.2",
+                updates: [
+                        { version: "1.2", changes: ["Added particle effects system", "New enemy types with different behaviors", "Sound effects for actions", "Dash ability with cooldown", "Improved visual feedback", "Added version display system"] },
+                        { version: "1.1", changes: ["Added shop system", "Leaderboard improvements", "Random events system", "Mobile controls"] },
+                        { version: "1.0", changes: ["Initial release", "Basic gameplay", "Firebase integration"] }
+                ]
+        };
+        // Game object
+        const game = {
+                name: "My random game",
+                version: "1.2",
+                description: "A random game by toye",
+                author: "toye"
+        };
+        game.version = gameUpdates.currentVersion;
+        // Log game details
+        console.log("Game loaded:", game.name, game.version, game.description, "by", game.author);
+
+        // --- FIREBASE CONFIGURATION ---
+        // Add your Firebase config here
+        const firebaseConfig = {
+                apiKey: "AIzaSyBKo_e9h5MpstKF5wrtrzr1GeZhlF_E6-0",
+                authDomain: "leaderboard-catchgame.firebaseapp.com",
+                projectId: "leaderboard-catchgame",
+                storageBucket: "leaderboard-catchgame.appspot.com",
+                messagingSenderId: "506946916728",
+                appId: "1:506946916728:web:6c2416ff49b125e6b6788d",
+                measurementId: "G-4FENJP02VS",
+                databaseURL: "https://leaderboard-catchgame-default-rtdb.europe-west1.firebasedatabase.app"
+        };
+
+        // Load Firebase scripts dynamically if not present
+        function loadFirebaseScripts(callback) {
+                if (window.firebase && window.firebase.apps && window.firebase.apps.length) {
+                        callback();
+                        return;
+                }
+                const script1 = document.createElement("script");
+                script1.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+                script1.onload = () => {
+                        const script2 = document.createElement("script");
+                        script2.src = "https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js";
+                        script2.onload = callback;
+                        document.head.appendChild(script2);
+                };
+                document.head.appendChild(script1);
+        }
+
+        // --- SHOP ITEMS ---
+        const SHOP_ITEMS = [
+                { id: "color_red", name: "Red Name", price: 200, type: "color", color: "#FF4444", desc: "Your name will be red on the leaderboard." },
+                { id: "color_blue", name: "Blue Name", price: 200, type: "color", color: "#44AADD", desc: "Your name will be blue on the leaderboard." },
+                { id: "color_gold", name: "Gold Name", price: 500, type: "color", color: "#FFD700", desc: "Your name will be gold on the leaderboard." },
+                { id: "rank_pro", name: "Pro Rank", price: 1000, type: "rank", rank: "PRO", desc: "Show off your PRO status!" },
+                { id: "rank_legend", name: "Legend Rank", price: 2500, type: "rank", rank: "LEGEND", desc: "Become a LEGEND on the leaderboard!" }
+        ];
+
+        // --- LEADERBOARD UI ---
+        function showLeaderboard(score, onRestart) {
+                setBodyStyles({
+                        backgroundColor: "#18191A",
+                        color: "#fff",
+                        fontFamily: "'Segoe UI', Arial, sans-serif",
+                        textAlign: "center",
+                        margin: "0",
+                        minHeight: "100vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                });
+                document.body.innerHTML = "";
+
+                // Title
+                const title = document.createElement("h2");
+                title.textContent = "🏆 Leaderboard";
+                title.style.letterSpacing = "1px";
+                title.style.marginBottom = "8px";
+                title.style.fontSize = "2.2rem";
+                title.style.color = "#FFD700";
+                document.body.appendChild(title);
+
+                // Leaderboard info
+                const info = document.createElement("div");
+                info.innerHTML = `<span style="color:#aaa;font-size:1rem;">Top 15 players by <b>Best Score</b>. <br>Ranks and colors are shown next to names.<br>Earn more by playing and spending in the shop!</span>`;
+                info.style.marginBottom = "10px";
+                document.body.appendChild(info);
+
+                // Refresh button
+                const refreshBtn = document.createElement("button");
+                refreshBtn.textContent = "🔄 Refresh";
+                Object.assign(refreshBtn.style, {
+                        marginBottom: "12px",
+                        padding: "6px 18px",
+                        fontSize: "1rem",
+                        border: "none",
+                        borderRadius: "6px",
+                        background: "#2196F3",
+                        color: "#fff",
+                        cursor: "pointer",
+                        marginLeft: "8px"
+                });
+                document.body.appendChild(refreshBtn);
+
+                // Leaderboard table
+                const leaderboardDiv = document.createElement("div");
+                leaderboardDiv.textContent = "Loading leaderboard...";
+                leaderboardDiv.style.margin = "16px";
+                leaderboardDiv.style.fontSize = "1.1rem";
+                leaderboardDiv.style.width = "100%";
+                leaderboardDiv.style.maxWidth = "500px";
+                leaderboardDiv.style.background = "#232526";
+                leaderboardDiv.style.borderRadius = "14px";
+                leaderboardDiv.style.boxShadow = "0 2px 12px rgba(0,0,0,0.25)";
+                leaderboardDiv.style.padding = "18px 0";
+                leaderboardDiv.style.overflowX = "auto";
+                leaderboardDiv.style.marginBottom = "12px";
+                leaderboardDiv.style.border = "2px solid #FFD700";
+                document.body.appendChild(leaderboardDiv);
+
+                // Username input
+                const inputDiv = document.createElement("div");
+                inputDiv.style.margin = "16px";
+                inputDiv.style.display = "flex";
+                inputDiv.style.justifyContent = "center";
+                inputDiv.style.alignItems = "center";
+                const label = document.createElement("label");
+                label.textContent = "Enter your name: ";
+                label.style.marginRight = "8px";
+                const input = document.createElement("input");
+                input.type = "text";
+                input.maxLength = 16;
+                input.placeholder = "Username";
+                input.style.padding = "6px";
+                input.style.borderRadius = "6px";
+                input.style.border = "1px solid #FFD700";
+                input.style.fontSize = "1rem";
+                input.style.background = "#18191A";
+                input.style.color = "#fff";
+                input.style.marginRight = "8px";
+                inputDiv.appendChild(label);
+                inputDiv.appendChild(input);
+
+                // Save button
+                const saveBtn = document.createElement("button");
+                saveBtn.textContent = "💾 Save Score";
+                Object.assign(saveBtn.style, {
+                        marginLeft: "4px",
+                        padding: "6px 18px",
+                        fontSize: "1rem",
+                        border: "none",
+                        borderRadius: "6px",
+                        background: "#4CAF50",
+                        color: "#fff",
+                        cursor: "pointer"
+                });
+                inputDiv.appendChild(saveBtn);
+
+                document.body.appendChild(inputDiv);
+
+                // Restart button
+                const restartBtn = document.createElement("button");
+                restartBtn.textContent = "Restart Game";
+                Object.assign(restartBtn.style, {
+                        marginTop: "18px",
+                        padding: "10px 32px",
+                        fontSize: "1.1rem",
+                        border: "none",
+                        borderRadius: "8px",
+                        background: "#232526",
+                        color: "#fff",
+                        cursor: "pointer",
+                        border: "2px solid #FFD700"
+                });
+                restartBtn.onclick = onRestart;
+                document.body.appendChild(restartBtn);
+
+                // Show your score
+                const scoreDiv = document.createElement("div");
+                scoreDiv.textContent = "Your Score: " + score;
+                scoreDiv.style.margin = "12px";
+                scoreDiv.style.fontWeight = "bold";
+                scoreDiv.style.fontSize = "1.2rem";
+                scoreDiv.style.color = "#FFD700";
+                document.body.appendChild(scoreDiv);
+
+                // Shop UI
+                const shopDiv = document.createElement("div");
+                shopDiv.style.margin = "18px 0";
+                shopDiv.style.background = "#232526";
+                shopDiv.style.borderRadius = "14px";
+                shopDiv.style.boxShadow = "0 2px 12px rgba(0,0,0,0.25)";
+                shopDiv.style.padding = "18px";
+                shopDiv.style.maxWidth = "500px";
+                shopDiv.style.width = "100%";
+                shopDiv.style.border = "2px solid #2196F3";
+                shopDiv.innerHTML = `<div style="font-size:1.2rem;font-weight:bold;color:#2196F3;margin-bottom:8px;">🛒 Game Shop</div>
+                <div style="color:#aaa;font-size:1rem;margin-bottom:10px;">Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.</div>`;
+                document.body.appendChild(shopDiv);
+
+                // Save score to Firebase (add to previous score, not overwrite)
+                saveBtn.onclick = function() {
+                        let username = input.value.trim().substring(0, 16) || "Anonymous";
+                        let isDev = false;
+                        if (username.toLowerCase() === "Toyaaa".toLowerCase()) {
+                                username = "Toyaaa";
+                                isDev = true;
+                        }
+                        saveBtn.disabled = true;
+                        saveBtn.textContent = "Saving...";
+                        // Read previous data, then add score
+                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                let prev = snap.val();
+                                let prevScore = (prev && prev.score) ? prev.score : 0;
+                                let totalScore = (prev && prev.totalScore) ? prev.totalScore : prevScore;
+                                let userItems = (prev && prev.items) ? prev.items : [];
+                                let userRank = (prev && prev.rank) ? prev.rank : "";
+                                let userColor = (prev && prev.color) ? prev.color : "";
+                                let newTotal = totalScore + score;
+                                // Save the highest score
+                                let newScore = Math.max(score, prevScore);
+                                // Only include 'dev' property if isDev is true
+                                const data = {
+                                        username: username,
+                                        score: newScore,
+                                        totalScore: newTotal,
+                                        timestamp: window.firebase.database.ServerValue.TIMESTAMP,
+                                        items: userItems,
+                                        rank: userRank,
+                                        color: userColor
+                                };
+                                if (isDev) {
+                                        data.dev = true;
+                                }
+                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).set(data).then(() => {
+                                        saveBtn.textContent = "Saved!";
+                                        input.disabled = true;
+                                        loadLeaderboard(username, newTotal, userItems, userRank, userColor);
+                                }).catch(() => {
+                                        saveBtn.textContent = "Error!";
+                                });
+                        });
+                };
+
+                // Load leaderboard from Firebase
+                function loadLeaderboard(currentUser, currentTotalScore, userItems, userRank, userColor) {
+                        leaderboardDiv.textContent = "Loading leaderboard...";
+                        window.firebase.database().ref("leaderboard")
+                                .once("value", snap => {
+                                        const arr = [];
+                                        snap.forEach(child => {
+                                                arr.push(child.val());
+                                        });
+                                        // Sort by best score (highest score), fallback to totalScore
+                                        arr.sort((a, b) => (b.score || 0) - (a.score || 0) || (b.totalScore || 0) - (a.totalScore || 0) || a.timestamp - b.timestamp);
+                                        // Build table
+                                        if (arr.length === 0) {
+                                                leaderboardDiv.innerHTML = "<div style='color:#aaa;'>No scores yet.</div>";
+                                                return;
+                                        }
+                                        let table = `<table style="width:100%;border-collapse:separate;border-spacing:0 4px;">
+                                                <thead>
+                                                        <tr style="background:#18191A;">
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">#</th>
+                                                                <th style="padding:8px 6px;text-align:left;font-size:1.1rem;">Name</th>
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">Score</th>
+                                                                <th style="padding:8px 6px;color:#FFD700;font-size:1.1rem;">Total</th>
+                                                                <th style="padding:8px 6px;color:#aaa;font-size:1.1rem;">Rank</th>
+                                                                <th style="padding:8px 6px;color:#aaa;font-size:1.1rem;">Time</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>`;
+                                        arr.slice(0, 15).forEach((entry, i) => {
+                                                // Show [DEV] tag after name if username is "Toyaaa" (case-insensitive)
+                                                const isDev = entry.username && entry.username.toLowerCase() === "toyaaa";
+                                                // Sanitize username to prevent XSS
+                                                const safeUsername = (entry.username || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                                                // Format time
+                                                let timeStr = "";
+                                                if (entry.timestamp) {
+                                                        const d = new Date(entry.timestamp);
+                                                        timeStr = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                                                }
+                                                // Color and rank
+                                                let color = entry.color || "#fff";
+                                                let rank = entry.rank || "";
+                                                let rankHtml = "";
+                                                if (isDev) {
+                                                        rankHtml = '<span style="color:#4CAF50;font-weight:bold;">[DEV]</span>';
+                                                } else if (rank) {
+                                                        rankHtml = `<span style="color:#FFD700;font-weight:bold;">[${rank}]</span>`;
+                                                }
+                                                // Highlight current user row
+                                                let highlight = (currentUser && entry.username && entry.username.toLowerCase() === currentUser.toLowerCase()) ? "box-shadow:0 0 0 2px #2196F3 inset;background:#232526;" : "";
+                                                table += `<tr style="background:${i%2===0?'#232526':'#292b2d'};${highlight}">
+                                                        <td style="padding:8px 6px;font-weight:bold;text-align:center;font-size:1.1rem;">${i + 1}</td>
+                                                        <td style="padding:8px 6px;text-align:left;">
+                                                                <span style="color:${color};font-weight:bold;font-size:1.1rem;">${safeUsername}</span> ${rankHtml}
+                                                        </td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-weight:bold;font-size:1.1rem;">${entry.score || 0}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-size:1.1rem;">${entry.totalScore || entry.score || 0}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#FFD700;font-size:1.1rem;">${rankHtml}</td>
+                                                        <td style="padding:8px 6px;text-align:center;color:#aaa;font-size:1rem;">${timeStr}</td>
+                                                </tr>`;
+                                        });
+                                        table += "</tbody></table>";
+                                        leaderboardDiv.innerHTML = table;
+
+                                        // If user is logged in, show shop
+                                        if (currentUser) {
+                                                renderShop(currentUser, currentTotalScore, userItems || [], userRank || "", userColor || "");
+                                        }
+                                });
+                }
+
+                // Shop rendering and logic (improved)
+                function renderShop(username, totalScore, ownedItems, userRank, userColor) {
+                        shopDiv.innerHTML = `<div style="font-size:1.2rem;font-weight:bold;color:#2196F3;margin-bottom:8px;">🛒 Game Shop</div>
+                        <div style="color:#aaa;font-size:1rem;margin-bottom:10px;">Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.</div>`;
+
+                        // Show current equipped
+                        let equipped = "";
+                        if (userColor) equipped += `<span style="color:${userColor};font-weight:bold;">Name Color</span> `;
+                        if (userRank) equipped += `<span style="color:#FFD700;font-weight:bold;">[${userRank}]</span>`;
+                        if (equipped) {
+                                shopDiv.innerHTML += `<div style="margin-bottom:10px;color:#aaa;">Equipped: ${equipped}</div>`;
+                        }
+
+                        // Shop grid
+                        const grid = document.createElement("div");
+                        grid.style.display = "grid";
+                        grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(210px, 1fr))";
+                        grid.style.gap = "14px";
+                        grid.style.marginTop = "8px";
+                        SHOP_ITEMS.forEach(item => {
+                                const owned = ownedItems && ownedItems.includes(item.id);
+                                const equippedNow = (item.type === "color" && userColor === item.color) || (item.type === "rank" && userRank === item.rank);
+                                const canBuy = totalScore >= item.price;
+                                const card = document.createElement("div");
+                                card.style.background = owned ? "#1e2224" : "#18191A";
+                                card.style.borderRadius = "10px";
+                                card.style.padding = "14px";
+                                card.style.boxShadow = equippedNow ? "0 0 0 2px #4CAF50 inset" : "0 1px 6px rgba(0,0,0,0.12)";
+                                card.style.border = owned ? "2px solid #4CAF50" : "2px solid #444";
+                                card.style.display = "flex";
+                                card.style.flexDirection = "column";
+                                card.style.alignItems = "center";
+                                card.style.justifyContent = "center";
+                                card.style.transition = "box-shadow 0.2s,border 0.2s";
+                                // Name
+                                let desc = "";
+                                if (item.type === "color") {
+                                        desc = `<span style="color:${item.color};font-weight:bold;font-size:1.1rem;">${item.name}</span>`;
+                                } else if (item.type === "rank") {
+                                        desc = `<span style="color:#FFD700;font-weight:bold;font-size:1.1rem;">[${item.rank}]</span> ${item.name}`;
+                                }
+                                card.innerHTML = `
+                                        <div style="margin-bottom:6px;">${desc}</div>
+                                        <div style="color:#FFD700;font-size:1.1rem;margin-bottom:4px;">${item.price} pts</div>
+                                        <div style="color:#aaa;font-size:0.95rem;margin-bottom:8px;min-height:32px;">${item.desc}</div>
+                                `;
+                                // Button
+                                const btn = document.createElement("button");
+                                btn.style.padding = "7px 18px";
+                                btn.style.borderRadius = "6px";
+                                btn.style.border = "none";
+                                btn.style.background = owned ? (equippedNow ? "#4CAF50" : "#888") : (canBuy ? "#2196F3" : "#aaa");
+                                btn.style.color = "#fff";
+                                btn.style.cursor = owned ? (equippedNow ? "default" : "pointer") : (canBuy ? "pointer" : "not-allowed");
+                                btn.style.fontWeight = "bold";
+                                btn.style.fontSize = "1rem";
+                                btn.style.marginTop = "4px";
+                                btn.textContent = owned ? (equippedNow ? "Equipped" : "Equip") : `Buy`;
+                                btn.disabled = owned ? equippedNow : !canBuy;
+
+                                btn.onclick = function() {
+                                        if (owned && !equippedNow) {
+                                                // Equip
+                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                                        let prev = snap.val();
+                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                                        let prevItems = (prev && prev.items) ? prev.items : [];
+                                                        let newRank = prev.rank || "";
+                                                        let newColor = prev.color || "";
+                                                        if (item.type === "rank") newRank = item.rank;
+                                                        if (item.type === "color") newColor = item.color;
+                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
+                                                                rank: newRank,
+                                                                color: newColor
+                                                        }).then(() => {
+                                                                loadLeaderboard(username, prevTotal, prevItems, newRank, newColor);
+                                                        });
+                                                });
+                                        } else if (!owned && canBuy) {
+                                                // Buy and equip
+                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
+                                                        let prev = snap.val();
+                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
+                                                        let prevItems = (prev && prev.items) ? prev.items : [];
+                                                        let newTotal = prevTotal - item.price;
+                                                        let newItems = prevItems.concat(item.id);
+                                                        let newRank = prev.rank || "";
+                                                        let newColor = prev.color || "";
+                                                        if (item.type === "rank") newRank = item.rank;
+                                                        if (item.type === "color") newColor = item.color;
+                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
+                                                                totalScore: newTotal,
+                                                                items: newItems,
+                                                                rank: newRank,
+                                                                color: newColor
+                                                        }).then(() => {
+                                                                loadLeaderboard(username, newTotal, newItems, newRank, newColor);
+                                                        });
+                                                });
+                                        }
+                                };
+                                card.appendChild(btn);
+                                grid.appendChild(card);
+                        });
+                        shopDiv.appendChild(grid);
+                }
+
+                // Initial leaderboard load
+                loadLeaderboard();
+
+                refreshBtn.onclick = function() {
+                        refreshBtn.textContent = "Refreshing...";
+                        refreshBtn.disabled = true;
+                        setTimeout(() => {
+                                loadLeaderboard();
+                                refreshBtn.textContent = "🔄 Refresh";
+                                refreshBtn.disabled = false;
+                        }, 500);
+                };
+        }
+
+        // Game start logic
+        function startGame() {
+                    if (gameStarted) return;
+                        gameStarted = true;
+
+                document.body.innerHTML = ""; // Clear body
+                setBodyStyles({
+                        backgroundColor: "#18191A",
+                        color: "#fff",
+                        fontFamily: "'Segoe UI', Arial, sans-serif",
+                        textAlign: "center",
+                        margin: "0",
+                        minHeight: "100vh",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                });
+
+                // Particle system
+                const particles = [];
+                // Sound effects (using Web Audio API)
+                let audioContext;
+                try {
+                        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch(e) {
+                        audioContext = null;
+                }
+
+                // Dash ability
+                let dashCooldown = 0;
+                let dashDirection = { x: 0, y: 0 };
+                let isDashing = false;
+                // Update dash cooldown
+                if (dashCooldown > 0) dashCooldown--;
+                const keysPressed = {};
+                // Handle dash (Spacebar)
+                if (keysPressed[' '] && dashCooldown <= 0) {
+                        isDashing = true;
+                        dashCooldown = 120; // 2 second cooldown
+                        let dashSpeed = 15;
+                        if (keysPressed[up]) dashDirection = { x: 0, y: -dashSpeed };
+                        else if (keysPressed[down]) dashDirection = { x: 0, y: dashSpeed };
+                        else if (keysPressed[left]) dashDirection = { x: -dashSpeed, y: 0 };
+                        else if (keysPressed[right]) dashDirection = { x: dashSpeed, y: 0 };
+                        else dashDirection = { x: 0, y: -dashSpeed }; // default up
+                        
+                        playSound(800, 0.1, 'square');
+                        createParticle(x + size/2, y + size/2, "#00BFFF", 'star');
+                        setTimeout(() => { isDashing = false; }, 200);
+                }
+
+                // Apply dash movement
+                if (isDashing) {
+                        let newX = x + dashDirection.x;
+                        let newY = y + dashDirection.y;
+                        // Check boundaries
+                        if (newX >= 0 && newX <= CANVAS_WIDTH - size && newY >= 0 && newY <= CANVAS_HEIGHT - size) {
+                                // Check obstacles
+                                let blocked = false;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(newX, newY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        x = newX;
+                                        y = newY;
+                                }
+                        }
+                }
+
+                // Update particles
+                updateParticles();
+                // Responsive canvas size
+                const CANVAS_WIDTH = Math.min(700, window.innerWidth - 40);
+                const CANVAS_HEIGHT = Math.min(500, window.innerHeight - 160);
+
+                // Create canvas
+                const canvas = document.createElement("canvas");
+                canvas.width = CANVAS_WIDTH;
+                canvas.height = CANVAS_HEIGHT;
+                Object.assign(canvas.style, {
+                        border: "2px solid #fff",
+                        background: "#232526",
+                        borderRadius: "12px"
+                });
+                document.body.appendChild(canvas);
+
+                // Modern optimized context
+                const ctx = canvas.getContext("2d", { alpha: false });
+
+                // Smaller player
+                let x = CANVAS_WIDTH / 2 - 10, y = CANVAS_HEIGHT / 2 - 10, size = 20, speed = 4;
+
+                // More collectibles and obstacles
+                const collectibles = [];
+                const obstacles = [];
+                const powerups = [];
+                let score = 0;
+
+                // Generate collectibles (coins)
+                for (let i = 0; i < 12; i++) {
+                        collectibles.push({
+                                x: Math.random() * (CANVAS_WIDTH - 16),
+                                y: Math.random() * (CANVAS_HEIGHT - 16),
+                                size: 16,
+                                collected: false
+                        });
+                }
+
+                // Generate obstacles (red blocks)
+                for (let i = 0; i < 7; i++) {
+                        obstacles.push({
+                                x: Math.random() * (CANVAS_WIDTH - 60),
+                                y: Math.random() * (CANVAS_HEIGHT - 60),
+                                width: 60,
+                                height: 20
+                        });
+                }
+
+                // Generate powerups (blue circles)
+                for (let i = 0; i < 3; i++) {
+                        powerups.push({
+                                x: Math.random() * (CANVAS_WIDTH - 18),
+                                y: Math.random() * (CANVAS_HEIGHT - 18),
+                                size: 18,
+                                active: true
+                        });
+                }
+
+                // Enemy (inactive for 2s, then slow and "stupid" movement)
+                const enemy = {
+                        x: Math.random() * (CANVAS_WIDTH - 24),
+                        y: Math.random() * (CANVAS_HEIGHT - 24),
+                        size: 24,
+                        speed: 1.5, // slightly faster for more challenge
+                        direction: Math.random() * Math.PI * 2,
+                        talkTimer: 0,
+                        message: "",
+                        messageTimer: 0,
+                        messages: [
+                                "Hey you!",
+                                "Catch me if you can!",
+                                "Stay away!",
+                                "Nice moves!",
+                                "You can't win!",
+                                "Watch out!"
+                        ],
+                        active: false, // inactive at start
+                        stupidTimer: 0 // for random direction changes
+                };
+
+                // Activate enemy after 2 seconds
+                setTimeout(() => {
+                        enemy.active = true;
+                }, 2000);
+
+                // --- RANDOM EVENTS SETUP ---
+                // List of random events
+                const randomEvents = [
+                        {
+                                name: "Extra Coin",
+                                chance: 0.01, // ~0.1% per frame (much less frequent)
+                                trigger: function() {
+                                        collectibles.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 16),
+                                                y: Math.random() * (CANVAS_HEIGHT - 16),
+                                                size: 16,
+                                                collected: false
+                                        });
+                                        showEventMessage("A bonus coin appeared!");
+                                }
+                        },
+                        {
+                                name: "Obstacle Drop",
+                                chance: 0.0007, // ~0.07% per frame
+                                trigger: function() {
+                                        obstacles.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 60),
+                                                y: Math.random() * (CANVAS_HEIGHT - 60),
+                                                width: 60,
+                                                height: 20
+                                        });
+                                        showEventMessage("A new obstacle dropped!");
+                                }
+                        },
+                        {
+                                name: "Speed Boost",
+                                chance: 0.000005, // ~0.005% per frame
+                                trigger: function() {
+                                        speed += 2;
+                                        showEventMessage("Speed boost! (+2)");
+                                        setTimeout(() => { speed -= 2; }, 2500);
+                                }
+                        },
+                        {
+                                name: "Enemy Freeze",
+                                chance: 0.0005, // ~0.05% per frame
+                                trigger: function() {
+                                        const oldSpeed = enemy.speed;
+                                        enemy.speed = 0;
+                                        showEventMessage("Enemy frozen!");
+                                        setTimeout(() => { enemy.speed = oldSpeed; }, 2000);
+                                }
+                        },
+                        {
+                                name: "Powerup Spawn",
+                                chance: 0.0007, // ~0.07% per frame
+                                trigger: function() {
+                                        powerups.push({
+                                                x: Math.random() * (CANVAS_WIDTH - 18),
+                                                y: Math.random() * (CANVAS_HEIGHT - 18),
+                                                size: 18,
+                                                active: true
+                                        });
+                                        showEventMessage("A powerup appeared!");
+                                }
+                        },
+                        {
+                                name: "Reverse Controls",
+                                chance: 0.0003, // ~0.03% per frame
+                                trigger: function() {
+                                        reverseControls = true;
+                                        showEventMessage("Controls reversed!");
+                                        setTimeout(() => { reverseControls = false; }, 2000);
+                                }
+                        }
+                ];
+
+                // State for random events
+                let eventMessage = "";
+                let eventMessageTimer = 0;
+                let reverseControls = false;
+
+                function showEventMessage(msg) {
+                        eventMessage = msg;
+                        eventMessageTimer = 90; // show for 1.5s
+                }
+
+
+                // Particle system
+                function createParticle(x, y, color, type = 'default') {
+                        particles.push({
+                                x: x,
+                                y: y,
+                                vx: (Math.random() - 0.5) * 8,
+                                vy: (Math.random() - 0.5) * 8,
+                                life: 30,
+                                maxLife: 30,
+                                color: color,
+                                size: Math.random() * 6 + 2,
+                                type: type
+                        });
+                }
+
+                function updateParticles() {
+                        for (let i = particles.length - 1; i >= 0; i--) {
+                                const p = particles[i];
+                                p.x += p.vx;
+                                p.y += p.vy;
+                                p.vy += 0.2; // gravity
+                                p.vx *= 0.98; // friction
+                                p.life--;
+                                if (p.life <= 0) {
+                                        particles.splice(i, 1);
+                                }
+                        }
+                }
+
+                function drawParticles() {
+                        particles.forEach(p => {
+                                ctx.save();
+                                ctx.globalAlpha = p.life / p.maxLife;
+                                ctx.fillStyle = p.color;
+                                if (p.type === 'star') {
+                                        drawStar(p.x, p.y, p.size);
+                                } else {
+                                        ctx.beginPath();
+                                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                                        ctx.fill();
+                                }
+                                ctx.restore();
+                        });
+                }
+
+                function drawStar(x, y, size) {
+                        ctx.beginPath();
+                        for (let i = 0; i < 5; i++) {
+                                const angle = (i * 4 * Math.PI) / 5;
+                                const px = x + Math.cos(angle) * size;
+                                const py = y + Math.sin(angle) * size;
+                                if (i === 0) ctx.moveTo(px, py);
+                                else ctx.lineTo(px, py);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                }
+
+                // Sound effects
+                function playSound(frequency, duration, type = 'sine') {
+                        if (!audioContext) return;
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                        oscillator.type = type;
+                        
+                        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + duration);
+                }
+
+                function draw() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                        // Draw obstacles
+                        ctx.fillStyle = "#e74c3c";
+                        obstacles.forEach(ob => {
+                                ctx.fillRect(ob.x, ob.y, ob.width, ob.height);
+                        });
+
+                        ctx.restore();
+
+                        // Draw collectibles
+                        collectibles.forEach(c => {
+                                if (!c.collected) {
+                                        ctx.save();
+                                        ctx.shadowColor = "#FFD700";
+                                        ctx.shadowBlur = 8;
+                                        ctx.fillStyle = "#FFD700";
+                                        ctx.beginPath();
+                                        ctx.arc(c.x + c.size / 2, c.y + c.size / 2, c.size / 2, 0, Math.PI * 2);
+                                        ctx.fill();
+                                        ctx.restore();
+                                }
+                        });
+
+                        // Draw powerups
+                        powerups.forEach(p => {
+                                if (p.active) {
+                                        ctx.save();
+                                        ctx.shadowColor = "#00BFFF";
+                                        ctx.shadowBlur = 8;
+                                        ctx.fillStyle = "#00BFFF";
+                                        ctx.beginPath();
+                                        ctx.arc(p.x + p.size / 2, p.y + p.size / 2, p.size / 2, 0, Math.PI * 2);
+                                        ctx.fill();
+                                        ctx.restore();
+                                }
+                        });
+
+                        // Draw enemy
+                        ctx.save();
+                        ctx.globalAlpha = enemy.active ? 1 : 0.4;
+                        ctx.fillStyle = "#9b59b6";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2, enemy.size / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+
+                        // Enemy face
+                        ctx.save();
+                        ctx.globalAlpha = enemy.active ? 1 : 0.4;
+                        ctx.fillStyle = "#fff";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2 - 4, enemy.y + enemy.size / 2 - 2, 2, 0, Math.PI * 2);
+                        ctx.arc(enemy.x + enemy.size / 2 + 4, enemy.y + enemy.size / 2 - 2, 2, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.strokeStyle = "#fff";
+                        ctx.beginPath();
+                        ctx.arc(enemy.x + enemy.size / 2, enemy.y + enemy.size / 2 + 4, 5, Math.PI * 0.1, Math.PI * 0.9);
+                        ctx.stroke();
+                        ctx.restore();
+
+                        // Enemy speech bubble
+                        if (enemy.message && enemy.messageTimer > 0) {
+                                ctx.save();
+                                ctx.font = "bold 15px Segoe UI, Arial";
+                                ctx.textAlign = "center";
+                                ctx.fillStyle = "#fff";
+                                ctx.strokeStyle = "#232526";
+                                ctx.lineWidth = 4;
+                                const msgX = enemy.x + enemy.size / 2;
+                                const msgY = enemy.y - 10;
+                                ctx.strokeText(enemy.message, msgX, msgY);
+                                ctx.fillText(enemy.message, msgX, msgY);
+                                ctx.restore();
+                        }
+
+                        // Draw player
+                        ctx.save();
+                        ctx.fillStyle = "#4CAF50";
+                        ctx.shadowColor = "#4CAF50";
+                        ctx.shadowBlur = 8;
+                        ctx.fillRect(x, y, size, size);
+                        ctx.restore();
+
+                        // Draw score
+                        ctx.save();
+                        ctx.fillStyle = "#fff";
+                        ctx.font = "18px Segoe UI, Arial";
+                        ctx.textAlign = "left";
+                        ctx.fillText("Score: " + score, 10, 24);
+                        ctx.restore();
+
+                        // Draw random event message
+                        if (eventMessage && eventMessageTimer > 0) {
+                                ctx.save();
+                                ctx.font = "bold 22px Segoe UI, Arial";
+                                ctx.textAlign = "center";
+                                ctx.fillStyle = "#FFD700";
+                                ctx.strokeStyle = "#232526";
+                                ctx.lineWidth = 5;
+                                ctx.globalAlpha = Math.min(1, eventMessageTimer / 30);
+                                ctx.strokeText(eventMessage, canvas.width / 2, 48);
+                                ctx.fillText(eventMessage, canvas.width / 2, 48);
+                                ctx.restore();
+                        }
+                }
+
+                function isColliding(ax, ay, asize, bx, by, bsize) {
+                        return ax < bx + bsize && ax + asize > bx && ay < by + bsize && ay + asize > by;
+                }
+
+                function isRectColliding(ax, ay, aw, ah, bx, by, bw, bh) {
+                        return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+                }
+
+                function update() {
+                        // --- RANDOM EVENTS TRIGGER ---
+                        // Only allow one event per 2 seconds max
+                        if (!update.lastEventTime) update.lastEventTime = 0;
+                        if (performance.now() - update.lastEventTime > 2000) {
+                                for (const event of randomEvents) {
+                                        if (Math.random() < event.chance) {
+                                                event.trigger();
+                                                update.lastEventTime = performance.now();
+                                                break;
+                                        }
+                                }
+                        }
+                        if (eventMessageTimer > 0) eventMessageTimer--;
+
+                        let moved = false;
+                        let up = reverseControls ? "ArrowDown" : "ArrowUp";
+                        let down = reverseControls ? "ArrowUp" : "ArrowDown";
+                        let left = reverseControls ? "ArrowRight" : "ArrowLeft";
+                        let right = reverseControls ? "ArrowLeft" : "ArrowRight";
+
+                        // Try to move vertically
+                        let nextY = y;
+                        if (keysPressed[up] && y > 0) {
+                                let tryY = y - speed;
+                                let blocked = false;
+                                // Check wall
+                                if (tryY < 0) blocked = true;
+                                // Check obstacles
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(x, tryY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextY = tryY;
+                                        moved = true;
+                                }
+                        }
+                        if (keysPressed[down] && y < canvas.height - size) {
+                                let tryY = y + speed;
+                                let blocked = false;
+                                if (tryY > canvas.height - size) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(x, tryY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextY = tryY;
+                                        moved = true;
+                                }
+                        }
+
+                        // Try to move horizontally
+                        let nextX = x;
+                        if (keysPressed[left] && x > 0) {
+                                let tryX = x - speed;
+                                let blocked = false;
+                                if (tryX < 0) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(tryX, nextY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextX = tryX;
+                                        moved = true;
+                                }
+                        }
+                        if (keysPressed[right] && x < canvas.width - size) {
+                                let tryX = x + speed;
+                                let blocked = false;
+                                if (tryX > canvas.width - size) blocked = true;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(tryX, nextY, size, size, ob.x, ob.y, ob.width, ob.height)) {
+                                                blocked = true;
+                                                break;
+                                        }
+                                }
+                                if (!blocked) {
+                                        nextX = tryX;
+                                        moved = true;
+                                }
+                        }
+
+                        x = nextX;
+                        y = nextY;
+
+                       
+                                // Collect collectibles (replace existing code)
+                                collectibles.forEach(c => {
+                                        if (!c.collected && isColliding(x, y, size, c.x, c.y, c.size)) {
+                                                c.collected = true;
+                                                if (navigator.vibrate) navigator.vibrate(20); // short tick
+                                                score += 10;
+                                                playSound(600, 0.2);
+                                                createParticle(c.x + c.size/2, c.y + c.size/2, "#FFD700", 'star');
+                                        }
+                                });
+
+                                // Collect powerups (replace existing code)
+                                powerups.forEach(p => {
+                                        if (p.active && isColliding(x, y, size, p.x, p.y, p.size)) {
+                                                p.active = false;
+                                                navigator.vibrate([5, 10, 25]); // vibrate-pause-vibrate
+                                                score += 25;
+                                                speed += 1;
+                                                playSound(400, 0.3);
+                                                createParticle(p.x + p.size/2, p.y + p.size/2, "#00BFFF");
+                                                showEventMessage("Powerup! (+1 speed)");
+                                                setTimeout(() => { speed -= 1; }, 2000);
+                                        }
+                                });
+
+                        // Enemy AI movement
+                        if (enemy.active) {
+                                // "Stupid" movement: sometimes chase, sometimes random
+                                if (enemy.stupidTimer <= 0) {
+                                        let dx = x - enemy.x, dy = y - enemy.y;
+                                        let dist = Math.sqrt(dx * dx + dy * dy);
+                                        if (dist < 200 && Math.random() < 0.7) {
+                                                enemy.direction = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.5;
+                                        } else {
+                                                enemy.direction = Math.random() * Math.PI * 2;
+                                        }
+                                        enemy.stupidTimer = 25 + Math.random() * 30;
+                                } else {
+                                        enemy.stupidTimer--;
+                                }
+                                let ex = enemy.x + Math.cos(enemy.direction) * enemy.speed;
+                                let ey = enemy.y + Math.sin(enemy.direction) * enemy.speed;
+                                // Check wall boundaries
+                                let wallCollision = false;
+                                if (ex < 0 || ex > canvas.width - enemy.size) {
+                                        wallCollision = true;
+                                }
+                                if (ey < 0 || ey > canvas.height - enemy.size) {
+                                        wallCollision = true;
+                                }
+                                // Check obstacles
+                                let enemyCollision = false;
+                                for (const ob of obstacles) {
+                                        if (isRectColliding(ex, ey, enemy.size, enemy.size, ob.x, ob.y, ob.width, ob.height)) {
+                                                enemyCollision = true;
+                                                break;
+                                        }
+                                }
+                                if (!enemyCollision && !wallCollision) {
+                                        enemy.x = ex;
+                                        enemy.y = ey;
+                                } else {
+                                        // Change direction to avoid getting stuck
+                                        enemy.direction += Math.PI / 2 + (Math.random() - 0.5) * Math.PI / 2;
+                                }
+
+                                // Enemy talks randomly or when close
+                                let dx = x - enemy.x, dy = y - enemy.y;
+                                let dist = Math.sqrt(dx * dx + dy * dy);
+                                if (enemy.messageTimer > 0) {
+                                        enemy.messageTimer--;
+                                } else if (Math.random() < 0.01 || dist < 60) {
+                                        enemy.message = enemy.messages[Math.floor(Math.random() * enemy.messages.length)];
+                                        enemy.messageTimer = 80 + Math.random() * 40;
+                                } else {
+                                        enemy.message = "";
+                                }
+
+                                // If enemy touches player, show message and reset
+                                if (isColliding(x, y, size, enemy.x, enemy.y, enemy.size)) {
+                                        if (!gameEnded) {
+                                                gameEnded = true;
+                                                setTimeout(() => {
+                                                        alert("YOU NOOB! 😂🫵🫵");
+                                                        loadFirebaseScripts(() => {
+                                                                if (!window.firebase.apps.length) {
+                                                                        window.firebase.initializeApp(firebaseConfig);
+                                                                }
+                                                                showLeaderboard(score);
+                                                        });
+                                                }, 100);
+                                        }
+                                        return;
+                                }
+                        }
+                            let vibrationCooldown = 0;
+                        if (moved && vibrationCooldown <= 0 && window.navigator.vibrate) {
+                            window.navigator.vibrate(15);  // better pulse
+                            vibrationCooldown = 10; // prevent spamming every frame
+                        }
+                        if (vibrationCooldown > 0) vibrationCooldown--;
+                }
+
+                window.addEventListener("keydown", e => {
+                        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                                keysPressed[e.key] = true;
+                                e.preventDefault();
+                        }
+                });
+
+                window.addEventListener("keyup", e => {
+                        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                                keysPressed[e.key] = false;
+                                e.preventDefault();
+                        }
+                });
+
+                let gameEnded = false;
+
+                function gameLoop() {
+                        if (gameEnded) return;
+                        update();
+                        draw();
+                        // Win condition
+                        if (collectibles.every(c => c.collected)) {
+                                gameEnded = true;
+                                setTimeout(() => {
+                                        // Show leaderboard instead of alert
+                                        loadFirebaseScripts(() => {
+                                                if (!window.firebase.apps.length) {
+                                                        window.firebase.initializeApp(firebaseConfig);
+                                                }
+                                                    // Stronger vibration pattern
+                                                        if (navigator.vibrate) {
+                                                            navigator.vibrate([100, 50, 100]); // vibrate-pause-vibrate
+                                                        }
+                                                showLeaderboard(score);
+                                        });
+                                }, 100);
+                                return;
+                        }
+                        
+                        requestAnimationFrame(gameLoop);
+                }
+                gameLoop();
+
+                // Show info
+                const info = document.createElement("div");
+                info.textContent = "Use arrow keys or tap the buttons to move the square! Collect all the coins, grab blue powerups, avoid red obstacles, moving obstacles, and the purple enemy!";
+                Object.assign(info.style, {
+                        marginTop: "18px",
+                        fontSize: "1rem",
+                        color: "#aaa"
+                });
+                document.body.appendChild(info);
+
+                // Add on-screen arrow keys for mobile
+                const arrows = document.createElement("div");
+                Object.assign(arrows.style, {
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginTop: "24px"
+                });
+
+                // Up arrow
+                const upRow = document.createElement("div");
+                upRow.style.display = "flex";
+                upRow.style.justifyContent = "center";
+                const upBtn = createArrowButton("▲", "ArrowUp");
+                upRow.appendChild(upBtn);
+
+                // Middle row (left, blank, right)
+                const midRow = document.createElement("div");
+                midRow.style.display = "flex";
+                midRow.style.justifyContent = "center";
+                const leftBtn = createArrowButton("◀", "ArrowLeft");
+                const blank = document.createElement("div");
+                blank.style.width = "48px";
+                const rightBtn = createArrowButton("▶", "ArrowRight");
+                midRow.appendChild(leftBtn);
+                midRow.appendChild(blank);
+                midRow.appendChild(rightBtn);
+
+                // Down arrow
+                const downRow = document.createElement("div");
+                downRow.style.display = "flex";
+                downRow.style.justifyContent = "center";
+                const downBtn = createArrowButton("▼", "ArrowDown");
+                downRow.appendChild(downBtn);
+
+                arrows.appendChild(upRow);
+                arrows.appendChild(midRow);
+                arrows.appendChild(downRow);
+                document.body.appendChild(arrows);
+
+                
+                function createArrowButton(symbol, key) {
+                const btn = document.createElement("button");
+                btn.textContent = symbol;
+                Object.assign(btn.style, {
+                    width: "48px",
+                    height: "48px",
+                    margin: "6px",
+                    fontSize: "2rem",
+                    border: "none",
+                    borderRadius: "8px",
+                    background: "#414345",
+                    color: "#fff",
+                    cursor: "pointer",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
+                    userSelect: "none",           // ⛔ prevent text selection
+                    touchAction: "none",          // ⛔ prevent default gestures
+                    WebkitUserSelect: "none",     // Safari
+                    MozUserSelect: "none",        // Firefox
+                    msUserSelect: "none"          // IE/Edge
+                });
+        
+                btn.setAttribute("draggable", "false"); // ⛔ prevent dragging
+        
+                let intervalId = null;
+        
+                btn.onpointerdown = function () {
+                    keysPressed[key] = true;
+                    btn.style.background = "#232526";
+                    if (!intervalId) {
+                        intervalId = setInterval(() => {
+                            keysPressed[key] = true;
+                        }, 16);
+                    }
+                };
+        
+                btn.onpointerup = function () {
+                    keysPressed[key] = false;
+                    btn.style.background = "#414345";
+                    clearInterval(intervalId);
+                    intervalId = null;
+                };
+        
+                btn.onpointerleave = function () {
+                    keysPressed[key] = false;
+                    btn.style.background = "#414345";
+                    clearInterval(intervalId);
+                    intervalId = null;
+                };
+        
+                return btn;
+                }
+        }
+})();
 </script>
 </html>
