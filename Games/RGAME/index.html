@@ -767,9 +767,9 @@ function handleShopAction(username, item, totalScore, ownedItems, userRank, user
                 // Update particles
                 updateParticles();
                 const PADDING = 15;
-                const VERTICAL_EXTRA_PADDING = 280; // extra vertical padding to reduce height more
+                const VERTICAL_EXTRA_PADDING = 300; // extra vertical padding to reduce height more
 
-                let CANVAS_WIDTH = window.innerWidth - PADDING * 2;
+                let CANVAS_WIDTH = window.innerWidth - PADDING * 1.8;
                 let CANVAS_HEIGHT = window.innerHeight - VERTICAL_EXTRA_PADDING;
 
                 let canvas = document.getElementById('canvas');
@@ -780,7 +780,7 @@ function handleShopAction(username, item, totalScore, ownedItems, userRank, user
                 }
 
                 function resizeCanvas() {
-                  CANVAS_WIDTH = window.innerWidth - PADDING * 2;
+                  CANVAS_WIDTH = window.innerWidth - PADDING * 1.8;
                   CANVAS_HEIGHT = window.innerHeight - VERTICAL_EXTRA_PADDING;
                 
                   canvas.width = CANVAS_WIDTH;
