@@ -848,33 +848,53 @@ function handleShopAction(username, item, totalScore, ownedItems, userRank, user
                                 active: true
                         });
                 }
+// Enemy configuration and behavior
+const createEnemy = () => {
+    const SIZE = 24;
+    const SPEED = 1.5;
+    const MESSAGE_DURATION = 2000;
 
-                // Enemy (inactive for 2s, then slow and "stupid" movement)
-                const enemy = {
-                        x: Math.random() * (CANVAS_WIDTH - 24),
-                        y: Math.random() * (CANVAS_HEIGHT - 24),
-                        size: 24,
-                        speed: 1.5, // slightly faster for more challenge
-                        direction: Math.random() * Math.PI * 2,
-                        talkTimer: 0,
-                        message: "",
-                        messageTimer: 0,
-                        messages: [
-                                "Hey you!",
-                                "Catch me if you can!",
-                                "Stay away!",
-                                "Nice moves!",
-                                "You can't win!",
-                                "Watch out!"
-                        ],
-                        active: false, // inactive at start
-                        stupidTimer: 0 // for random direction changes
-                };
+    return {
+        x: Math.random() * (CANVAS_WIDTH - SIZE),
+        y: Math.random() * (CANVAS_HEIGHT - SIZE),
+        size: SIZE,
+        speed: SPEED,
+        direction: Math.random() * Math.PI * 2,
+        talkTimer: 0,
+        message: "",
+        messageTimer: 0,
+        messages: [
+            "Hey you!",
+            "Catch me if you can!",
+            "Stay away!",
+            "Nice moves!",
+            "You can't win!",
+            "Watch out!"
+        ],
+        active: false,
+        stupidTimer: 0,
+        activate() {
+            this.active = true;
+        },
+        sayRandomMessage() {
+            this.message = this.messages[Math.floor(Math.random() * this.messages.length)];
+            this.messageTimer = MESSAGE_DURATION;
+        },
+        updateDirectionRandomly() {
+            // Change direction slightly to simulate "stupid" movement
+            const change = (Math.random() - 0.5) * 0.5;
+            this.direction += change;
+        }
+    };
+};
 
-                // Activate enemy after 2 seconds
-                setTimeout(() => {
-                        enemy.active = true;
-                }, 2000);
+const enemy = createEnemy();
+
+// Activate enemy after 2 seconds
+setTimeout(() => {
+    enemy.activate();
+}, 2000);
+
 
                 // --- RANDOM EVENTS SETUP ---
                 // List of random events
@@ -1098,20 +1118,67 @@ function handleShopAction(username, item, totalScore, ownedItems, userRank, user
                         ctx.stroke();
                         ctx.restore();
 
-                        // Enemy speech bubble
+                        // Enhanced enemy speech bubble with background and tail
                         if (enemy.message && enemy.messageTimer > 0) {
-                                ctx.save();
-                                ctx.font = "bold 15px Segoe UI, Arial";
-                                ctx.textAlign = "center";
-                                ctx.fillStyle = "#fff";
-                                ctx.strokeStyle = "#232526";
-                                ctx.lineWidth = 4;
-                                const msgX = enemy.x + enemy.size / 2;
-                                const msgY = enemy.y - 10;
-                                ctx.strokeText(enemy.message, msgX, msgY);
-                                ctx.fillText(enemy.message, msgX, msgY);
-                                ctx.restore();
+                            ctx.save();
+                        
+                            // Calculate bubble dimensions and position
+                            ctx.font = "bold 15px Segoe UI, Arial";
+                            const msgWidth = ctx.measureText(enemy.message).width;
+                            const padding = 12;
+                            const bubbleWidth = msgWidth + padding * 2;
+                            const bubbleHeight = 30;
+                            const msgX = enemy.x + enemy.size / 2;
+                            const msgY = enemy.y - 25;
+                            const bubbleX = msgX - bubbleWidth / 2;
+                            const bubbleY = msgY - bubbleHeight / 2 - 8;
+                        
+                            // Draw bubble background with rounded corners
+                            const radius = 8;
+                            ctx.fillStyle = "rgba(40, 44, 52, 0.95)";
+                            ctx.strokeStyle = "#60a5fa";
+                            ctx.lineWidth = 2;
+                        
+                            ctx.beginPath();
+                            ctx.roundRect(bubbleX, bubbleY, bubbleWidth, bubbleHeight, radius);
+                            ctx.fill();
+                            ctx.stroke();
+                        
+                            // Draw speech bubble tail
+                            const tailSize = 8;
+                            const tailX = msgX;
+                            const tailY = bubbleY + bubbleHeight;
+                        
+                            ctx.beginPath();
+                            ctx.moveTo(tailX - tailSize / 2, tailY);
+                            ctx.lineTo(tailX + tailSize / 2, tailY);
+                            ctx.lineTo(tailX, tailY + tailSize);
+                            ctx.closePath();
+                            ctx.fill();
+                            ctx.stroke();
+                        
+                            // Draw text with subtle shadow
+                            ctx.textAlign = "center";
+                            ctx.textBaseline = "middle";
+                        
+                            // Text shadow
+                            ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+                            ctx.fillText(enemy.message, msgX + 1, msgY + 1);
+                        
+                            // Main text
+                            ctx.fillStyle = "#ffffff";
+                            ctx.fillText(enemy.message, msgX, msgY);
+                        
+                            // Fade effect based on timer
+                            const fadeThreshold = 120; // frames
+                            if (enemy.messageTimer < fadeThreshold) {
+                                const alpha = enemy.messageTimer / fadeThreshold;
+                                ctx.globalAlpha = alpha;
+                            }
+
+                            ctx.restore();
                         }
+
 
                         // Draw player
                         ctx.save();
