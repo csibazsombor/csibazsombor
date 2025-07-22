@@ -549,112 +549,133 @@ function showVersionInfo(onContinue) {
                                 });
                 }
 
-                // Shop rendering and logic (improved)
-                function renderShop(username, totalScore, ownedItems, userRank, userColor) {
-                        shopDiv.innerHTML = `<div style="font-size:1.2rem;font-weight:bold;color:#2196F3;margin-bottom:8px;">🛒 Game Shop</div>
-                        <div style="color:#aaa;font-size:1rem;margin-bottom:10px;">Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.</div>`;
+// Render the game shop interface
+function renderShop(username, totalScore, ownedItems = [], userRank, userColor) {
+    // Header
+    shopDiv.innerHTML = `
+        <div style="font-size:1.2rem; font-weight:bold; color:#2196F3; margin-bottom:8px;">🛒 Game Shop</div>
+        <div style="color:#aaa; font-size:1rem; margin-bottom:10px;">
+            Spend your <b>Total Score</b> to buy and equip items!<br>Click an item to buy or equip it.
+        </div>
+    `;
 
-                        // Show current equipped
-                        let equipped = "";
-                        if (userColor) equipped += `<span style="color:${userColor};font-weight:bold;">Name Color</span> `;
-                        if (userRank) equipped += `<span style="color:#FFD700;font-weight:bold;">[${userRank}]</span>`;
-                        if (equipped) {
-                                shopDiv.innerHTML += `<div style="margin-bottom:10px;color:#aaa;">Equipped: ${equipped}</div>`;
-                        }
+    // Equipped summary
+    const equippedParts = [];
+    if (userColor) equippedParts.push(`<span style="color:${userColor}; font-weight:bold;">Name Color</span>`);
+    if (userRank) equippedParts.push(`<span style="color:#FFD700; font-weight:bold;">[${userRank}]</span>`);
+    if (equippedParts.length > 0) {
+        shopDiv.innerHTML += `<div style="margin-bottom:10px; color:#aaa;">Equipped: ${equippedParts.join(' ')}</div>`;
+    }
 
-                        // Shop grid
-                        const grid = document.createElement("div");
-                        grid.style.display = "grid";
-                        grid.style.gridTemplateColumns = "repeat(auto-fit, minmax(210px, 1fr))";
-                        grid.style.gap = "14px";
-                        grid.style.marginTop = "8px";
-                        SHOP_ITEMS.forEach(item => {
-                                const owned = ownedItems && ownedItems.includes(item.id);
-                                const equippedNow = (item.type === "color" && userColor === item.color) || (item.type === "rank" && userRank === item.rank);
-                                const canBuy = totalScore >= item.price;
-                                const card = document.createElement("div");
-                                card.style.background = owned ? "#1e2224" : "#18191A";
-                                card.style.borderRadius = "10px";
-                                card.style.padding = "14px";
-                                card.style.boxShadow = equippedNow ? "0 0 0 2px #4CAF50 inset" : "0 1px 6px rgba(0,0,0,0.12)";
-                                card.style.border = owned ? "2px solid #4CAF50" : "2px solid #444";
-                                card.style.display = "flex";
-                                card.style.flexDirection = "column";
-                                card.style.alignItems = "center";
-                                card.style.justifyContent = "center";
-                                card.style.transition = "box-shadow 0.2s,border 0.2s";
-                                // Name
-                                let desc = "";
-                                if (item.type === "color") {
-                                        desc = `<span style="color:${item.color};font-weight:bold;font-size:1.1rem;">${item.name}</span>`;
-                                } else if (item.type === "rank") {
-                                        desc = `<span style="color:#FFD700;font-weight:bold;font-size:1.1rem;">[${item.rank}]</span> ${item.name}`;
-                                }
-                                card.innerHTML = `
-                                        <div style="margin-bottom:6px;">${desc}</div>
-                                        <div style="color:#FFD700;font-size:1.1rem;margin-bottom:4px;">${item.price} pts</div>
-                                        <div style="color:#aaa;font-size:0.95rem;margin-bottom:8px;min-height:32px;">${item.desc}</div>
-                                `;
-                                // Button
-                                const btn = document.createElement("button");
-                                btn.style.padding = "7px 18px";
-                                btn.style.borderRadius = "6px";
-                                btn.style.border = "none";
-                                btn.style.background = owned ? (equippedNow ? "#4CAF50" : "#888") : (canBuy ? "#2196F3" : "#aaa");
-                                btn.style.color = "#fff";
-                                btn.style.cursor = owned ? (equippedNow ? "default" : "pointer") : (canBuy ? "pointer" : "not-allowed");
-                                btn.style.fontWeight = "bold";
-                                btn.style.fontSize = "1rem";
-                                btn.style.marginTop = "4px";
-                                btn.textContent = owned ? (equippedNow ? "Equipped" : "Equip") : `Buy`;
-                                btn.disabled = owned ? equippedNow : !canBuy;
+    // Create grid
+    const grid = document.createElement("div");
+    Object.assign(grid.style, {
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+        gap: "14px",
+        marginTop: "8px"
+    });
 
-                                btn.onclick = function() {
-                                        if (owned && !equippedNow) {
-                                                // Equip
-                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
-                                                        let prev = snap.val();
-                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
-                                                        let prevItems = (prev && prev.items) ? prev.items : [];
-                                                        let newRank = prev.rank || "";
-                                                        let newColor = prev.color || "";
-                                                        if (item.type === "rank") newRank = item.rank;
-                                                        if (item.type === "color") newColor = item.color;
-                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
-                                                                rank: newRank,
-                                                                color: newColor
-                                                        }).then(() => {
-                                                                loadLeaderboard(username, prevTotal, prevItems, newRank, newColor);
-                                                        });
-                                                });
-                                        } else if (!owned && canBuy) {
-                                                // Buy and equip
-                                                window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).once("value", snap => {
-                                                        let prev = snap.val();
-                                                        let prevTotal = (prev && prev.totalScore) ? prev.totalScore : (prev && prev.score ? prev.score : 0);
-                                                        let prevItems = (prev && prev.items) ? prev.items : [];
-                                                        let newTotal = prevTotal - item.price;
-                                                        let newItems = prevItems.concat(item.id);
-                                                        let newRank = prev.rank || "";
-                                                        let newColor = prev.color || "";
-                                                        if (item.type === "rank") newRank = item.rank;
-                                                        if (item.type === "color") newColor = item.color;
-                                                        window.firebase.database().ref("leaderboard/" + encodeURIComponent(username)).update({
-                                                                totalScore: newTotal,
-                                                                items: newItems,
-                                                                rank: newRank,
-                                                                color: newColor
-                                                        }).then(() => {
-                                                                loadLeaderboard(username, newTotal, newItems, newRank, newColor);
-                                                        });
-                                                });
-                                        }
-                                };
-                                card.appendChild(btn);
-                                grid.appendChild(card);
-                        });
-                        shopDiv.appendChild(grid);
-                }
+    // Render each shop item
+    SHOP_ITEMS.forEach(item => {
+        const isOwned = ownedItems.includes(item.id);
+        const isEquipped = (item.type === "color" && userColor === item.color) ||
+                           (item.type === "rank" && userRank === item.rank);
+        const canBuy = totalScore >= item.price;
+
+        // Card container
+        const card = document.createElement("div");
+        Object.assign(card.style, {
+            background: isOwned ? "#1e2224" : "#18191A",
+            border: `2px solid ${isOwned ? "#4CAF50" : "#444"}`,
+            borderRadius: "10px",
+            padding: "14px",
+            boxShadow: isEquipped ? "0 0 0 2px #4CAF50 inset" : "0 1px 6px rgba(0,0,0,0.12)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "box-shadow 0.2s, border 0.2s"
+        });
+
+        // Item display
+        const itemLabel = item.type === "color"
+            ? `<span style="color:${item.color}; font-weight:bold; font-size:1.1rem;">${item.name}</span>`
+            : `<span style="color:#FFD700; font-weight:bold; font-size:1.1rem;">[${item.rank}]</span> ${item.name}`;
+        card.innerHTML = `
+            <div style="margin-bottom:6px;">${itemLabel}</div>
+            <div style="color:#FFD700; font-size:1.1rem; margin-bottom:4px;">${item.price} pts</div>
+            <div style="color:#aaa; font-size:0.95rem; margin-bottom:8px; min-height:32px;">${item.desc}</div>
+        `;
+
+        // Action button
+        const btn = document.createElement("button");
+        btn.textContent = isOwned ? (isEquipped ? "Equipped" : "Equip") : "Buy";
+        btn.disabled = isOwned ? isEquipped : !canBuy;
+        Object.assign(btn.style, {
+            padding: "7px 18px",
+            borderRadius: "6px",
+            border: "none",
+            background: isOwned
+                ? (isEquipped ? "#4CAF50" : "#888")
+                : (canBuy ? "#2196F3" : "#aaa"),
+            color: "#fff",
+            cursor: isOwned
+                ? (isEquipped ? "default" : "pointer")
+                : (canBuy ? "pointer" : "not-allowed"),
+            fontWeight: "bold",
+            fontSize: "1rem",
+            marginTop: "4px"
+        });
+
+        btn.onclick = () => handleShopAction(username, item, totalScore, ownedItems, userRank, userColor);
+        card.appendChild(btn);
+        grid.appendChild(card);
+    });
+
+    shopDiv.appendChild(grid);
+}
+
+// Handles buy/equip logic
+function handleShopAction(username, item, totalScore, ownedItems, userRank, userColor) {
+    const userRef = window.firebase.database().ref("leaderboard/" + encodeURIComponent(username));
+    userRef.once("value", snap => {
+        const userData = snap.val() || {};
+        const prevTotal = userData.totalScore ?? userData.score ?? 0;
+        const prevItems = userData.items || [];
+        let newColor = userData.color || "";
+        let newRank = userData.rank || "";
+
+        const isOwned = prevItems.includes(item.id);
+        const isEquipped = (item.type === "color" && userColor === item.color) ||
+                           (item.type === "rank" && userRank === item.rank);
+        const canBuy = prevTotal >= item.price;
+
+        if (isOwned && !isEquipped) {
+            // Equip only
+            if (item.type === "color") newColor = item.color;
+            if (item.type === "rank") newRank = item.rank;
+            userRef.update({ rank: newRank, color: newColor }).then(() => {
+                loadLeaderboard(username, prevTotal, prevItems, newRank, newColor);
+            });
+        } else if (!isOwned && canBuy) {
+            // Buy and equip
+            const newItems = [...prevItems, item.id];
+            const newTotal = prevTotal - item.price;
+            if (item.type === "color") newColor = item.color;
+            if (item.type === "rank") newRank = item.rank;
+            userRef.update({
+                totalScore: newTotal,
+                items: newItems,
+                rank: newRank,
+                color: newColor
+            }).then(() => {
+                loadLeaderboard(username, newTotal, newItems, newRank, newColor);
+            });
+        }
+    });
+}
+
 
                 // Initial leaderboard load
                 loadLeaderboard();
