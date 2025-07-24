@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Counter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', system-ui, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            color: #000000;
+            line-height: 1.6;
+            font-weight: 400;
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #000000;
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 900px;
+            width: 90%;
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.1s forwards;
+        }
+
+        .mode-toggle {
+            background: none;
+            border: 1px solid #e5e5e5;
+            color: #666666;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 20px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .mode-toggle:hover {
+            border-color: #000000;
+            color: #000000;
+        }
+
+        body.dark-mode .mode-toggle {
+            border-color: #333333;
+            color: #999999;
+        }
+
+        body.dark-mode .mode-toggle:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .share-btn {
+            background: none;
+            border: 1px solid #e5e5e5;
+            color: #666666;
+            padding: 8px 16px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 20px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .share-btn:hover {
+            border-color: #000000;
+            color: #000000;
+        }
+
+        body.dark-mode .share-btn {
+            border-color: #333333;
+            color: #999999;
+        }
+
+        body.dark-mode .share-btn:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #000000;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.2s forwards;
+        }
+
+        body.dark-mode .title {
+            color: #ffffff;
+        }
+
+        .milestone {
+            font-size: 1rem;
+            color: #666666;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.3s forwards;
+        }
+
+        body.dark-mode .milestone {
+            color: #999999;
+        }
+
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 40px;
+            margin: 60px 0 40px 0;
+        }
+
+        .counter-item {
+            opacity: 0;
+            animation: fadeInUp 0.3s ease-out forwards;
+            transition: transform 0.2s ease, opacity 0.15s ease;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .counter-item:hover {
+            transform: translateY(-2px);
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        body.dark-mode .counter-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .counter-item:nth-child(1) { animation-delay: 0.1s; }
+        .counter-item:nth-child(2) { animation-delay: 0.15s; }
+        .counter-item:nth-child(3) { animation-delay: 0.2s; }
+        .counter-item:nth-child(4) { animation-delay: 0.25s; }
+        .counter-item:nth-child(5) { animation-delay: 0.3s; }
+        .counter-item:nth-child(6) { animation-delay: 0.35s; }
+
+        .counter-number {
+            font-size: 3.5rem;
+            font-weight: 200;
+            display: block;
+            margin-bottom: 8px;
+            color: #000000;
+            letter-spacing: -0.02em;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .counter-number {
+            color: #ffffff;
+        }
+
+        .counter-label {
+            font-size: 0.875rem;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        body.dark-mode .counter-label {
+            color: #999999;
+        }
+
+        .description {
+            font-size: 1.125rem;
+            color: #333333;
+            font-weight: 300;
+            letter-spacing: -0.01em;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1s forwards;
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .description {
+            color: #cccccc;
+        }
+
+        .date-highlight {
+            color: #000000;
+            font-weight: 400;
+        }
+
+        body.dark-mode .date-highlight {
+            color: #ffffff;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.2s forwards;
+        }
+
+        .toggle-button {
+            background: none;
+            border: 1px solid #e5e5e5;
+            color: #666666;
+            padding: 12px 24px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            border-radius: 0;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-button:hover {
+            border-color: #000000;
+            color: #000000;
+        }
+
+        body.dark-mode .toggle-button {
+            border-color: #333333;
+            color: #999999;
+        }
+
+        body.dark-mode .toggle-button:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+            opacity: 0;
+            animation: fadeIn 0.3s ease-out 0.2s forwards;
+        }
+
+        .stat-item {
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            background-color: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            border-color: #e0e0e0;
+        }
+
+        body.dark-mode .stat-item {
+            background-color: #111111;
+            border-color: #222222;
+        }
+
+        body.dark-mode .stat-item:hover {
+            border-color: #333333;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #666666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 5px;
+        }
+
+        body.dark-mode .stat-label {
+            color: #999999;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #000000;
+        }
+
+        body.dark-mode .stat-value {
+            color: #ffffff;
+        }
+
+        .memories-section {
+            margin: 60px 0;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.6s forwards;
+        }
+
+        .memories-title {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #000000;
+        }
+
+        body.dark-mode .memories-title {
+            color: #ffffff;
+        }
+
+        .memory-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 1px solid #e5e5e5;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.875rem;
+            margin-bottom: 15px;
+            border-radius: 0;
+            color: #000000;
+        }
+
+        .memory-input:focus {
+            outline: none;
+            border-color: #000000;
+        }
+
+        body.dark-mode .memory-input {
+            border-color: #333333;
+            color: #ffffff;
+        }
+
+        body.dark-mode .memory-input:focus {
+            border-color: #ffffff;
+        }
+
+        .memory-list {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .memory-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: #333333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .memory-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        body.dark-mode .memory-item {
+            background-color: #111111;
+            color: #cccccc;
+        }
+
+        body.dark-mode .memory-item:hover {
+            background-color: #1a1a1a;
+        }
+
+        .seconds-hidden, .minutes-hidden {
+            display: none !important;
+        }
+
+        .stats-hidden {
+            display: none !important;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        body.dark-mode .notification {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .number-change {
+            animation: numberPulse 0.4s ease;
+        }
+
+        @keyframes numberPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .counter-number {
+                font-size: 2.8rem;
+            }
+            
+            .counter-grid {
+                gap: 30px;
+                margin: 40px 0 30px 0;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .counter-number {
+                font-size: 2.2rem;
+            }
+            
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div></div>
+        </div>
+
+        <h1 class="title">Friendship</h1>
+        <div class="milestone" id="milestone"></div>
+        
+        <div class="counter-grid">
+            <div class="counter-item" onclick="copyToClipboard('years')">
+                <span class="counter-number" id="years">0</span>
+                <span class="counter-label">Years</span>
+            </div>
+            <div class="counter-item" onclick="copyToClipboard('months')">
+                <span class="counter-number" id="months">0</span>
+                <span class="counter-label">Months</span>
+            </div>
+            <div class="counter-item" onclick="copyToClipboard('days')">
+                <span class="counter-number" id="days">0</span>
+                <span class="counter-label">Days</span>
+            </div>
+            <div class="counter-item" onclick="copyToClipboard('hours')">
+                <span class="counter-number" id="hours">0</span>
+                <span class="counter-label">Hours</span>
+            </div>
+            <div class="counter-item minutes-item" onclick="copyToClipboard('minutes')">
+                <span class="counter-number" id="minutes">0</span>
+                <span class="counter-label">Minutes</span>
+            </div>
+            <div class="counter-item seconds-item" onclick="copyToClipboard('seconds')">
+                <span class="counter-number" id="seconds">0</span>
+                <span class="counter-label">Seconds</span>
+            </div>
+        </div>
+        
+        <div class="description">
+            Since <span class="date-highlight" id="friendship-date"></span> with Toyeee
+        </div>
+        
+        <div class="controls">
+            <button class="toggle-button" onclick="toggleTimeUnits()">
+                <span id="button-text">Show More</span>
+            </button>
+            <button class="toggle-button" onclick="toggleStats()">
+                <span id="stats-text">Show Stats</span>
+            </button>
+        </div>
+
+        <div class="stats-grid stats-hidden" id="stats-section">
+            <div class="stat-item">
+                <div class="stat-label">Total Days</div>
+                <div class="stat-value" id="total-days">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Hours</div>
+                <div class="stat-value" id="total-hours">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Weeks</div>
+                <div class="stat-value" id="total-weeks">0</div>
+            </div>
+        </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        const startDate = new Date('2025-03-14T00:00:00');
+        let showDetailedTime = false;
+        let showStats = false;
+
+        function toggleTimeUnits() {
+            const minutesItem = document.querySelector('.minutes-item');
+            const secondsItem = document.querySelector('.seconds-item');
+            const buttonText = document.getElementById('button-text');
+            
+            showDetailedTime = !showDetailedTime;
+            
+            if (showDetailedTime) {
+                minutesItem.classList.remove('minutes-hidden');
+                secondsItem.classList.remove('seconds-hidden');
+                buttonText.textContent = 'Show Less';
+            } else {
+                minutesItem.classList.add('minutes-hidden');
+                secondsItem.classList.add('seconds-hidden');
+                buttonText.textContent = 'Show More';
+            }
+        }
+
+        function toggleStats() {
+            const statsSection = document.getElementById('stats-section');
+            const buttonText = document.getElementById('stats-text');
+            
+            showStats = !showStats;
+            
+            if (showStats) {
+                statsSection.classList.remove('stats-hidden');
+                buttonText.textContent = 'Hide Stats';
+            } else {
+                statsSection.classList.add('stats-hidden');
+                buttonText.textContent = 'Show Stats';
+            }
+        }
+
+
+        function copyToClipboard(unit) {
+            const value = document.getElementById(unit).textContent;
+            const label = unit.charAt(0).toUpperCase() + unit.slice(1);
+            
+            navigator.clipboard.writeText(`${value} ${label}`).then(() => {
+                showNotification(`Copied: ${value} ${label}`);
+            });
+        }
+
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            animateNumber('years', years);
+            animateNumber('months', months);
+            animateNumber('days', days);
+            animateNumber('hours', hours);
+            animateNumber('minutes', minutes);
+            animateNumber('seconds', seconds);
+
+            // Update stats
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const totalWeeks = Math.floor(totalDays / 7);
+            const friendshipPercentage = Math.min(100, Math.floor((totalDays / 365) * 100));
+
+            document.getElementById('total-days').textContent = totalDays.toLocaleString();
+            document.getElementById('total-hours').textContent = totalHours.toLocaleString();
+            document.getElementById('total-weeks').textContent = totalWeeks.toLocaleString();
+
+            // Update milestone
+            updateMilestone(totalDays);
+        }
+
+        function updateMilestone(totalDays) {
+            const milestone = document.getElementById('milestone');
+            let message = '';
+            
+            if (totalDays >= 365) {
+                message = '🎉 Over a year of friendship!';
+            } else if (totalDays >= 730) {
+                message = '😱 Friends since 2 years, yeayyy!!';
+            } else if (totalDays >= 300) {
+                message = '✨ Almost a full year together!';
+            } else if (totalDays >= 200) {
+                message = '🌟 200+ days and counting!';
+            } else if (totalDays >= 100) {
+                message = '💫 Over 100 days of friendship!';
+            } else if (totalDays >= 50) {
+                message = '☺️ 50+ days together!';
+            } else if (totalDays >= 30) {
+                message = '🎈 A month of friendship!';
+            } else if (totalDays >= 7) {
+                message = '🌸 A week of friendship!';
+            } else {
+                message = '🌱 Growing friendship!';
+            }
+            
+            milestone.textContent = message;
+        }
+        
+        function animateNumber(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            const currentValue = parseInt(element.textContent);
+            
+            if (currentValue !== newValue) {
+                element.classList.add('number-change');
+                element.textContent = newValue;
+                setTimeout(() => {
+                    element.classList.remove('number-change');
+                }, 400);
+            }
+        }
+        
+        function formatDate() {
+            document.getElementById('friendship-date').textContent = 'March 14, 2024';
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            document.querySelector('.minutes-item').classList.add('minutes-hidden');
+            document.querySelector('.seconds-item').classList.add('seconds-hidden');
+        });
+        
+        formatDate();
+        updateCounter();
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>
