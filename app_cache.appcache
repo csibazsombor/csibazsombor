@@ -1,9 +1,10 @@
 CACHE MANIFEST
-#v1.1.0 change this to force update
+#v1.1.1 change this to force update
 
 CACHE:
 kezdolap.css
 index.html
+links.html
 PAGE/informacio.html
 JS/engedélyek.js
 JS/jquery.min.js
