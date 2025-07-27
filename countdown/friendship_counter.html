@@ -428,6 +428,30 @@
                 gap: 25px;
             }
         }
+        .birthday-section {
+            margin: 60px 0;
+            padding: 30px;
+            border: 2px dashed #f39c12;
+            background-color: #fff8e1;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease-out 1.4s forwards;
+        }
+
+        .birthday-title {
+            font-size: 1.8rem;
+            color: #e67e22;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .birthday-countdown-text {
+            font-size: 1.2rem;
+            color: #333333;
+            font-weight: 300;
+        }
+
     </style>
 </head>
 <body>
@@ -494,6 +518,17 @@
                 <div class="stat-label">Next friendiversary</div>
                 <div class="stat-value" id="anniversary-countdown">--</div>
             </div>
+        <div class="birthday-section" id="birthday-section">
+            <div class="stat-item">
+             <div class="stat-label">Toyeee’s Birthday</div>
+             <div class="stat-value" id="birthday-countdown_toyeee">--</div>
+             </div>
+            <div class="stat-item">
+             <div class="stat-label">Toyaaa’s Birthday</div>
+             <div class="stat-value" id="birthday-countdown_toyaaa">--</div>
+             </div>
+        </div>
+
         </div>
 
         <div class="notification" id="notification"></div>
@@ -586,6 +621,8 @@
             updateMilestone(totalDays);
             updateGoalProgress(totalDays);
             updateAnniversaryCountdown();
+            updateBirthdayCountdown_toyeee()
+            updateBirthdayCountdown_toyaaa();
         }
 
         function updateGoalProgress(totalDays) {
@@ -602,6 +639,53 @@
             const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
             document.getElementById('anniversary-countdown').textContent = `${daysLeft} days left`;
         }
+function updateBirthdayCountdown_toyeee() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Normalize now
+
+    const actualMonth = 2; // ✅ February (1-based)
+    const birthday = new Date(now.getFullYear(), actualMonth - 1, 14); // 🎂 Feb 15
+
+    birthday.setHours(0, 0, 0, 0); // Normalize birthday
+
+    if (now >= birthday) {
+        birthday.setFullYear(birthday.getFullYear() + 1);
+    }
+
+    const diff = birthday - now;
+    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    const message = daysLeft === 0
+        ? `🎉 Today is Toyeee's birthday! 🎂`
+        : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
+
+    document.getElementById('birthday-countdown_toyeee').textContent = message;
+}
+
+function updateBirthdayCountdown_toyaaa() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Normalize now
+
+    const actualMonth = 7; // ✅ July (1-based)
+    const birthday = new Date(now.getFullYear(), actualMonth - 1, 13); // 🎂 July 13
+
+    birthday.setHours(0, 0, 0, 0); // Normalize birthday
+
+    if (now >= birthday) {
+        birthday.setFullYear(birthday.getFullYear() + 1);
+    }
+
+    const diff = birthday - now;
+    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    const message = daysLeft === 0
+        ? `🎉 Today is Toyaaa's birthday! 🎂`
+        : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
+
+    document.getElementById('birthday-countdown_toyaaa').textContent = message;
+}
+
+
 
         function updateMilestone(totalDays) {
             const milestone = document.getElementById('milestone');
