@@ -321,63 +321,6 @@
             color: #ffffff;
         }
 
-        .memory-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 16px;
-            border: 1px solid #e5e5e5;
-            background: transparent;
-            font-family: inherit;
-            font-size: 0.875rem;
-            margin-bottom: 15px;
-            border-radius: 0;
-            color: #000000;
-        }
-
-        .memory-input:focus {
-            outline: none;
-            border-color: #000000;
-        }
-
-        body.dark-mode .memory-input {
-            border-color: #333333;
-            color: #ffffff;
-        }
-
-        body.dark-mode .memory-input:focus {
-            border-color: #ffffff;
-        }
-
-        .memory-list {
-            max-width: 500px;
-            margin: 0 auto;
-            text-align: left;
-        }
-
-        .memory-item {
-            padding: 15px;
-            margin-bottom: 10px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: #333333;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .memory-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        body.dark-mode .memory-item {
-            background-color: #111111;
-            color: #cccccc;
-        }
-
-        body.dark-mode .memory-item:hover {
-            background-color: #1a1a1a;
-        }
-
         .seconds-hidden, .minutes-hidden {
             display: none !important;
         }
@@ -489,13 +432,11 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div></div>
-        </div>
+        <div class="header"><div></div></div>
 
         <h1 class="title">Friendship</h1>
         <div class="milestone" id="milestone"></div>
-        
+
         <div class="counter-grid">
             <div class="counter-item" onclick="copyToClipboard('years')">
                 <span class="counter-number" id="years">0</span>
@@ -522,18 +463,14 @@
                 <span class="counter-label">Seconds</span>
             </div>
         </div>
-        
+
         <div class="description">
             Since <span class="date-highlight" id="friendship-date"></span> with Toyeee
         </div>
-        
+
         <div class="controls">
-            <button class="toggle-button" onclick="toggleTimeUnits()">
-                <span id="button-text">Show More</span>
-            </button>
-            <button class="toggle-button" onclick="toggleStats()">
-                <span id="stats-text">Show Stats</span>
-            </button>
+            <button class="toggle-button" onclick="toggleTimeUnits()"><span id="button-text">Show More</span></button>
+            <button class="toggle-button" onclick="toggleStats()"><span id="stats-text">Show Stats</span></button>
         </div>
 
         <div class="stats-grid stats-hidden" id="stats-section">
@@ -549,22 +486,32 @@
                 <div class="stat-label">Total Weeks</div>
                 <div class="stat-value" id="total-weeks">0</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-label">Goal Progress (1000 Days)</div>
+                <div class="stat-value" id="goal-progress">0%</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Next friendiversary</div>
+                <div class="stat-value" id="anniversary-countdown">--</div>
+            </div>
         </div>
 
-    <div class="notification" id="notification"></div>
+        <div class="notification" id="notification"></div>
+    </div>
 
     <script>
         const startDate = new Date('2025-03-14T00:00:00');
         let showDetailedTime = false;
         let showStats = false;
+        const friendshipGoalDays = 1000;
 
         function toggleTimeUnits() {
             const minutesItem = document.querySelector('.minutes-item');
             const secondsItem = document.querySelector('.seconds-item');
             const buttonText = document.getElementById('button-text');
-            
+
             showDetailedTime = !showDetailedTime;
-            
+
             if (showDetailedTime) {
                 minutesItem.classList.remove('minutes-hidden');
                 secondsItem.classList.remove('seconds-hidden');
@@ -579,9 +526,9 @@
         function toggleStats() {
             const statsSection = document.getElementById('stats-section');
             const buttonText = document.getElementById('stats-text');
-            
+
             showStats = !showStats;
-            
+
             if (showStats) {
                 statsSection.classList.remove('stats-hidden');
                 buttonText.textContent = 'Hide Stats';
@@ -591,22 +538,20 @@
             }
         }
 
-
         function copyToClipboard(unit) {
             const value = document.getElementById(unit).textContent;
             const label = unit.charAt(0).toUpperCase() + unit.slice(1);
-            
+
             navigator.clipboard.writeText(`${value} ${label}`).then(() => {
                 showNotification(`Copied: ${value} ${label}`);
             });
         }
 
-
         function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.classList.add('show');
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
@@ -615,14 +560,14 @@
         function updateCounter() {
             const now = new Date();
             const diff = now - startDate;
-            
+
             const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
             const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
             const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
+
             animateNumber('years', years);
             animateNumber('months', months);
             animateNumber('days', days);
@@ -630,28 +575,42 @@
             animateNumber('minutes', minutes);
             animateNumber('seconds', seconds);
 
-            // Update stats
             const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
             const totalHours = Math.floor(diff / (1000 * 60 * 60));
             const totalWeeks = Math.floor(totalDays / 7);
-            const friendshipPercentage = Math.min(100, Math.floor((totalDays / 365) * 100));
 
             document.getElementById('total-days').textContent = totalDays.toLocaleString();
             document.getElementById('total-hours').textContent = totalHours.toLocaleString();
             document.getElementById('total-weeks').textContent = totalWeeks.toLocaleString();
 
-            // Update milestone
             updateMilestone(totalDays);
+            updateGoalProgress(totalDays);
+            updateAnniversaryCountdown();
+        }
+
+        function updateGoalProgress(totalDays) {
+            const progress = Math.min(100, Math.floor((totalDays / friendshipGoalDays) * 100));
+            document.getElementById('goal-progress').textContent = `${progress}%`;
+        }
+
+        function updateAnniversaryCountdown() {
+            const now = new Date();
+            const anniversary = new Date(now.getFullYear(), 2, 14); // March 14
+            if (now > anniversary) anniversary.setFullYear(now.getFullYear() + 1);
+
+            const diff = anniversary - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('anniversary-countdown').textContent = `${daysLeft} days left`;
         }
 
         function updateMilestone(totalDays) {
             const milestone = document.getElementById('milestone');
             let message = '';
-            
-            if (totalDays >= 365) {
-                message = '🎉 Over a year of friendship!';
-            } else if (totalDays >= 730) {
+
+            if (totalDays >= 730) {
                 message = '😱 Friends since 2 years, yeayyy!!';
+            } else if (totalDays >= 365) {
+                message = '🎉 Over a year of friendship!';
             } else if (totalDays >= 300) {
                 message = '✨ Almost a full year together!';
             } else if (totalDays >= 200) {
@@ -667,14 +626,14 @@
             } else {
                 message = '🌱 Growing friendship!';
             }
-            
+
             milestone.textContent = message;
         }
-        
+
         function animateNumber(elementId, newValue) {
             const element = document.getElementById(elementId);
             const currentValue = parseInt(element.textContent);
-            
+
             if (currentValue !== newValue) {
                 element.classList.add('number-change');
                 element.textContent = newValue;
@@ -683,17 +642,16 @@
                 }, 400);
             }
         }
-        
+
         function formatDate() {
             document.getElementById('friendship-date').textContent = 'March 14, 2025';
         }
-        
-        // Initialize
+
         window.addEventListener('load', () => {
             document.querySelector('.minutes-item').classList.add('minutes-hidden');
             document.querySelector('.seconds-item').classList.add('seconds-hidden');
         });
-        
+
         formatDate();
         updateCounter();
         setInterval(updateCounter, 1000);
