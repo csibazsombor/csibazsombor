@@ -451,7 +451,23 @@
             color: #333333;
             font-weight: 300;
         }
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
 
+        a:hover {
+            color: #2980b9;
+        }
+
+        body.dark-mode a {
+            color: #1abc9c;
+        }
+
+        body.dark-mode a:hover {
+            color: #16a085;
+        }
     </style>
 </head>
 <body>
@@ -532,6 +548,10 @@
         </div>
 
         <div class="notification" id="notification"></div>
+    <p>other websites: 
+        <br>    
+        <a href="../notes/">Leave a notes</a>
+    </p>
     </div>
 
     <script>
