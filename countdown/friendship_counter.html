@@ -476,6 +476,68 @@
         body.dark-mode a:hover {
             color: #16a085;
         }
+        .timezone-section {
+            margin: 60px 0;
+            padding: 20px;
+            border: 2px dashed #2196f3;
+            background-color: #e3f2fd;
+            border-radius: 12px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out 1.6s forwards;
+        }
+
+        .timezone-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+
+        .timezone-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .timezone-item {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-width: 160px;
+        }
+
+        .timezone-label {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .timezone-value {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #000000;
+        }
+
+        body.dark-mode .timezone-section {
+            background-color: #0a263f;
+            border-color: #64b5f6;
+        }
+
+        body.dark-mode .timezone-title {
+            color: #90caf9;
+        }
+
+        body.dark-mode .timezone-item {
+            background-color: #121212;
+        }
+
+        body.dark-mode .timezone-value {
+            color: #ffffff;
+        }
+
     </style>
 </head>
 <body>
@@ -554,9 +616,24 @@
         </div>
 
         </div>
+        <br>
+        <div class="timezone-section">
+            <h2 class="timezone-title">🌍 Our Local Times</h2>
+            <div class="timezone-grid">
+                <div class="timezone-item">
+                    <div class="timezone-item">
+                    <div class="timezone-label">Toyeee's Timezone</div>
+                    <div class="timezone-value" id="friend-time">--:--</div>
+                </div>
+                    <div class="timezone-label">Toyaaa's Timezone</div>
+                    <div class="timezone-value" id="your-time">--:--</div>
+                </div>
+            </div>
+        </div>
 
         <div class="notification" id="notification"></div>
-    <p>other websites: 
+
+        <p>other websites: 
         <br>    
         <a href="../notes/">Leave a notes</a>
     </p>
@@ -609,6 +686,26 @@
                 showNotification(`Copied: ${value} ${label}`);
             });
         }
+
+            function updateTimezones() {
+                const yourTime = new Date().toLocaleString('en-US', {
+                    timeZone: 'Europe/Bratislava',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+            
+                const friendTime = new Date().toLocaleString('en-US', {
+                    timeZone: 'Asia/Jakarta',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                });
+            
+                document.getElementById('your-time').textContent = yourTime;
+                document.getElementById('friend-time').textContent = friendTime;
+            }
+
 
         function showNotification(message) {
             const notification = document.getElementById('notification');
@@ -766,7 +863,13 @@ function updateBirthdayCountdown_toyaaa() {
 
         formatDate();
         updateCounter();
+        // Update Counter
         setInterval(updateCounter, 1000);
+
+        // Update Timezones
+        updateTimezones();
+        setInterval(updateTimezones, 1000);
+
     </script>
 </body>
 <script src="traffic.js"></script>
