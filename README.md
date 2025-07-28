@@ -1,5 +1,5 @@
 # Csiba Zsombor weboldala
-# v1.1.0
+# v1.1.1
 
 ### Karbantartó és Fejlesztő
 Ez a projekt **Csiba Zsombor** által lett fejlesztve és karbantartva.
