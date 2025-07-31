@@ -641,6 +641,30 @@
     </div>
 
     <script>
+
+        // NOTIFICATION SETUP
+
+
+        // Ask user permission for system notifications
+        if (Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+
+        
+        function sendSystemNotification(title, body) {
+            if (Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: body,
+                    icon: 'favicon.ico'
+                });
+            }
+        }
+        
+
+
+
+
+
         const startDate = new Date('2025-03-14T00:00:00');
         let showDetailedTime = false;
         let showStats = false;
@@ -765,80 +789,90 @@
             const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
             document.getElementById('anniversary-countdown').textContent = `${daysLeft} days left`;
         }
-function updateBirthdayCountdown_toyeee() {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0); // Normalize now
+        function updateBirthdayCountdown_toyeee() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0); // Normalize now
+        
+            const actualMonth = 2; // ✅ February (1-based)
+            const birthday = new Date(now.getFullYear(), actualMonth - 1, 14); // 🎂 Feb 15
+        
+            birthday.setHours(0, 0, 0, 0); // Normalize birthday
+        
+            if (now >= birthday) {
+                birthday.setFullYear(birthday.getFullYear() + 1);
+            }
+        
+            const diff = birthday - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        
+            const message = daysLeft === 0
+                ? `🎉 Today is Toyeee's birthday! 🎂`
+                : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
+        
+            document.getElementById('birthday-countdown_toyeee').textContent = message;
+        }
 
-    const actualMonth = 2; // ✅ February (1-based)
-    const birthday = new Date(now.getFullYear(), actualMonth - 1, 14); // 🎂 Feb 15
-
-    birthday.setHours(0, 0, 0, 0); // Normalize birthday
-
-    if (now >= birthday) {
-        birthday.setFullYear(birthday.getFullYear() + 1);
-    }
-
-    const diff = birthday - now;
-    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    const message = daysLeft === 0
-        ? `🎉 Today is Toyeee's birthday! 🎂`
-        : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
-
-    document.getElementById('birthday-countdown_toyeee').textContent = message;
-}
-
-function updateBirthdayCountdown_toyaaa() {
-    const now = new Date();
-    now.setHours(0, 0, 0, 0); // Normalize now
-
-    const actualMonth = 7; // ✅ July (1-based)
-    const birthday = new Date(now.getFullYear(), actualMonth - 1, 13); // 🎂 July 13
-
-    birthday.setHours(0, 0, 0, 0); // Normalize birthday
-
-    if (now >= birthday) {
-        birthday.setFullYear(birthday.getFullYear() + 1);
-    }
-
-    const diff = birthday - now;
-    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-
-    const message = daysLeft === 0
-        ? `🎉 Today is Toyaaa's birthday! 🎂`
-        : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
-
-    document.getElementById('birthday-countdown_toyaaa').textContent = message;
-}
+        function updateBirthdayCountdown_toyaaa() {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0); // Normalize now
+        
+            const actualMonth = 7; // ✅ July (1-based)
+            const birthday = new Date(now.getFullYear(), actualMonth - 1, 13); // 🎂 July 13
+        
+            birthday.setHours(0, 0, 0, 0); // Normalize birthday
+        
+            if (now >= birthday) {
+                birthday.setFullYear(birthday.getFullYear() + 1);
+            }
+        
+            const diff = birthday - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        
+            const message = daysLeft === 0
+                ? `🎉 Today is Toyaaa's birthday! 🎂`
+                : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
+        
+            document.getElementById('birthday-countdown_toyaaa').textContent = message;
+        }
 
 
 
         function updateMilestone(totalDays) {
             const milestone = document.getElementById('milestone');
-            let message = '';
-
-            if (totalDays >= 730) {
-                message = '😱 Friends since 2 years, yeayyy!!';
-            } else if (totalDays >= 365) {
-                message = '🎉 Over a year of friendship!';
-            } else if (totalDays >= 300) {
-                message = '✨ Almost a full year together!';
-            } else if (totalDays >= 200) {
-                message = '🌟 200+ days and counting!';
-            } else if (totalDays >= 100) {
-                message = '💫 Over 100 days of friendship!';
-            } else if (totalDays >= 50) {
-                message = '☺️ 50+ days together!';
-            } else if (totalDays >= 30) {
-                message = '🎈 A month of friendship!';
-            } else if (totalDays >= 7) {
-                message = '🌸 A week of friendship!';
-            } else {
-                message = '🌱 Growing friendship!';
+        
+            // Define milestone map in descending order to match the biggest first
+            const milestones = [
+                { days: 730, key: '2y', message: '😱 Friends since 2 years, yeayyy!!' },
+                { days: 365, key: '1y', message: '🎉 Over a year of friendship!' },
+                { days: 300, key: '300', message: '✨ Almost a full year together!' },
+                { days: 200, key: '200', message: '🌟 200+ days and counting!' },
+                { days: 100, key: '100', message: '💫 Over 100 days of friendship!' },
+                { days: 50,  key: '50',  message: '☺️ 50+ days together!' },
+                { days: 30,  key: '30',  message: '🎈 A month of friendship!' },
+                { days: 7,   key: '7',   message: '🌸 A week of friendship!' },
+                { days: 0,   key: 'start', message: '🌱 Growing friendship!' }
+            ];
+        
+            // Find the highest milestone that fits
+            const currentMilestone = milestones.find(m => totalDays >= m.days);
+            
+            if (!currentMilestone) return;
+        
+            // Update milestone message in UI
+            milestone.textContent = currentMilestone.message;
+        
+            // Get saved milestone from localStorage
+            const savedMilestone = localStorage.getItem('lastMilestoneNotified') || '';
+        
+            // Only notify if it's a new milestone
+            if (savedMilestone !== currentMilestone.key) {
+                localStorage.setItem('lastMilestoneNotified', currentMilestone.key);
+                showNotification(currentMilestone.message); // In-page toast
+                sendSystemNotification("🎉 Friendship Milestone!", currentMilestone.message); // OS-level
             }
-
-            milestone.textContent = message;
         }
+
+
 
         function animateNumber(elementId, newValue) {
             const element = document.getElementById(elementId);
