@@ -12,7 +12,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>  
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-messaging.js"></script>  
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script> 
-
+    <div class="popup-overlay" id="popupOverlay"></div>
+    
+    <div class="language-switcher" id="languageSwitcher">
+        <button id="switch-to-id" onclick="switchLanguage('id')" class="active">ID</button>
+        <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
+    </div>
+    
     <style>
         * {
             margin: 0;
@@ -538,40 +544,246 @@
         body.dark-mode .timezone-value {
             color: #ffffff;
         }
+        .language-switcher {
+            position: relative;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
 
+        .language-switcher:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .language-switcher button {
+            position: relative;
+            background: transparent;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+            min-width: 80px;
+            text-transform: uppercase;
+        }
+
+        .language-switcher button:hover {
+            transform: scale(1.05);
+        }
+
+        .language-switcher button.active {
+            color: #333;
+            font-weight: 700;
+        }
+.language-switcher {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 50px;
+    background-color: #f1f1f1;
+    width: 172px;
+}
+
+.language-switcher::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 80px;
+    height: 44px;
+    background: linear-gradient(135deg, #ff6b6b, #ffa726);
+    border-radius: 40px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+}
+
+.language-switcher.en::before {
+    transform: translateX(84px);
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    box-shadow: 0 4px 20px rgba(79, 172, 254, 0.3);
+}
+
+.language-switcher button {
+    background: none;
+    border: none;
+    padding: 10px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s;
+    border-radius: 30px;
+}
+
+.language-switcher button.active {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Flag icons using CSS */
+.language-switcher button::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 2px;
+    vertical-align: middle;
+    background-size: cover;
+}
+
+#switch-to-id::before {
+    background-image: url('https://flagcdn.com/id.svg'); /* or your own local flag icon */
+}
+
+#switch-to-en::before {
+    background-image: url('https://flagcdn.com/gb.svg');
+}
+
+
+        #switch-to-id::before {
+            background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
+
+        }
+
+        #switch-to-en::before {
+            background-image: url(flags/english.png);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 25px;
+            height: 20px;
+        }
+
+
+
+        /* Content section for demonstration */
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-top: 120px;
+            text-align: center;
+            color: white;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .language-switcher button:active {
+            animation: pulse 0.3s ease;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .language-switcher {
+                padding: 6px;
+            }
+            
+            .language-switcher button {
+                padding: 10px 20px;
+                font-size: 13px;
+                min-width: 70px;
+            }
+            
+            .language-switcher::before {
+                width: 70px;
+                height: 40px;
+            }
+            
+            .language-switcher.en::before {
+                transform: translateX(74px);
+            }
+            
+            .content h1 {
+                font-size: 2rem;
+            }
+            
+            .content p {
+                font-size: 1rem;
+                padding: 0 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header"><div></div></div>
 
-        <h1 class="title">Friendship</h1>
+        <h1 class="title" id="title_friendship">Friendship</h1>
         <div class="milestone" id="milestone"></div>
 
         <div class="counter-grid">
             <div class="counter-item" onclick="copyToClipboard('years')">
                 <span class="counter-number" id="years">0</span>
-                <span class="counter-label">Years</span>
+                <span class="counter-label" id="years_Y">Years</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('months')">
                 <span class="counter-number" id="months">0</span>
-                <span class="counter-label">Months</span>
+                <span class="counter-label" id="months_M">Months</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('days')">
                 <span class="counter-number" id="days">0</span>
-                <span class="counter-label">Days</span>
+                <span class="counter-label" id="days_D">Days</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('hours')">
                 <span class="counter-number" id="hours">0</span>
-                <span class="counter-label">Hours</span>
+                <span class="counter-label" id="hours_H">Hours</span>
             </div>
             <div class="counter-item minutes-item" onclick="copyToClipboard('minutes')">
                 <span class="counter-number" id="minutes">0</span>
-                <span class="counter-label">Minutes</span>
+                <span class="counter-label" id="minutes_M">Minutes</span>
             </div>
             <div class="counter-item seconds-item" onclick="copyToClipboard('seconds')">
                 <span class="counter-number" id="seconds">0</span>
-                <span class="counter-label">Seconds</span>
+                <span class="counter-label" id="seconds_S">Seconds</span>
             </div>
         </div>
 
@@ -580,38 +792,38 @@
         </div>
 
         <div class="controls">
-            <button class="toggle-button" onclick="toggleTimeUnits()"><span id="button-text">Show More</span></button>
-            <button class="toggle-button" onclick="toggleStats()"><span id="stats-text">Show Stats</span></button>
+            <button id="button-text" class="toggle-button" onclick="toggleTimeUnits()"><span id="show_more_btn">Show More</span></button>
+            <button id="button-text" class="toggle-button" onclick="toggleStats()"><span id="show_stats_btn">Show Stats</span></button>
         </div>
 
         <div class="stats-grid stats-hidden" id="stats-section">
             <div class="stat-item">
-                <div class="stat-label">Total Days</div>
+                <div class="stat-label" id="totaldays">Total Days</div>
                 <div class="stat-value" id="total-days">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Total Hours</div>
+                <div class="stat-label" id="totalhours">Total Hours</div>
                 <div class="stat-value" id="total-hours">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Total Weeks</div>
+                <div class="stat-label" id="totalweeks">Total Weeks</div>
                 <div class="stat-value" id="total-weeks">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Goal Progress (1000 Days)</div>
+                <div class="stat-label" id="goalprogress">Goal Progress (1000 Days)</div>
                 <div class="stat-value" id="goal-progress">0%</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label">Next friendiversary</div>
+                <div class="stat-label" id="nextfriendiversary">Next friendiversary</div>
                 <div class="stat-value" id="anniversary-countdown">--</div>
             </div>
         <div class="birthday-section" id="birthday-section">
             <div class="stat-item">
-             <div class="stat-label">Toyeee’s Birthday</div>
+             <div class="stat-label" id="toyeeesbirthday">Toyeee’s Birthday</div>
              <div class="stat-value" id="birthday-countdown_toyeee">--</div>
              </div>
             <div class="stat-item">
-             <div class="stat-label">Toyaaa’s Birthday</div>
+             <div class="stat-label" id="toyaaasbirthday">Toyaaa’s Birthday</div>
              <div class="stat-value" id="birthday-countdown_toyaaa">--</div>
              </div>
         </div>
@@ -619,7 +831,7 @@
         </div>
         <br>
         <div class="timezone-section">
-            <h2 class="timezone-title">🌍 Our Local Times</h2>
+            <h2 class="timezone-title" id="ourtimezone">🌍 Our Timezone</h2>
             <div class="timezone-grid">
                 <div class="timezone-item">
                     <div class="timezone-item">
@@ -639,7 +851,7 @@
         <a href="../notes/">Leave a notes</a>
     </p>
     </div>
-
+<script src="../libs/web.lib.js"></script>
     <script>
 
         // NOTIFICATION SETUP
@@ -837,6 +1049,7 @@
 
 
 
+
         function updateMilestone(totalDays) {
             const milestone = document.getElementById('milestone');
         
@@ -908,4 +1121,5 @@
     </script>
 </body>
 <script src="traffic.js"></script>
+<script src="JS/language-selector.js"></script>
 </html>
