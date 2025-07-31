@@ -37,8 +37,10 @@
             color: #000000;
             line-height: 1.6;
             font-weight: 400;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease; 
+            padding: 40px 20px; /* Add padding to avoid overflow on smaller screens */
         }
+
 
         body.dark-mode {
             background-color: #000000;
@@ -143,97 +145,95 @@
             color: #999999;
         }
 
+        .counter-section {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 60px 20px;
+          background-color: #f9f9f9;
+        }
+
+        body.dark-mode .counter-section {
+          background-color: #121212;
+        }
+
         .counter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 40px;
-            margin: 60px 0 40px 0;
+          margin: 5cm;
+          text-align: 50px;
+          display: flex;   
         }
 
         .counter-item {
-            opacity: 0;
-            animation: fadeInUp 0.3s ease-out forwards;
-            transition: transform 0.2s ease, opacity 0.15s ease;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
+          background: #ffffff;
+          padding: 24px 16px;
+          border-radius: 16px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          opacity: 0;
+          animation: fadeInUp 0.6s ease forwards;
         }
 
         .counter-item:hover {
-            transform: translateY(-2px);
-            background-color: rgba(0, 0, 0, 0.02);
+          transform: translateY(-6px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
 
-        body.dark-mode .counter-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+        body.dark-mode .counter-item {
+          background: #1e1e1e;
+          box-shadow: 0 4px 20px rgba(255, 255, 255, 0.03);
         }
-
-        .counter-item:nth-child(1) { animation-delay: 0.1s; }
-        .counter-item:nth-child(2) { animation-delay: 0.15s; }
-        .counter-item:nth-child(3) { animation-delay: 0.2s; }
-        .counter-item:nth-child(4) { animation-delay: 0.25s; }
-        .counter-item:nth-child(5) { animation-delay: 0.3s; }
-        .counter-item:nth-child(6) { animation-delay: 0.35s; }
 
         .counter-number {
-            font-size: 3.5rem;
-            font-weight: 200;
-            display: block;
-            margin-bottom: 8px;
-            color: #000000;
-            letter-spacing: -0.02em;
-            transition: all 0.3s ease;
+          font-size: 5rem;
+          font-weight: 600;
+          color: #222;
+          margin-bottom: 12px;
+          letter-spacing: -0.02em;
         }
 
         body.dark-mode .counter-number {
-            color: #ffffff;
+          color: #ffffff;
         }
 
         .counter-label {
-            font-size: 0.875rem;
-            color: #666666;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 500;
+
+          color: #888888;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-weight: 500;
         }
 
         body.dark-mode .counter-label {
-            color: #999999;
+          color: #bbbbbb;
         }
 
-        .description {
-            font-size: 1.125rem;
-            color: #333333;
-            font-weight: 300;
-            letter-spacing: -0.01em;
+        @keyframes fadeInUp {
+          0% {
             opacity: 0;
-            animation: fadeIn 0.8s ease-out 1s forwards;
-            margin-bottom: 30px;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
-        body.dark-mode .description {
-            color: #cccccc;
+        /* Mobile Tweaks */
+        @media (max-width: 480px) {
+          .counter-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+          }
+      
+          .counter-number {
+            font-size: 2.2rem;
+          }
+      
+          .counter-item {
+            padding: 20px 12px;
+          }
         }
 
-        .date-highlight {
-            color: #000000;
-            font-weight: 400;
-        }
-
-        body.dark-mode .date-highlight {
-            color: #ffffff;
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 30px 0;
-            opacity: 0;
-            animation: fadeIn 0.8s ease-out 1.2s forwards;
-        }
 
         .toggle-button {
             background: none;
@@ -673,17 +673,15 @@
 
         /* Content section for demonstration */
         .content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            margin-top: 120px;
             text-align: center;
             color: white;
             opacity: 0;
             animation: fadeInUp 0.8s ease forwards;
             animation-delay: 0.3s;
+            max-width: 800px;
+            padding: 0 20px;
         }
+
 
         .content h1 {
             font-size: 2.5rem;
