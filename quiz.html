@@ -73,33 +73,27 @@
       border: none;
       cursor: pointer;
     }
-
   </style>
 </head>
 <body>
 
   <div class="quiz-container">
     <h1 id="quiz-title">Magyar–Indonéz Kvíz</h1>
-    <div class="question" id="question">Mit jelent az, hogy “kamu”?</div>
-    <div class="answers" id="answers">
-      <button onclick="checkAnswer('a')">Te</button>
-      <button onclick="checkAnswer('b')">Hazugság</button>
-      <button onclick="checkAnswer('c')">Háború</button>
-    </div>
+    <div class="question" id="question"></div>
+    <div class="answers" id="answers"></div>
     <div id="result"></div>
     <div id="score">Pontszám: 0</div>
 
     <div class="lang-switch">
+      <button onclick="setLanguage('id')">🇮🇩 Indonéz</button>
       <button onclick="setLanguage('hu')">🇭🇺 Magyar</button>
-      <button onclick="setLanguage('id')">🇮🇩 Bahasa</button>
     </div>
   </div>
 
   <script>
-    const questions = [
+    const allQuestions = [
       {
-        hu: "Mit jelent az, hogy “kamu”?",
-        id: "Apa arti dari kata “kamu” dalam bahasa Indonesia?",
+        question: "Mit jelent az, hogy “kamu”?",
         answers: {
           a: { hu: "Te", id: "Kamu" },
           b: { hu: "Hazugság", id: "Kebohongan" },
@@ -108,8 +102,7 @@
         correct: "a"
       },
       {
-        hu: "Mit jelent az, hogy “teman”?",
-        id: "Apa arti dari kata “teman”?",
+        question: "Mit jelent az, hogy “teman”?",
         answers: {
           a: { hu: "Ellenség", id: "Musuh" },
           b: { hu: "Barát", id: "Teman" },
@@ -118,45 +111,103 @@
         correct: "b"
       },
       {
-        hu: "Mit jelent az, hogy “selamat pagi”?",
-        id: "Apa arti dari “selamat pagi”?",
+        question: "Mit jelent az, hogy “selamat pagi”?",
         answers: {
           a: { hu: "Jó reggelt", id: "Selamat pagi" },
           b: { hu: "Jó estét", id: "Selamat malam" },
           c: { hu: "Viszlát", id: "Sampai jumpa" }
         },
         correct: "a"
+      },
+      {
+        question: "Mit jelent az, hogy “aku”?",
+        answers: {
+          a: { hu: "Ő", id: "Dia" },
+          b: { hu: "Én", id: "Aku" },
+          c: { hu: "Te", id: "Kamu" }
+        },
+        correct: "b"
+      },
+      {
+        question: "Mit jelent az, hogy “nemtudom”?",
+        answers: {
+          a: { hu: "Tudom", id: "Saya tahu" },
+          b: { hu: "Nem érdekel", id: "Tidak peduli" },
+          c: { hu: "Nem tudom", id: "Saya tidak tahu" }
+        },
+        correct: "c"
+      },
+      {
+        question: "Mit jelent az, hogy “ember”?",
+        answers: {
+          a: { hu: "Macska", id: "Kucing" },
+          b: { hu: "Ember", id: "Manusia" },
+          c: { hu: "Állat", id: "Hewan" }
+        },
+        correct: "b"
+      },
+      {
+        question: "Mit jelent az, hogy “dalam”?",
+        answers: {
+          a: { hu: "Kívül", id: "Luar" },
+          b: { hu: "Benn, belül", id: "Dalam" },
+          c: { hu: "Alatt", id: "Di bawah" }
+        },
+        correct: "b"
       }
     ];
 
+    let questions = [];
     let currentQuestion = 0;
     let score = 0;
-    let lang = "hu";
+    let lang = "id";
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function startQuiz() {
+      questions = shuffle([...allQuestions]);
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById("score").textContent =
+        (lang === "hu" ? "Pontszám: " : "Skor: ") + score;
+      showQuestion();
+    }
 
     function showQuestion() {
       const q = questions[currentQuestion];
-      document.getElementById("question").textContent = q[lang];
+      document.getElementById("question").textContent = q.question;
+
       const answersDiv = document.getElementById("answers");
       answersDiv.innerHTML = '';
+
       for (const key in q.answers) {
         const btn = document.createElement("button");
         btn.textContent = q.answers[key][lang];
         btn.onclick = () => checkAnswer(key);
         answersDiv.appendChild(btn);
       }
+
       document.getElementById("result").textContent = '';
     }
 
     function checkAnswer(selected) {
       const correct = questions[currentQuestion].correct;
       const resultDiv = document.getElementById("result");
+
       if (selected === correct) {
         resultDiv.textContent = lang === "hu" ? "Helyes!" : "Benar!";
         score++;
       } else {
         resultDiv.textContent = lang === "hu" ? "Rossz válasz!" : "Salah!";
       }
-      document.getElementById("score").textContent = 
+
+      document.getElementById("score").textContent =
         (lang === "hu" ? "Pontszám: " : "Skor: ") + score;
 
       setTimeout(() => {
@@ -176,11 +227,11 @@
       lang = l;
       document.getElementById("quiz-title").textContent =
         lang === "hu" ? "Magyar–Indonéz Kvíz" : "Kuis Indonesia–Hongaria";
-      showQuestion();
+      startQuiz();
     }
 
-    // Kezdő kérdés
-    showQuestion();
+    // Automatikusan elindítja a kvízt véletlenszerűen
+    setLanguage("id");
   </script>
 
 </body>
