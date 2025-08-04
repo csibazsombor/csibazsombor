@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Magyar–Indonéz Kvíz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fefcea, #f1da36);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: none;
+      background-color: #e0e0e0;
+    }
+
+    .answers button:hover {
+      background-color: #d4af37;
+      color: white;
+    }
+
+    #result {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #score {
+      margin-top: 20px;
+    }
+
+    .lang-switch {
+      margin-top: 20px;
+    }
+
+    .lang-switch button {
+      padding: 6px 12px;
+      margin: 0 5px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h1 id="quiz-title">Magyar–Indonéz Kvíz</h1>
+    <div class="question" id="question">Mit jelent az, hogy “kamu”?</div>
+    <div class="answers" id="answers">
+      <button onclick="checkAnswer('a')">Te</button>
+      <button onclick="checkAnswer('b')">Hazugság</button>
+      <button onclick="checkAnswer('c')">Háború</button>
+    </div>
+    <div id="result"></div>
+    <div id="score">Pontszám: 0</div>
+
+    <div class="lang-switch">
+      <button onclick="setLanguage('hu')">🇭🇺 Magyar</button>
+      <button onclick="setLanguage('id')">🇮🇩 Bahasa</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        hu: "Mit jelent az, hogy “kamu”?",
+        id: "Apa arti dari kata “kamu” dalam bahasa Indonesia?",
+        answers: {
+          a: { hu: "Te", id: "Kamu" },
+          b: { hu: "Hazugság", id: "Kebohongan" },
+          c: { hu: "Háború", id: "Perang" }
+        },
+        correct: "a"
+      },
+      {
+        hu: "Mit jelent az, hogy “teman”?",
+        id: "Apa arti dari kata “teman”?",
+        answers: {
+          a: { hu: "Ellenség", id: "Musuh" },
+          b: { hu: "Barát", id: "Teman" },
+          c: { hu: "Tanár", id: "Guru" }
+        },
+        correct: "b"
+      },
+      {
+        hu: "Mit jelent az, hogy “selamat pagi”?",
+        id: "Apa arti dari “selamat pagi”?",
+        answers: {
+          a: { hu: "Jó reggelt", id: "Selamat pagi" },
+          b: { hu: "Jó estét", id: "Selamat malam" },
+          c: { hu: "Viszlát", id: "Sampai jumpa" }
+        },
+        correct: "a"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let lang = "hu";
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("question").textContent = q[lang];
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = '';
+      for (const key in q.answers) {
+        const btn = document.createElement("button");
+        btn.textContent = q.answers[key][lang];
+        btn.onclick = () => checkAnswer(key);
+        answersDiv.appendChild(btn);
+      }
+      document.getElementById("result").textContent = '';
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[currentQuestion].correct;
+      const resultDiv = document.getElementById("result");
+      if (selected === correct) {
+        resultDiv.textContent = lang === "hu" ? "Helyes!" : "Benar!";
+        score++;
+      } else {
+        resultDiv.textContent = lang === "hu" ? "Rossz válasz!" : "Salah!";
+      }
+      document.getElementById("score").textContent = 
+        (lang === "hu" ? "Pontszám: " : "Skor: ") + score;
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          document.getElementById("question").textContent =
+            lang === "hu" ? "Kvíz vége!" : "Kuis selesai!";
+          document.getElementById("answers").innerHTML = '';
+          resultDiv.textContent = '';
+        }
+      }, 1000);
+    }
+
+    function setLanguage(l) {
+      lang = l;
+      document.getElementById("quiz-title").textContent =
+        lang === "hu" ? "Magyar–Indonéz Kvíz" : "Kuis Indonesia–Hongaria";
+      showQuestion();
+    }
+
+    // Kezdő kérdés
+    showQuestion();
+  </script>
+
+</body>
+</html>
