@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕰️ Időkapszula - Toye & Toyaaa</title>
+    <title>🕰️ Time capsule - Toyeee & Toyaaa</title>
+<!-- Firebase 8.x SDK-k -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+    
     <style>
         * {
             margin: 0;
@@ -364,34 +371,34 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🕰️ Időkapszula</h1>
+            <h1>🕰️ Time capsule</h1>
             <p>Toye & Toyaaa személyes időkapszulája</p>
         </div>
 
         <div id="error-container"></div>
 
         <div class="section">
-            <h2>✨ Új időkapszula létrehozása</h2>
+            <h2>✅ New Time capsule</h2>
             <form id="capsule-form">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="title">Kapszula címe</label>
+                        <label for="title">Capsule name</label>
                         <input type="text" id="title" placeholder="pl. Születésnapodra" required>
                     </div>
                     <div class="form-group">
-                        <label for="author">Ki írja</label>
+                        <label for="author">Author</label>
                         <select id="author" required>
-                            <option value="">Válassz...</option>
-                            <option value="Toye">Toye</option>
+                            <option value=""></option>
+                            <option value="Toye">Toyeee</option>
                             <option value="Toyaaa">Toyaaa</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="message">Üzenet</label>
-                    <textarea id="message" placeholder="Írd ide az üzeneted..." required></textarea>
-                    <button type="button" class="btn-secondary" id="record-btn">🎤 Hang rögzítése</button>
+                    <label for="message">Message</label>
+                    <textarea id="message" placeholder="Type..." required></textarea>
+                    <button type="button" class="btn-secondary" id="record-btn">🎤 Voice message</button>
                     <div class="audio-controls" id="audio-controls" style="display: none;">
                         <audio class="audio-player" id="audio-player" controls></audio>
                     </div>
@@ -399,55 +406,53 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="unlock-date">Megnyitási dátum</label>
+                        <label for="unlock-date">Unlock date (The date when the capsule openable)</label>
                         <input type="datetime-local" id="unlock-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Jelszó (opcionális)</label>
-                        <input type="password" id="password" placeholder="Titkos jelszó...">
+                        <label for="password">Password (optional)</label>
+                        <input type="password" id="password" placeholder="shhh...">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Hangulat emoji</label>
                     <div class="emoji-selector">
-                        <div class="emoji-option" data-emoji="🥹">🥹</div>
-                        <div class="emoji-option" data-emoji="💌">💌</div>
+                        <div class="emoji-option" data-emoji="🥳">🥳</div>
+                        <div class="emoji-option" data-emoji="😆">😆</div>
                         <div class="emoji-option" data-emoji="🎁">🎁</div>
-                        <div class="emoji-option" data-emoji="❤️">❤️</div>
+                        <div class="emoji-option" data-emoji="☺️">☺️</div>
                         <div class="emoji-option" data-emoji="🌟">🌟</div>
-                        <div class="emoji-option" data-emoji="🦋">🦋</div>
-                        <div class="emoji-option" data-emoji="🌸">🌸</div>
+                        <div class="emoji-option" data-emoji="😏">😏</div>
+                        <div class="emoji-option" data-emoji="😈">😈</div>
                         <div class="emoji-option" data-emoji="✨">✨</div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Kapszula létrehozása</button>
+                <button type="submit" class="btn btn-primary">Create capsule</button>
             </form>
         </div>
 
         <div class="section">
-            <h2>📦 Időkapszulák</h2>
+            <h2>📦 Time capsules</h2>
             <div id="capsules-container" class="loading">
-                Betöltés...
+                Loading...
             </div>
         </div>
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-storage-compat.min.js"></script>
 
     <script>
         // Firebase konfiguráció - CSERÉLD KI A SAJÁT ADATAIDDAL!
         const firebaseConfig = {
-            apiKey: "your-api-key-here",
-            authDomain: "your-project.firebaseapp.com",
-            projectId: "your-project-id",
-            storageBucket: "your-project.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "your-app-id"
+          apiKey: "AIzaSyDHWHn4P4CmX39gtRbvpWg57fllcMloj-Y",
+          authDomain: "idokapszula0513.firebaseapp.com",
+          databaseURL: "https://idokapszula0513-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "idokapszula0513",
+            storageBucket: "idokapszula0513.appspot.com",
+          messagingSenderId: "596185565717",
+          appId: "1:596185565717:web:becad8f04e32f53e975c1c"
         };
 
         // Firebase inicializálás
@@ -464,7 +469,7 @@
             db = null;
         }
 
-        let selectedEmoji = '💌';
+        let selectedEmoji = '🥳';
         let audioBlob = null;
         let mediaRecorder = null;
         let capsules = [];
@@ -487,7 +492,7 @@
         });
 
         // Alapértelmezett emoji
-        document.querySelector('.emoji-option[data-emoji="💌"]').classList.add('selected');
+        document.querySelector('.emoji-option[data-emoji="🥳"]').classList.add('selected');
 
         // Hang rögzítés
         document.getElementById('record-btn').addEventListener('click', async () => {
@@ -578,11 +583,11 @@
 
                 // Form reset
                 document.getElementById('capsule-form').reset();
-                selectedEmoji = '💌';
+                selectedEmoji = '🥳';
                 audioBlob = null;
                 document.getElementById('audio-controls').style.display = 'none';
                 document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
-                document.querySelector('.emoji-option[data-emoji="💌"]').classList.add('selected');
+                document.querySelector('.emoji-option[data-emoji="🥳"]').classList.add('selected');
                 
                 await loadCapsules();
                 
