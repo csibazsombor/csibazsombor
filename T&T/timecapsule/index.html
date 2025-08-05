@@ -349,6 +349,37 @@
             font-style: italic;
         }
 
+        .success {
+            background: rgba(198, 237, 188, 0.2);
+            color: #2d5016;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(45, 80, 22, 0.2);
+            font-style: italic;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .connection-status.online {
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+        }
+
+        .connection-status.offline {
+            background: rgba(244, 67, 54, 0.9);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px 15px;
@@ -365,10 +396,19 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+
+            .connection-status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.7rem;
+                padding: 6px 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="connection-status" class="connection-status offline">🔴 Offline</div>
+    
     <div class="container">
         <div class="header">
             <h1>🕰️ Time capsule</h1>
@@ -441,32 +481,80 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-
     <script>
-        // Firebase konfiguráció - CSERÉLD KI A SAJÁT ADATAIDDAL!
+        // Firebase konfiguráció
         const firebaseConfig = {
-          apiKey: "AIzaSyDHWHn4P4CmX39gtRbvpWg57fllcMloj-Y",
-          authDomain: "idokapszula0513.firebaseapp.com",
-          databaseURL: "https://idokapszula0513-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "idokapszula0513",
+            apiKey: "AIzaSyDHWHn4P4CmX39gtRbvpWg57fllcMloj-Y",
+            authDomain: "idokapszula0513.firebaseapp.com",
+            projectId: "idokapszula0513",
             storageBucket: "idokapszula0513.appspot.com",
-          messagingSenderId: "596185565717",
-          appId: "1:596185565717:web:becad8f04e32f53e975c1c"
+            messagingSenderId: "596185565717",
+            appId: "1:596185565717:web:becad8f04e32f53e975c1c"
         };
 
         // Firebase inicializálás
-        let db, storage;
-        try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            storage = firebase.storage();
-            console.log('Firebase sikeresen inicializálva');
-        } catch (error) {
-            console.error('Firebase inicializálási hiba:', error);
-            showError('Firebase kapcsolat sikertelen. LocalStorage-ot használunk helyette.');
-            // Fallback LocalStorage-ra
-            db = null;
+        let db, storage, isFirebaseConnected = false;
+
+        // Fő inicializáló függvény
+        async function initializeFirebase() {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                storage = firebase.storage();
+
+                // Offline perzisztencia engedélyezése
+                try {
+                    await db.enablePersistence({ synchronizeTabs: true });
+                    console.log('Offline perzisztencia engedélyezve');
+                } catch (persistenceError) {
+                    console.warn('Offline perzisztencia nem elérhető:', persistenceError);
+                }
+
+                // Hálózati állapot figyelése onSnapshot-on keresztül
+                // A listener a kapcsolat állapotáról is tájékoztat a metadata segítségével
+                db.collection('capsules').limit(1).onSnapshot({ includeMetadataChanges: true }, (snapshot) => {
+                    const fromCache = snapshot.metadata.fromCache;
+                    const isOnline = !fromCache;
+
+                    if (isOnline !== isFirebaseConnected) {
+                        isFirebaseConnected = isOnline;
+                        updateConnectionStatus(isOnline);
+                        console.log(`Kapcsolat állapota megváltozott: ${isOnline ? 'online' : 'offline'}`);
+                        // Ha a kapcsolat helyreáll, frissítjük a kapszulákat a szerverről
+                        if (isOnline) {
+                            loadCapsules();
+                        }
+                    }
+                }, (error) => {
+                    console.error('Snapshot figyelési hiba:', error);
+                    // Hiba esetén offline állapotba kerülünk
+                    isFirebaseConnected = false;
+                    updateConnectionStatus(false);
+                });
+
+                // Kezdeti kapszulák betöltése a kezdeti állapot megjelenítéséhez
+                loadCapsules();
+                console.log('Firebase sikeresen inicializálva, a kapcsolatot figyeli');
+
+            } catch (error) {
+                console.error('Firebase inicializálási hiba:', error);
+                isFirebaseConnected = false;
+                updateConnectionStatus(false);
+                // Még hiba esetén is megpróbáljuk betölteni a helyi adatokat
+                loadCapsules();
+            }
+        }
+
+        // Kapcsolat állapotának frissítése a UI-n
+        function updateConnectionStatus(online) {
+            const statusElement = document.getElementById('connection-status');
+            if (online) {
+                statusElement.textContent = '🟢 Firebase Online';
+                statusElement.className = 'connection-status online';
+            } else {
+                statusElement.textContent = '🔴 Offline Mode';
+                statusElement.className = 'connection-status offline';
+            }
         }
 
         let selectedEmoji = '🥳';
@@ -474,9 +562,11 @@
         let mediaRecorder = null;
         let capsules = [];
 
-        function showError(message) {
+        // Üzenet megjelenítése
+        function showMessage(message, type = 'error') {
             const errorContainer = document.getElementById('error-container');
-            errorContainer.innerHTML = `<div class="error">${message}</div>`;
+            const className = type === 'success' ? 'success' : 'error';
+            errorContainer.innerHTML = `<div class="${className}">${message}</div>`;
             setTimeout(() => {
                 errorContainer.innerHTML = '';
             }, 5000);
@@ -522,7 +612,7 @@
                     recordBtn.textContent = '⏹️ Leállítás';
                     recordBtn.classList.add('recording');
                 } catch (error) {
-                    showError('Nem sikerült elérni a mikrofont!');
+                    showMessage('Nem sikerült elérni a mikrofont!');
                 }
             } else {
                 mediaRecorder.stop();
@@ -534,7 +624,7 @@
         // Kapszula létrehozás
         document.getElementById('capsule-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const title = document.getElementById('title').value;
             const author = document.getElementById('author').value;
             const message = document.getElementById('message').value;
@@ -542,7 +632,7 @@
             const password = document.getElementById('password').value;
 
             if (unlockDate <= new Date()) {
-                showError('A megnyitási dátumnak a jövőben kell lennie!');
+                showMessage('A megnyitási dátumnak a jövőben kell lennie!');
                 return;
             }
 
@@ -561,47 +651,63 @@
                     createdAt: new Date().toISOString()
                 };
 
-                // Hangfájl feltöltése Firebase Storage-ba
-                if (audioBlob && storage) {
-                    const audioRef = storage.ref().child(`audio/${Date.now()}.wav`);
-                    const uploadTask = await audioRef.put(audioBlob);
-                    capsule.audioUrl = await uploadTask.ref.getDownloadURL();
-                } else if (audioBlob) {
-                    // LocalStorage fallback
-                    capsule.audioBlob = await blobToBase64(audioBlob);
+                // Hangfájl kezelése
+                if (audioBlob) {
+                    if (isFirebaseConnected && storage) {
+                        try {
+                            const audioRef = storage.ref().child(`audio/${Date.now()}.wav`);
+                            const uploadTask = await audioRef.put(audioBlob);
+                            capsule.audioUrl = await uploadTask.ref.getDownloadURL();
+                        } catch (error) {
+                            console.error('Audio upload hiba:', error);
+                            // Fallback base64-re
+                            capsule.audioBlob = await blobToBase64(audioBlob);
+                        }
+                    } else {
+                        // LocalStorage/offline fallback
+                        capsule.audioBlob = await blobToBase64(audioBlob);
+                    }
                 }
 
                 // Mentés Firebase-be vagy LocalStorage-ba
-                if (db) {
+                if (isFirebaseConnected && db) {
                     await db.collection('capsules').add(capsule);
+                    showMessage('Időkapszula sikeresen mentve a Firebase-be! ✨', 'success');
                 } else {
-                    const localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
-                    capsule.id = Date.now();
-                    localCapsules.push(capsule);
-                    localStorage.setItem('timeCapsules', JSON.stringify(localCapsules));
+                    await saveToLocalStorage(capsule);
+                    showMessage('Időkapszula lokálisan mentve! 💾', 'success');
                 }
 
                 // Form reset
-                document.getElementById('capsule-form').reset();
-                selectedEmoji = '🥳';
-                audioBlob = null;
-                document.getElementById('audio-controls').style.display = 'none';
-                document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
-                document.querySelector('.emoji-option[data-emoji="🥳"]').classList.add('selected');
-                
+                resetForm();
                 await loadCapsules();
-                
-                // Success feedback
-                showError('Időkapszula sikeresen létrehozva! ✨');
-                
+
             } catch (error) {
                 console.error('Hiba a mentés során:', error);
-                showError('Hiba történt a mentés során. Próbáld újra!');
+                showMessage('Hiba történt a mentés során. Próbáld újra!');
             }
 
             submitBtn.textContent = 'Kapszula létrehozása';
             submitBtn.disabled = false;
         });
+
+        // LocalStorage mentés
+        async function saveToLocalStorage(capsule) {
+            const localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+            capsule.id = Date.now().toString();
+            localCapsules.push(capsule);
+            localStorage.setItem('timeCapsules', JSON.stringify(localCapsules));
+        }
+
+        // Form reset
+        function resetForm() {
+            document.getElementById('capsule-form').reset();
+            selectedEmoji = '🥳';
+            audioBlob = null;
+            document.getElementById('audio-controls').style.display = 'none';
+            document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
+            document.querySelector('.emoji-option[data-emoji="🥳"]').classList.add('selected');
+        }
 
         // Base64 konverzió
         function blobToBase64(blob) {
@@ -635,29 +741,53 @@
             container.innerHTML = '<div class="loading">Betöltés...</div>';
 
             try {
+                let firebaseCapsules = [];
+                let localCapsules = [];
+
                 if (db) {
-                    // Firebase betöltés
-                    const snapshot = await db.collection('capsules').orderBy('createdAt', 'desc').get();
-                    capsules = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }));
-                } else {
-                    // LocalStorage fallback
-                    capsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+                    try {
+                        const snapshot = await db.collection('capsules').orderBy('createdAt', 'desc').get();
+                        firebaseCapsules = snapshot.docs.map(doc => ({
+                            id: doc.id,
+                            source: 'firebase',
+                            ...doc.data()
+                        }));
+                        console.log('Adatok betöltve a Firebase-ből');
+                    } catch (error) {
+                        console.warn('Firebase betöltési hiba:', error.message);
+                    }
                 }
+
+                // LocalStorage betöltés
+                try {
+                    localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]')
+                        .map(capsule => ({
+                            ...capsule,
+                            source: 'local'
+                        }));
+                } catch (error) {
+                    console.error('LocalStorage betöltési hiba:', error);
+                }
+
+                // Kapszulák egyesítése (duplikációk eltávolításával)
+                const allCapsules = [...firebaseCapsules, ...localCapsules];
+                const uniqueCapsules = allCapsules.filter((capsule, index, self) =>
+                    index === self.findIndex(c => c.title === capsule.title && c.createdAt === capsule.createdAt)
+                );
+
+                capsules = uniqueCapsules.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
                 renderCapsules();
             } catch (error) {
-                console.error('Hiba a betöltés során:', error);
-                container.innerHTML = '<div class="error">Hiba a betöltés során</div>';
+                console.error('Általános betöltési hiba:', error);
+                container.innerHTML = '<div class="error">Hiba a betöltés során. Próbáld újra később.</div>';
             }
         }
 
         // Kapszulák renderelése
         function renderCapsules() {
             const container = document.getElementById('capsules-container');
-            
+
             if (capsules.length === 0) {
                 container.innerHTML = '<div class="no-capsules">Még nincsenek időkapszulák.<br>Hozz létre az elsőt! ✨</div>';
                 return;
@@ -670,11 +800,12 @@
                         const unlockDate = new Date(capsule.unlockDate);
                         const isUnlocked = now >= unlockDate;
                         const timeRemaining = getTimeRemaining(capsule.unlockDate);
+                        const sourceIcon = capsule.source === 'firebase' ? '☁️' : '💾';
 
                         return `
                             <div class="capsule ${isUnlocked ? 'unlocked' : 'locked'}" onclick="openCapsule('${capsule.id}')">
                                 <div class="capsule-header">
-                                    <h3 class="capsule-title">${capsule.title}</h3>
+                                    <h3 class="capsule-title">${capsule.title} ${sourceIcon}</h3>
                                     <div class="capsule-emoji">${capsule.emoji}</div>
                                 </div>
                                 <div class="capsule-author">${capsule.author}</div>
@@ -734,14 +865,14 @@
         }, 60000); // Minden percben
 
         // Inicializálás
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Alapértelmezett dátum beállítása (holnap)
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('unlock-date').value = tomorrow.toISOString().slice(0, 16);
-            
-            // Kapszulák betöltése
-            loadCapsules();
+
+            // Firebase inicializálás
+            await initializeFirebase();
         });
     </script>
 </body>
