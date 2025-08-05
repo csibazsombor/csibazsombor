@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕰️ Időkapszula - Toye & Toyaaa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #f5f3f0 0%, #ede7e0 100%);
+            color: #4a4a4a;
+            line-height: 1.7;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="0.5" fill="%23d4c4b0" opacity="0.3"/><circle cx="80" cy="40" r="0.3" fill="%23d4c4b0" opacity="0.2"/><circle cx="40" cy="80" r="0.4" fill="%23c9b896" opacity="0.25"/><circle cx="90" cy="90" r="0.2" fill="%23d4c4b0" opacity="0.3"/><circle cx="10" cy="60" r="0.3" fill="%23c9b896" opacity="0.2"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: #5d4e37;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 4px rgba(93, 78, 55, 0.1);
+            font-family: 'Georgia', serif;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #7a6b5d;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .section {
+            background: rgba(255, 251, 245, 0.9);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 
+                0 8px 32px rgba(93, 78, 55, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(212, 196, 176, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .section h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: #5d4e37;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Georgia', serif;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #5d4e37;
+            font-size: 0.95rem;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(212, 196, 176, 0.4);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 251, 245, 0.8);
+            font-family: 'Georgia', serif;
+            color: #4a4a4a;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #a0926b;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(160, 146, 107, 0.15);
+            background: rgba(255, 251, 245, 1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .emoji-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .emoji-option {
+            padding: 12px;
+            border: 2px solid rgba(212, 196, 176, 0.4);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 251, 245, 0.8);
+            font-size: 1.3rem;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .emoji-option:hover {
+            border-color: #a0926b;
+            transform: translateY(-2px);
+            background: rgba(255, 251, 245, 1);
+            box-shadow: 0 4px 12px rgba(160, 146, 107, 0.15);
+        }
+
+        .emoji-option.selected {
+            border-color: #8b7355;
+            background: rgba(139, 115, 85, 0.1);
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+        }
+
+        .btn {
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #333;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #666;
+            border: 1.5px solid #e8e8e8;
+            margin-left: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f8f8;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        .btn-secondary.recording {
+            background: #ff4444;
+            color: white;
+            border-color: #ff4444;
+        }
+
+        .capsules-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .capsule {
+            background: rgba(255, 251, 245, 0.85);
+            border: 2px solid rgba(212, 196, 176, 0.4);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            position: relative;
+        }
+
+        .capsule::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
+        }
+
+        .capsule:hover {
+            border-color: #a0926b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(160, 146, 107, 0.2);
+            background: rgba(255, 251, 245, 0.95);
+        }
+
+        .capsule.locked {
+            border-color: rgba(212, 196, 176, 0.3);
+            background: rgba(248, 244, 237, 0.6);
+        }
+
+        .capsule.unlocked {
+            border-color: #d4a574;
+            background: rgba(212, 165, 116, 0.08);
+            box-shadow: 0 4px 20px rgba(212, 165, 116, 0.15);
+        }
+
+        .capsule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .capsule-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        .capsule-emoji {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .capsule-author {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .capsule-countdown {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .capsule.locked .capsule-countdown {
+            color: #999;
+        }
+
+        .capsule.unlocked .capsule-countdown {
+            color: #2196F3;
+        }
+
+        .capsule-message {
+            background: #f8f8f8;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 3px solid #2196F3;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .capsule-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 12px;
+        }
+
+        .lock-icon {
+            font-size: 2rem;
+            color: #ccc;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .no-capsules {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 60px 20px;
+        }
+
+        .audio-controls {
+            margin-top: 12px;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+
+        .error {
+            background: rgba(237, 198, 188, 0.2);
+            color: #8b4513;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .section {
+                padding: 24px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕰️ Időkapszula</h1>
+            <p>Toye & Toyaaa személyes időkapszulája</p>
+        </div>
+
+        <div id="error-container"></div>
+
+        <div class="section">
+            <h2>✨ Új időkapszula létrehozása</h2>
+            <form id="capsule-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Kapszula címe</label>
+                        <input type="text" id="title" placeholder="pl. Születésnapodra" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Ki írja</label>
+                        <select id="author" required>
+                            <option value="">Válassz...</option>
+                            <option value="Toye">Toye</option>
+                            <option value="Toyaaa">Toyaaa</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Üzenet</label>
+                    <textarea id="message" placeholder="Írd ide az üzeneted..." required></textarea>
+                    <button type="button" class="btn-secondary" id="record-btn">🎤 Hang rögzítése</button>
+                    <div class="audio-controls" id="audio-controls" style="display: none;">
+                        <audio class="audio-player" id="audio-player" controls></audio>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="unlock-date">Megnyitási dátum</label>
+                        <input type="datetime-local" id="unlock-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Jelszó (opcionális)</label>
+                        <input type="password" id="password" placeholder="Titkos jelszó...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Hangulat emoji</label>
+                    <div class="emoji-selector">
+                        <div class="emoji-option" data-emoji="🥹">🥹</div>
+                        <div class="emoji-option" data-emoji="💌">💌</div>
+                        <div class="emoji-option" data-emoji="🎁">🎁</div>
+                        <div class="emoji-option" data-emoji="❤️">❤️</div>
+                        <div class="emoji-option" data-emoji="🌟">🌟</div>
+                        <div class="emoji-option" data-emoji="🦋">🦋</div>
+                        <div class="emoji-option" data-emoji="🌸">🌸</div>
+                        <div class="emoji-option" data-emoji="✨">✨</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Kapszula létrehozása</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>📦 Időkapszulák</h2>
+            <div id="capsules-container" class="loading">
+                Betöltés...
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-firestore-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-storage-compat.min.js"></script>
+
+    <script>
+        // Firebase konfiguráció - CSERÉLD KI A SAJÁT ADATAIDDAL!
+        const firebaseConfig = {
+            apiKey: "your-api-key-here",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project-id",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "your-app-id"
+        };
+
+        // Firebase inicializálás
+        let db, storage;
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            storage = firebase.storage();
+            console.log('Firebase sikeresen inicializálva');
+        } catch (error) {
+            console.error('Firebase inicializálási hiba:', error);
+            showError('Firebase kapcsolat sikertelen. LocalStorage-ot használunk helyette.');
+            // Fallback LocalStorage-ra
+            db = null;
+        }
+
+        let selectedEmoji = '💌';
+        let audioBlob = null;
+        let mediaRecorder = null;
+        let capsules = [];
+
+        function showError(message) {
+            const errorContainer = document.getElementById('error-container');
+            errorContainer.innerHTML = `<div class="error">${message}</div>`;
+            setTimeout(() => {
+                errorContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Emoji kiválasztás
+        document.querySelectorAll('.emoji-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedEmoji = option.dataset.emoji;
+            });
+        });
+
+        // Alapértelmezett emoji
+        document.querySelector('.emoji-option[data-emoji="💌"]').classList.add('selected');
+
+        // Hang rögzítés
+        document.getElementById('record-btn').addEventListener('click', async () => {
+            const recordBtn = document.getElementById('record-btn');
+            const audioControls = document.getElementById('audio-controls');
+            const audioPlayer = document.getElementById('audio-player');
+
+            if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    const audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioPlayer.src = audioUrl;
+                        audioControls.style.display = 'block';
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    recordBtn.textContent = '⏹️ Leállítás';
+                    recordBtn.classList.add('recording');
+                } catch (error) {
+                    showError('Nem sikerült elérni a mikrofont!');
+                }
+            } else {
+                mediaRecorder.stop();
+                recordBtn.textContent = '🎤 Hang rögzítése';
+                recordBtn.classList.remove('recording');
+            }
+        });
+
+        // Kapszula létrehozás
+        document.getElementById('capsule-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            const message = document.getElementById('message').value;
+            const unlockDate = new Date(document.getElementById('unlock-date').value);
+            const password = document.getElementById('password').value;
+
+            if (unlockDate <= new Date()) {
+                showError('A megnyitási dátumnak a jövőben kell lennie!');
+                return;
+            }
+
+            const submitBtn = document.querySelector('.btn-primary');
+            submitBtn.textContent = 'Mentés...';
+            submitBtn.disabled = true;
+
+            try {
+                const capsule = {
+                    title,
+                    author,
+                    message,
+                    unlockDate: unlockDate.toISOString(),
+                    password,
+                    emoji: selectedEmoji,
+                    createdAt: new Date().toISOString()
+                };
+
+                // Hangfájl feltöltése Firebase Storage-ba
+                if (audioBlob && storage) {
+                    const audioRef = storage.ref().child(`audio/${Date.now()}.wav`);
+                    const uploadTask = await audioRef.put(audioBlob);
+                    capsule.audioUrl = await uploadTask.ref.getDownloadURL();
+                } else if (audioBlob) {
+                    // LocalStorage fallback
+                    capsule.audioBlob = await blobToBase64(audioBlob);
+                }
+
+                // Mentés Firebase-be vagy LocalStorage-ba
+                if (db) {
+                    await db.collection('capsules').add(capsule);
+                } else {
+                    const localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+                    capsule.id = Date.now();
+                    localCapsules.push(capsule);
+                    localStorage.setItem('timeCapsules', JSON.stringify(localCapsules));
+                }
+
+                // Form reset
+                document.getElementById('capsule-form').reset();
+                selectedEmoji = '💌';
+                audioBlob = null;
+                document.getElementById('audio-controls').style.display = 'none';
+                document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
+                document.querySelector('.emoji-option[data-emoji="💌"]').classList.add('selected');
+                
+                await loadCapsules();
+                
+                // Success feedback
+                showError('Időkapszula sikeresen létrehozva! ✨');
+                
+            } catch (error) {
+                console.error('Hiba a mentés során:', error);
+                showError('Hiba történt a mentés során. Próbáld újra!');
+            }
+
+            submitBtn.textContent = 'Kapszula létrehozása';
+            submitBtn.disabled = false;
+        });
+
+        // Base64 konverzió
+        function blobToBase64(blob) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(blob);
+            });
+        }
+
+        // Időszámítás
+        function getTimeRemaining(targetDate) {
+            const now = new Date();
+            const target = new Date(targetDate);
+            const diff = target - now;
+
+            if (diff <= 0) return null;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            if (days > 0) return `${days} nap`;
+            if (hours > 0) return `${hours} óra`;
+            return `${minutes} perc`;
+        }
+
+        // Kapszulák betöltése
+        async function loadCapsules() {
+            const container = document.getElementById('capsules-container');
+            container.innerHTML = '<div class="loading">Betöltés...</div>';
+
+            try {
+                if (db) {
+                    // Firebase betöltés
+                    const snapshot = await db.collection('capsules').orderBy('createdAt', 'desc').get();
+                    capsules = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                } else {
+                    // LocalStorage fallback
+                    capsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+                }
+
+                renderCapsules();
+            } catch (error) {
+                console.error('Hiba a betöltés során:', error);
+                container.innerHTML = '<div class="error">Hiba a betöltés során</div>';
+            }
+        }
+
+        // Kapszulák renderelése
+        function renderCapsules() {
+            const container = document.getElementById('capsules-container');
+            
+            if (capsules.length === 0) {
+                container.innerHTML = '<div class="no-capsules">Még nincsenek időkapszulák.<br>Hozz létre az elsőt! ✨</div>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="capsules-grid">
+                    ${capsules.map(capsule => {
+                        const now = new Date();
+                        const unlockDate = new Date(capsule.unlockDate);
+                        const isUnlocked = now >= unlockDate;
+                        const timeRemaining = getTimeRemaining(capsule.unlockDate);
+
+                        return `
+                            <div class="capsule ${isUnlocked ? 'unlocked' : 'locked'}" onclick="openCapsule('${capsule.id}')">
+                                <div class="capsule-header">
+                                    <h3 class="capsule-title">${capsule.title}</h3>
+                                    <div class="capsule-emoji">${capsule.emoji}</div>
+                                </div>
+                                <div class="capsule-author">${capsule.author}</div>
+                                <div class="capsule-countdown">
+                                    ${isUnlocked ? '✅ Megnyílt!' : `🔒 Még ${timeRemaining || 'hamarosan!'}`}
+                                </div>
+                                ${isUnlocked ? `
+                                    <div class="capsule-message">
+                                        ${capsule.message}
+                                        ${(capsule.audioUrl || capsule.audioBlob) ? `
+                                            <audio class="audio-player" controls>
+                                                <source src="${capsule.audioUrl || capsule.audioBlob}" type="audio/wav">
+                                            </audio>
+                                        ` : ''}
+                                    </div>
+                                ` : `
+                                    <div class="lock-icon">🔐</div>
+                                `}
+                                <div class="capsule-date">
+                                    Megnyílik: ${unlockDate.toLocaleDateString('hu-HU')} ${unlockDate.toLocaleTimeString('hu-HU', {hour: '2-digit', minute: '2-digit'})}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        // Kapszula megnyitás
+        function openCapsule(id) {
+            const capsule = capsules.find(c => c.id == id);
+            if (!capsule) return;
+
+            const now = new Date();
+            const unlockDate = new Date(capsule.unlockDate);
+
+            if (now < unlockDate) {
+                const timeRemaining = getTimeRemaining(capsule.unlockDate);
+                alert(`🔒 Ez a kapszula még zárva van!\nMég ${timeRemaining || 'kevés idő'} van hátra.`);
+                return;
+            }
+
+            if (capsule.password) {
+                const enteredPassword = prompt('🔐 Add meg a jelszót:');
+                if (enteredPassword !== capsule.password) {
+                    alert('❌ Helytelen jelszó!');
+                    return;
+                }
+            }
+
+            alert(`🎉 Kapszula megnyílt!\n\n"${capsule.title}"\n\n${capsule.message}\n\n- ${capsule.author}`);
+        }
+
+        // Automatikus frissítés
+        setInterval(() => {
+            renderCapsules();
+        }, 60000); // Minden percben
+
+        // Inicializálás
+        document.addEventListener('DOMContentLoaded', () => {
+            // Alapértelmezett dátum beállítása (holnap)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('unlock-date').value = tomorrow.toISOString().slice(0, 16);
+            
+            // Kapszulák betöltése
+            loadCapsules();
+        });
+    </script>
+</body>
+</html>
