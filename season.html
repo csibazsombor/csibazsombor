@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeFlow - Modern Counters</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0a0a0f;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.3) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .counters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .counter-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .counter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .counter-card:hover::before {
+            left: 100%;
+        }
+
+        .counter-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .counter-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .counter-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .season-icon { background: var(--primary-gradient); }
+        .time-icon { background: var(--secondary-gradient); }
+        .date-icon { background: var(--accent-gradient); }
+
+        .counter-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .counter-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .counter-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .season-progress { background: var(--primary-gradient); }
+        .year-progress { background: var(--secondary-gradient); }
+        .day-progress { background: var(--accent-gradient); }
+
+        .live-time {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .live-time h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .digital-clock {
+            font-size: 3rem;
+            font-weight: 300;
+            font-family: 'Courier New', monospace;
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .date-display {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .digital-clock {
+                font-size: 2rem;
+            }
+            
+            .counter-value {
+                font-size: 2rem;
+            }
+            
+            .counters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>TimeFlow</h1>
+            <p>Experience time in beautiful ways with live counters for seasons, days, and moments that matter</p>
+        </div>
+
+        <div class="live-time">
+            <h2>Live Time</h2>
+            <div class="digital-clock" id="digitalClock">00:00:00</div>
+            <div class="date-display" id="dateDisplay"></div>
+        </div>
+
+        <div class="counters-grid">
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon season-icon">🌸</div>
+                    <div class="counter-title">Current Season</div>
+                </div>
+                <div class="counter-value" id="currentSeason">Spring</div>
+                <div class="progress-bar">
+                    <div class="progress-fill season-progress" id="seasonProgress"></div>
+                </div>
+                <div class="counter-description" id="seasonDescription">Days until next season</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon time-icon">⏰</div>
+                    <div class="counter-title">Year Progress</div>
+                </div>
+                <div class="counter-value" id="yearProgress">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill year-progress" id="yearProgressBar"></div>
+                </div>
+                <div class="counter-description" id="yearDescription">Days remaining in 2025</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon date-icon">📅</div>
+                    <div class="counter-title">Day Progress</div>
+                </div>
+                <div class="counter-value" id="dayProgress">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill day-progress" id="dayProgressBar"></div>
+                </div>
+                <div class="counter-description">Hours and minutes until midnight</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon season-icon">🎄</div>
+                    <div class="counter-title">Days to Christmas</div>
+                </div>
+                <div class="counter-value" id="christmasCountdown">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill season-progress" id="christmasProgress"></div>
+                </div>
+                <div class="counter-description">Ho ho ho! 🎅</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon time-icon">🎊</div>
+                    <div class="counter-title">Days to New Year</div>
+                </div>
+                <div class="counter-value" id="newYearCountdown">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill year-progress" id="newYearProgress"></div>
+                </div>
+                <div class="counter-description">Ready for 2026?</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon date-icon">🌙</div>
+                    <div class="counter-title">Week Progress</div>
+                </div>
+                <div class="counter-value" id="weekProgress">0%</div>
+                <div class="progress-bar">
+                    <div class="progress-fill day-progress" id="weekProgressBar"></div>
+                </div>
+                <div class="counter-description" id="weekDescription">Days until weekend</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value" id="totalSeconds">0</div>
+                <div class="stat-label">Seconds Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalMinutes">0</div>
+                <div class="stat-label">Minutes Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="dayOfYear">0</div>
+                <div class="stat-label">Day of Year</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="weekOfYear">0</div>
+                <div class="stat-label">Week of Year</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateAllCounters() {
+            const now = new Date();
+            
+            // Digital Clock
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('digitalClock').textContent = timeString;
+            
+            // Date Display
+            const dateString = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('dateDisplay').textContent = dateString;
+            
+            // Season Calculation
+            const month = now.getMonth();
+            let season, seasonIcon, daysToNext;
+            
+            if (month >= 2 && month <= 4) {
+                season = 'Spring';
+                seasonIcon = '🌸';
+                daysToNext = new Date(now.getFullYear(), 5, 21) - now;
+            } else if (month >= 5 && month <= 7) {
+                season = 'Summer';
+                seasonIcon = '☀️';
+                daysToNext = new Date(now.getFullYear(), 8, 23) - now;
+            } else if (month >= 8 && month <= 10) {
+                season = 'Autumn';
+                seasonIcon = '🍂';
+                daysToNext = new Date(now.getFullYear(), 11, 21) - now;
+            } else {
+                season = 'Winter';
+                seasonIcon = '❄️';
+                daysToNext = new Date(now.getFullYear() + (month === 11 ? 1 : 0), 2, 20) - now;
+            }
+            
+            document.getElementById('currentSeason').textContent = season;
+            document.querySelector('.season-icon').textContent = seasonIcon;
+            
+            const daysToNextSeason = Math.ceil(daysToNext / (1000 * 60 * 60 * 24));
+            document.getElementById('seasonDescription').textContent = `${daysToNextSeason} days until next season`;
+            
+            // Season progress (approximate)
+            const seasonProgress = ((90 - daysToNextSeason) / 90) * 100;
+            document.getElementById('seasonProgress').style.width = `${Math.max(0, seasonProgress)}%`;
+            
+            // Year Progress
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const endOfYear = new Date(now.getFullYear() + 1, 0, 1);
+            const yearProgressPercent = ((now - startOfYear) / (endOfYear - startOfYear)) * 100;
+            document.getElementById('yearProgress').textContent = `${yearProgressPercent.toFixed(1)}%`;
+            document.getElementById('yearProgressBar').style.width = `${yearProgressPercent}%`;
+            
+            const daysRemainingInYear = Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('yearDescription').textContent = `${daysRemainingInYear} days remaining in ${now.getFullYear()}`;
+            
+            // Day Progress
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const dayProgressPercent = ((now - startOfDay) / (endOfDay - startOfDay)) * 100;
+            document.getElementById('dayProgress').textContent = `${dayProgressPercent.toFixed(1)}%`;
+            document.getElementById('dayProgressBar').style.width = `${dayProgressPercent}%`;
+            
+            // Christmas Countdown
+            let christmas = new Date(now.getFullYear(), 11, 25);
+            if (now > christmas) {
+                christmas = new Date(now.getFullYear() + 1, 11, 25);
+            }
+            const daysToChristmas = Math.ceil((christmas - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('christmasCountdown').textContent = daysToChristmas;
+            const christmasProgress = ((365 - daysToChristmas) / 365) * 100;
+            document.getElementById('christmasProgress').style.width = `${christmasProgress}%`;
+            
+            // New Year Countdown
+            let newYear = new Date(now.getFullYear() + 1, 0, 1);
+            const daysToNewYear = Math.ceil((newYear - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('newYearCountdown').textContent = daysToNewYear;
+            const newYearProgress = ((365 - daysToNewYear) / 365) * 100;
+            document.getElementById('newYearProgress').style.width = `${newYearProgress}%`;
+            
+            // Week Progress
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay());
+            startOfWeek.setHours(0, 0, 0, 0);
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 7);
+            const weekProgressPercent = ((now - startOfWeek) / (endOfWeek - startOfWeek)) * 100;
+            document.getElementById('weekProgress').textContent = `${weekProgressPercent.toFixed(1)}%`;
+            document.getElementById('weekProgressBar').style.width = `${weekProgressPercent}%`;
+            
+            const daysToWeekend = 6 - now.getDay();
+            document.getElementById('weekDescription').textContent = daysToWeekend === 0 ? "It's weekend!" : `${daysToWeekend} days until weekend`;
+            
+            // Stats
+            const secondsToday = Math.floor((now - startOfDay) / 1000);
+            document.getElementById('totalSeconds').textContent = secondsToday.toLocaleString();
+            
+            const minutesToday = Math.floor(secondsToday / 60);
+            document.getElementById('totalMinutes').textContent = minutesToday.toLocaleString();
+            
+            const dayOfYear = Math.ceil((now - startOfYear) / (1000 * 60 * 60 * 24));
+            document.getElementById('dayOfYear').textContent = dayOfYear;
+            
+            const weekOfYear = Math.ceil(dayOfYear / 7);
+            document.getElementById('weekOfYear').textContent = weekOfYear;
+        }
+        
+        // Update immediately and then every second
+        updateAllCounters();
+        setInterval(updateAllCounters, 1000);
+        
+        // Add subtle animation to counter cards
+        const cards = document.querySelectorAll('.counter-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+    </script>
+</body>
+</html>
