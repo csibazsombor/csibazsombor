@@ -1,0 +1,117 @@
+body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+}
+
+img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Subtle drop shadow */
+        transition: transform 0.3s ease;
+}
+
+img:hover {
+        transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Animation for messages: slide in from the left */
+@keyframes slideIn {
+        0% {
+                opacity: 0;
+                transform: translateX(-50px);
+        }
+        100% {
+                opacity: 1;
+                transform: translateX(0);
+        }
+}
+
+.messages {
+        padding: 20px;
+        background-color: #fff8e1; /* light, creamy background */
+        border: 2px dashed #FF6F61; /* playful, cat-like border */
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        margin: 20px auto;
+        max-width: 600px;
+        width: 90%; /* allow responsive width */
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        position: relative;
+        animation: slideIn 0.6s ease-out; /* Apply slide-in animation */
+}
+
+.messages:before {
+        content: "";
+        background: url('https://placekitten.com/40/40') no-repeat center;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: -20px;
+        left: -20px;
+}
+
+.messages:after {
+        content: "";
+        background: url('https://placekitten.com/40/40') no-repeat center;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+}
+
+/* Button Styles */
+button {
+        background-color: #FF6F61;
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+}
+
+/* Bounce animation for button on click */
+@keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+        }
+        40% {
+                transform: translateY(-10px);
+        }
+        60% {
+                transform: translateY(-5px);
+        }
+}
+
+button:hover {
+        background-color: #e65c50;
+}
+
+button:active {
+        animation: bounce 0.5s;
+}
+
+/* Additional responsive styling for very small devices */
+@media (max-width: 480px) {
+        .messages {
+                padding: 15px;
+                margin: 15px;
+        }
+        .messages:before,
+        .messages:after {
+                width: 30px;
+                height: 30px;
+        }
+        button {
+                padding: 8px 16px;
+                font-size: 14px;
+        }
+}
