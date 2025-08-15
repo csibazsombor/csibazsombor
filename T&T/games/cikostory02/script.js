@@ -2,12 +2,12 @@ let messages = document.getElementById("messages");
 
 // Define the conversation steps with text, image, and delay for each step
 const conversation = [
-        { text: "Hiii", image: "cat1.jpg", delay: 2000 },
-        { text: "You know who I am, sir?", image: "cat2.jpg", delay: 5000 },
-        { text: "Watch my next trick!", image: "cat3.jpg", delay: 2000 },
-        { text: "💤💤", image: "sleep.jpg", delay: 3000 },
-        { text: "HII, i'm awakee!!!", image: "cat4.png", delay: 3500 },
-        { text: "", image: "cat5.jpg", delay: 2000 }
+        { text: "Youu,again?", image: "cat1.jpg", delay: 2000 },
+        { text: "You know why i'm here?", image: "cat1.jpg", delay: 5000 },
+        { text: "I'm gonna hit you!!", image: "naughty.jpg", delay: 2000 },
+        { text: "😼", image: "cat3.jpg", delay: 3000 },
+        { text: "nah, i go to gym instead", image: "leave.png", delay: 2000 },
+        { text: "The end! I hope you enjoyed it toyeee🫵😏", image: "leave.png", delay: 2000 }
 ];
 
 // Function to display a message with a simple fade animation
@@ -38,11 +38,11 @@ function runConversation() {
                 feedContainer.style.marginTop = "20px";
 
                 const goodFoodButton = document.createElement("button");
-                goodFoodButton.textContent = "Feed ciko with cat food";
+                goodFoodButton.textContent = "Let ciko go outside";
                 goodFoodButton.style.marginRight = "10px";
 
                 const badFoodButton = document.createElement("button");
-                badFoodButton.textContent = "Feed ciko with bad food";
+                badFoodButton.textContent = "Hold ciko back";
 
                 feedContainer.appendChild(goodFoodButton);
                 feedContainer.appendChild(badFoodButton);
@@ -55,9 +55,8 @@ function runConversation() {
                         setTimeout(() => {
                                 messages.innerHTML = `
                                         <div style="text-align:center;">
-                                                <img src="happy_food.png" alt="Happy Cat" style="width:150px;height:150px;display:block;margin:0 auto;">
                                         </div>
-                                        <p style="font-size:1em;color:green;text-align:center;">😻😻</p>
+                                        <p style="font-size:1em;color:green;text-align:center;">Ciko went outside</p>
                                 `;
                                 messages.style.opacity = 1;
                         }, 500);
@@ -70,9 +69,9 @@ function runConversation() {
                         setTimeout(() => {
                                 messages.innerHTML = `
                                         <div style="text-align:center;">
-                                                <img src="eww.png" alt="Angry Cat" style="width:150px;height:150px;display:block;margin:0 auto;">
+                                                <img src="mad.jpg" alt="Angry Cat" style="width:150px;height:150px;display:block;margin:0 auto;">
                                         </div>
-                                        <p style="font-size:1em;color:red;text-align:center;">WHATT IS THATT??🤢        </p>
+                                        <p style="font-size:1em;color:red;text-align:center;">😾😾</p>
                                 `;
                                 messages.style.opacity = 1;
                         }, 500);
@@ -90,11 +89,11 @@ function runConversation() {
                         buttonContainer.style.marginTop = "20px";
                         
                         const button1 = document.createElement("button");
-                        button1.textContent = "Ciko";
+                        button1.textContent = "To Ask for food?";
                         button1.style.marginRight = "10px";
                         
                         const button2 = document.createElement("button");
-                        button2.textContent = "Larry's friend";
+                        button2.textContent = "To bother me..";
                         
                         button1.onclick = () => {
                                 buttonContainer.remove();
@@ -103,9 +102,9 @@ function runConversation() {
                                 setTimeout(() => {
                                         messages.innerHTML = `
                                                 <div style="text-align:center;">
-                                                        <img src="happy.jpg" alt="Happy Image" style="width:150px;height:150px;display:block;margin:0 auto;">
+                                                        <img src="cat2.jpg" alt="Happy Image" style="width:150px;height:150px;display:block;margin:0 auto;">
                                                 </div>
-                                                <p style="font-size:1em;color:blue;text-align:center;">YEAYYYYY!!!! Meoowww</p>
+                                                <p style="font-size:1em;color:blue;text-align:center;">Nopee</p>
                                         `;
                                         messages.style.opacity = 1;
                                         setTimeout(() => {
@@ -154,9 +153,9 @@ function runConversation() {
                                         setTimeout(() => {
                                                 messages.innerHTML = `
                                                         <div style="text-align:center;">
-                                                                <img src="mad.jpg" alt="Mad Image" style="width:150px;height:150px;display:block;margin:0 auto;">
+                                                                <img src="mm.jpg" alt="Mad Image" style="width:150px;height:150px;display:block;margin:0 auto;">
                                                         </div>
-                                                        <p style="font-size:1em;color:red;text-align:center;">WHATTT!!!😡😡</p>
+                                                        <p style="font-size:1em;color:red;text-align:center;">Exactly!😏</p>
                                                 `;
                                                 messages.style.opacity = 1;
                                                 setTimeout(() => {
@@ -173,18 +172,18 @@ function runConversation() {
                 }, 600);
         }
         // Interactive branch for step 3 (new branch)
-        else if (currentStep === 3) {
+        else if (currentStep === 2) {
                 setTimeout(() => {
                         const buttonContainer = document.createElement("div");
                         buttonContainer.style.textAlign = "center";
                         buttonContainer.style.marginTop = "20px";
                         
                         const danceButton = document.createElement("button");
-                        danceButton.textContent = "Not bothering";
+                        danceButton.textContent = "Scold ciko";
                         danceButton.style.marginRight = "10px";
                         
                         const singButton = document.createElement("button");
-                        singButton.textContent = "Bothering ciko";
+                        singButton.textContent = "Bothering ciko back";
                         
                         danceButton.onclick = () => {
                                 buttonContainer.remove();
@@ -195,7 +194,7 @@ function runConversation() {
                                                 <div style="text-align:center;">
                                                         <img src="leave.png" alt="Ciko not bothered" style="width:150px;height:150px;display:block;margin:0 auto;">
                                                 </div>
-                                                <p style="font-size:1em;color:purple;text-align:center;">Why you not care about me??😭😭😢😢 (Ciko went outside)</p>
+                                                <p style="font-size:1em;color:purple;text-align:center;">...</p>
                                         `;
                                         messages.style.opacity = 1;
                                         setTimeout(() => {
@@ -212,7 +211,7 @@ function runConversation() {
                                 setTimeout(() => {
                                         messages.innerHTML = `
                                                 <div style="text-align:center;">
-                                                        <img src="bothered.jpg" alt="Ciko bothered" style="width:150px;height:150px;display:block;margin:0 auto;">
+                                                        <img src="shock.jpg" alt="Ciko bothered" style="width:150px;height:150px;display:block;margin:0 auto;">
                                                 </div>
                                         `;
                                         messages.style.opacity = 1;
