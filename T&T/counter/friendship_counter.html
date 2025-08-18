@@ -5,780 +5,864 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Friendship with Toyeee & Toyaaa</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>  
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-messaging.js"></script>  
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script> 
-    <div class="popup-overlay" id="popupOverlay"></div>
     
+    <style>
+        /* Enhanced Modern Friendship Counter CSS */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light mode colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #718096;
+            --text-muted: #a0aec0;
+            --border-color: #e2e8f0;
+            --accent-primary: #667eea;
+            --accent-secondary: #764ba2;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --transition-fast: all 0.15s ease;
+            --transition-medium: all 0.3s ease;
+            --transition-slow: all 0.6s ease;
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+        }
+
+        /* Dark mode colors */
+        body.dark-mode {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border-color: #475569;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            background: var(--bg-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-weight: 400;
+            transition: var(--transition-medium);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Container and Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 900px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .mode-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            transition: var(--transition-fast);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .mode-toggle:hover {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Typography */
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .milestone {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* Counter Grid */
+        .counter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            width: 100%;
+            max-width: 900px;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .counter-item {
+            background: var(--bg-card);
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition-medium);
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: var(--transition-slow);
+        }
+
+        .counter-item:hover::before {
+            left: 100%;
+        }
+
+        .counter-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--accent-primary);
+        }
+
+        .counter-item:active {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        .counter-number {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+            letter-spacing: -0.01em;
+            display: block;
+            line-height: 1;
+        }
+
+        .counter-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Hide/Show Time Units */
+        .minutes-hidden,
+        .seconds-hidden {
+            display: none !important;
+        }
+
+        .stats-hidden {
+            display: none !important;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin: var(--spacing-lg) 0;
+            flex-wrap: wrap;
+        }
+
+        .toggle-button {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            transition: var(--transition-fast);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toggle-button:hover {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            width: 100%;
+            max-width: 900px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-medium);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-accent);
+            transform: scaleY(0);
+            transition: var(--transition-medium);
+        }
+
+        .stat-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--text-muted);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Birthday and Timezone Sections */
+        .birthday-section,
+        .timezone-section {
+            width: 100%;
+            max-width: 500px;
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-medium);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .birthday-section {
+            border-color: var(--warning-color);
+            background: linear-gradient(135deg, #fff8e1, #fef3e2);
+        }
+
+        body.dark-mode .birthday-section {
+            background: linear-gradient(135deg, #2d1b00, #3d2900);
+        }
+
+        .timezone-section {
+            border-color: #2196f3;
+            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+        }
+
+        body.dark-mode .timezone-section {
+            background: linear-gradient(135deg, #0a263f, #1a365d);
+        }
+
+        .birthday-title,
+        .timezone-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+        }
+
+        .birthday-grid {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .timezone-grid {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .timezone-item {
+            background: var(--bg-card);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            min-width: 180px;
+            border: 1px solid var(--border-color);
+        }
+
+        .timezone-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .timezone-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Language Switcher */
+        .language-switcher {
+            position: fixed;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            z-index: 1000;
+            display: flex;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition-medium);
+        }
+
+        body.dark-mode .language-switcher {
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .language-switcher::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 72px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 40px;
+            transition: var(--transition-medium);
+            z-index: 1;
+            box-shadow: var(--shadow-light);
+        }
+
+        .language-switcher.en::before {
+            transform: translateX(76px);
+            background: var(--gradient-accent);
+        }
+
+        .language-switcher button {
+            background: none;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.875rem;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition-fast);
+            border-radius: 30px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            min-width: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .language-switcher button.active {
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: calc(var(--spacing-md) + 60px);
+            right: var(--spacing-md);
+            background: var(--success-color);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: var(--transition-medium);
+            z-index: 1001;
+            box-shadow: var(--shadow-heavy);
+            max-width: 300px;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: var(--error-color);
+        }
+
+        .notification.warning {
+            background: var(--warning-color);
+        }
+
+        /* Description */
+        .description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin: var(--spacing-lg) 0;
+            padding: var(--spacing-md);
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+
+        .date-highlight {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Links */
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--accent-secondary);
+            text-decoration: underline;
+        }
+
+        /* Enhanced Achievements Section */
+        .achievements-section {
+            width: 100%;
+            max-width: 900px;
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-medium);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .achievements-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .achievement-item {
+            text-align: center;
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            transition: var(--transition-medium);
+            cursor: pointer;
+        }
+
+        .achievement-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .achievement-item.unlocked {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .achievement-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes numberPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .number-change {
+            animation: numberPulse 0.4s ease;
+        }
+
+        .celebrate {
+            animation: celebrate 0.6s ease;
+        }
+
+        /* Staggered animation delays */
+        .counter-item:nth-child(1) { animation-delay: 0.1s; }
+        .counter-item:nth-child(2) { animation-delay: 0.2s; }
+        .counter-item:nth-child(3) { animation-delay: 0.3s; }
+        .counter-item:nth-child(4) { animation-delay: 0.4s; }
+        .counter-item:nth-child(5) { animation-delay: 0.5s; }
+        .counter-item:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .counter-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: var(--spacing-md);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --spacing-xs: 0.25rem;
+                --spacing-sm: 0.75rem;
+                --spacing-md: 1rem;
+                --spacing-lg: 1.5rem;
+                --spacing-xl: 2rem;
+            }
+            
+            .container {
+                padding: var(--spacing-md);
+            }
+            
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-sm);
+            }
+            
+            .counter-item {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+            
+            .counter-number {
+                font-size: clamp(1.5rem, 6vw, 2.5rem);
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-md);
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timezone-grid,
+            .birthday-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .language-switcher {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: var(--spacing-md);
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .counter-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-xs);
+            }
+            
+            .counter-item {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+            
+            .counter-number {
+                font-size: clamp(1.25rem, 8vw, 2rem);
+                margin-bottom: 0.25rem;
+            }
+            
+            .counter-label {
+                font-size: 0.75rem;
+            }
+            
+            .birthday-section,
+            .timezone-section {
+                padding: var(--spacing-lg);
+                margin: var(--spacing-md) 0;
+            }
+
+            .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Performance optimizations */
+        .counter-item,
+        .stat-item,
+        .language-switcher,
+        .notification {
+            will-change: transform;
+        }
+
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
     <div class="language-switcher" id="languageSwitcher">
         <button id="switch-to-id" onclick="switchLanguage('id')" class="active">ID</button>
         <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
     </div>
-    
-    <style>
-/* Modern Friendship Counter CSS - Updated and Bug Fixed */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    /* Light mode colors */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-card: #ffffff;
-    --text-primary: #1a202c;
-    --text-secondary: #718096;
-    --text-muted: #a0aec0;
-    --border-color: #e2e8f0;
-    --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    --transition-fast: all 0.15s ease;
-    --transition-medium: all 0.3s ease;
-    --transition-slow: all 0.6s ease;
-    --border-radius: 12px;
-    --border-radius-lg: 16px;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-}
-
-/* Dark mode colors */
-body.dark-mode {
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-card: #334155;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #64748b;
-    --border-color: #475569;
-    --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-}
-
-body {
-    background: var(--bg-primary);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
-    color: var(--text-primary);
-    line-height: 1.6;
-    font-weight: 400;
-    transition: var(--transition-medium);
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* Container and Layout */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--spacing-lg) var(--spacing-md);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xl);
-}
-
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 900px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.1s forwards;
-    flex-wrap: wrap;
-    gap: var(--spacing-sm);
-}
-
-/* Typography */
-.title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    background: var(--gradient-primary);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-align: center;
-    letter-spacing: -0.02em;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.2s forwards;
-    margin-bottom: var(--spacing-md);
-}
-
-.milestone {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    text-align: center;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.3s forwards;
-    margin-bottom: var(--spacing-xl);
-}
-
-/* Counter Grid - Fixed Layout Issues */
-.counter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: var(--spacing-md);
-    width: 100%;
-    max-width: 900px;
-    margin: var(--spacing-xl) 0;
-}
-
-.counter-item {
-    background: var(--bg-card);
-    padding: var(--spacing-xl) var(--spacing-lg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-medium);
-    transition: var(--transition-medium);
-    cursor: pointer;
-    text-align: center;
-    border: 1px solid var(--border-color);
-    opacity: 0;
-    animation: fadeInUp 0.6s ease forwards;
-    position: relative;
-    overflow: hidden;
-}
-
-.counter-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: var(--transition-slow);
-}
-
-.counter-item:hover::before {
-    left: 100%;
-}
-
-.counter-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: var(--shadow-heavy);
-    border-color: var(--text-muted);
-}
-
-.counter-item:active {
-    transform: translateY(-4px) scale(1.01);
-}
-
-.counter-number {
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
-    letter-spacing: -0.01em;
-    display: block;
-    line-height: 1;
-}
-
-.counter-label {
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-    font-size: 0.875rem;
-}
-
-/* Hide/Show Time Units */
-.minutes-hidden,
-.seconds-hidden {
-    display: none !important;
-}
-
-.stats-hidden {
-    display: none !important;
-}
-
-/* Buttons */
-.mode-toggle,
-.share-btn,
-.toggle-button {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: var(--spacing-xs) var(--spacing-md);
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    font-family: inherit;
-    transition: var(--transition-fast);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    position: relative;
-    overflow: hidden;
-}
-
-.mode-toggle:hover,
-.share-btn:hover,
-.toggle-button:hover {
-    background: var(--text-primary);
-    color: var(--bg-primary);
-    border-color: var(--text-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
-}
-
-.toggle-button {
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-size: 0.875rem;
-    margin: 0 var(--spacing-xs);
-}
-
-/* Controls Section */
-.controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--spacing-sm);
-    margin: var(--spacing-lg) 0;
-    flex-wrap: wrap;
-}
-
-/* Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--spacing-lg);
-    width: 100%;
-    max-width: 900px;
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.4s forwards;
-}
-
-.stat-item {
-    background: var(--bg-card);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius);
-    border: 1px solid var(--border-color);
-    transition: var(--transition-medium);
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-}
-
-.stat-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--gradient-accent);
-    transform: scaleY(0);
-    transition: var(--transition-medium);
-}
-
-.stat-item:hover::before {
-    transform: scaleY(1);
-}
-
-.stat-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-medium);
-    border-color: var(--text-muted);
-}
-
-.stat-label {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-weight: 600;
-    margin-bottom: var(--spacing-xs);
-}
-
-.stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-/* Birthday and Timezone Sections - Fixed Background Issues */
-.birthday-section,
-.timezone-section {
-    width: 500%;
-    max-width: 500px;
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
-    text-align: center;
-    box-shadow: var(--shadow-medium);
-    opacity: 0;
-    animation: fadeInUp 0.8s ease 0.6s forwards;
-    background: var(--bg-card);
-    border: 2px solid var(--border-color);
-    position: relative;
-    overflow: hidden;
-}
-
-.birthday-section {
-    border-color: #f39c12;
-    background: linear-gradient(135deg, #fff8e1, #fef3e2);
-}
-
-body.dark-mode .birthday-section {
-    background: linear-gradient(135deg, #2d1b00, #3d2900);
-}
-
-.timezone-section {
-    border-color: #2196f3;
-    background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
-}
-
-body.dark-mode .timezone-section {
-    background: linear-gradient(135deg, #0a263f, #1a365d);
-}
-
-.birthday-title,
-.timezone-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: var(--spacing-lg);
-    color: var(--text-primary);
-}
-
-.timezone-grid {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-lg);
-    flex-wrap: wrap;
-}
-
-.timezone-item {
-    background: var(--bg-card);
-    padding: var(--spacing-lg);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-light);
-    min-width: 180px;
-    border: 1px solid var(--border-color);
-}
-
-.timezone-label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-xs);
-    text-transform: uppercase;
-    font-weight: 600;
-}
-
-.timezone-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
-
-/* Language Switcher - Fixed Positioning */
-.language-switcher {
-    position: fixed;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    z-index: 1000;
-    display: flex;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 50px;
-    padding: 6px;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-medium);
-    transition: var(--transition-medium);
-    width: auto;
-    min-width: 160px;
-}
-
-body.dark-mode .language-switcher {
-    background: rgba(15, 23, 42, 0.95);
-}
-
-.language-switcher::before {
-    content: '';
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    width: 72px;
-    height: 40px;
-    background: var(--gradient-primary);
-    border-radius: 40px;
-    transition: var(--transition-medium);
-    z-index: 1;
-    box-shadow: var(--shadow-light);
-}
-
-.language-switcher.en::before {
-    transform: translateX(76px);
-    background: var(--gradient-accent);
-}
-
-.language-switcher button {
-    background: none;
-    border: none;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-size: 0.875rem;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-    transition: var(--transition-fast);
-    border-radius: 30px;
-    color: var(--text-secondary);
-    font-weight: 600;
-    min-width: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.language-switcher button.active {
-    color: white;
-    font-weight: 700;
-}
-
-.language-switcher button::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 15px;
-    margin-right: 6px;
-    border-radius: 2px;
-    vertical-align: middle;
-    background-size: cover;
-}
-
-#switch-to-id::before {
-    background: linear-gradient(to bottom, #ff0000 50%, #ffffff 50%);
-}
-
-#switch-to-en::before {
-    background-image: url('https://flagcdn.com/gb.svg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-/* Notification */
-.notification {
-    position: fixed;
-    top: var(--spacing-md);
-    right: var(--spacing-md);
-    background: var(--text-primary);
-    color: var(--bg-primary);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    border-radius: var(--border-radius);
-    font-size: 0.875rem;
-    font-weight: 600;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: var(--transition-medium);
-    z-index: 1001;
-    box-shadow: var(--shadow-heavy);
-}
-
-.notification.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-/* Description */
-.description {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    text-align: center;
-    margin: var(--spacing-lg) 0;
-}
-
-.date-highlight {
-    color: var(--text-primary);
-    font-weight: 600;
-}
-
-/* Links */
-a {
-    color: #3b82f6;
-    text-decoration: none;
-    transition: var(--transition-fast);
-    font-weight: 500;
-}
-
-a:hover {
-    color: #1d4ed8;
-    text-decoration: underline;
-}
-
-body.dark-mode a {
-    color: #60a5fa;
-}
-
-body.dark-mode a:hover {
-    color: #93c5fd;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes numberPulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); color: var(--gradient-primary); }
-    100% { transform: scale(1); }
-}
-
-.number-change {
-    animation: numberPulse 0.4s ease;
-}
-
-/* Staggered animation delays */
-.counter-item:nth-child(1) { animation-delay: 0.1s; }
-.counter-item:nth-child(2) { animation-delay: 0.2s; }
-.counter-item:nth-child(3) { animation-delay: 0.3s; }
-.counter-item:nth-child(4) { animation-delay: 0.4s; }
-.counter-item:nth-child(5) { animation-delay: 0.5s; }
-.counter-item:nth-child(6) { animation-delay: 0.6s; }
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .counter-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-md);
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    :root {
-        --spacing-xs: 0.25rem;
-        --spacing-sm: 0.75rem;
-        --spacing-md: 1rem;
-        --spacing-lg: 1.5rem;
-        --spacing-xl: 2rem;
-    }
-    
-    .container {
-        padding: var(--spacing-md);
-    }
-    
-    .counter-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-sm);
-    }
-    
-    .counter-item {
-        padding: var(--spacing-lg) var(--spacing-md);
-    }
-    
-    .counter-number {
-        font-size: clamp(1.5rem, 6vw, 2.5rem);
-    }
-    
-    .header {
-        flex-direction: column;
-        align-items: center;
-        gap: var(--spacing-md);
-    }
-    
-    .controls {
-        flex-direction: column;
-        gap: var(--spacing-sm);
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .timezone-grid {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .language-switcher {
-        position: relative;
-        top: auto;
-        right: auto;
-        margin-bottom: var(--spacing-md);
-    }
-}
-
-@media (max-width: 480px) {
-    .counter-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-xs);
-    }
-    
-    .counter-item {
-        padding: var(--spacing-md) var(--spacing-sm);
-    }
-    
-    .counter-number {
-        font-size: clamp(1.25rem, 8vw, 2rem);
-        margin-bottom: 0.25rem;
-    }
-    
-    .counter-label {
-        font-size: 0.75rem;
-    }
-    
-    .birthday-section,
-    .timezone-section {
-        width: 100%;
-        padding: var(--spacing-lg);
-        margin: var(--spacing-md) 0;
-    }
-    
-    .language-switcher {
-        min-width: 140px;
-    }
-    
-    .language-switcher button {
-        min-width: 64px;
-        padding: var(--spacing-xs) var(--spacing-sm);
-        font-size: 0.75rem;
-    }
-    
-    .language-switcher::before {
-        width: 64px;
-        height: 36px;
-    }
-    
-    .language-switcher.en::before {
-        transform: translateX(68px);
-    }
-}
-
-/* Performance optimizations */
-.counter-item,
-.stat-item,
-.language-switcher,
-.notification {
-    will-change: transform;
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}    </style>
-</head>
-<body>
     <div class="container">
-        <div class="header"><div></div></div>
+        <div class="header">
+            <div></div>
+            <button class="mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+        </div>
 
-        <h1 class="title" id="title_friendship">Friendship</h1>
-        <div class="milestone" id="milestone"></div>
+        <h1 class="title" id="title_friendship">✨ Friendship Journey</h1>
+        <div class="milestone" id="milestone">🌱 Growing friendship!</div>
 
         <div class="counter-grid">
             <div class="counter-item" onclick="copyToClipboard('years')">
                 <span class="counter-number" id="years">0</span>
-                <span class="counter-label" id="years_Y">Years</span>
+                <span class="counter-label" id="years_label">Years</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('months')">
                 <span class="counter-number" id="months">0</span>
-                <span class="counter-label" id="months_M">Months</span>
+                <span class="counter-label" id="months_label">Months</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('days')">
                 <span class="counter-number" id="days">0</span>
-                <span class="counter-label" id="days_D">Days</span>
+                <span class="counter-label" id="days_label">Days</span>
             </div>
             <div class="counter-item" onclick="copyToClipboard('hours')">
                 <span class="counter-number" id="hours">0</span>
-                <span class="counter-label" id="hours_H">Hours</span>
+                <span class="counter-label" id="hours_label">Hours</span>
             </div>
-            <div class="counter-item minutes-item" onclick="copyToClipboard('minutes')">
+            <div class="counter-item minutes-item minutes-hidden" onclick="copyToClipboard('minutes')">
                 <span class="counter-number" id="minutes">0</span>
-                <span class="counter-label" id="minutes_M">Minutes</span>
+                <span class="counter-label" id="minutes_label">Minutes</span>
             </div>
-            <div class="counter-item seconds-item" onclick="copyToClipboard('seconds')">
+            <div class="counter-item seconds-item seconds-hidden" onclick="copyToClipboard('seconds')">
                 <span class="counter-number" id="seconds">0</span>
-                <span class="counter-label" id="seconds_S">Seconds</span>
+                <span class="counter-label" id="seconds_label">Seconds</span>
             </div>
         </div>
 
         <div class="description">
-            Since <span class="date-highlight" id="friendship-date"></span> with Toyeee
+            Since <span class="date-highlight" id="friendship-date">March 14, 2025</span> with Toyeee & Toyaaa 😏
         </div>
 
         <div class="controls">
-            <button id="button-text" class="toggle-button" onclick="toggleTimeUnits()"><span id="show_more_btn">Show More</span></button>
-            <button id="button-text" class="toggle-button" onclick="toggleStats()"><span id="show_stats_btn">Show Stats</span></button>
+            <button class="toggle-button" onclick="toggleTimeUnits()">
+                <span id="show_more_btn">⏰ Show More</span>
+            </button>
+            <button class="toggle-button" onclick="toggleStats()">
+                <span id="show_stats_btn">📊 Show Stats</span>
+            </button>
+            <button class="toggle-button" onclick="toggleAchievements()">
+                <span id="show_achievements_btn">🏆 Achievements</span>
+            </button>
         </div>
 
         <div class="stats-grid stats-hidden" id="stats-section">
             <div class="stat-item">
-                <div class="stat-label" id="totaldays">Total Days</div>
+                <div class="stat-label" id="totaldays_label">Total Days</div>
                 <div class="stat-value" id="total-days">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="totalhours">Total Hours</div>
+                <div class="stat-label" id="totalhours_label">Total Hours</div>
                 <div class="stat-value" id="total-hours">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="totalweeks">Total Weeks</div>
+                <div class="stat-label" id="totalweeks_label">Total Weeks</div>
                 <div class="stat-value" id="total-weeks">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="goalprogress">Goal Progress (1000 Days)</div>
+                <div class="stat-label" id="goalprogress_label">Goal Progress (1000 Days)</div>
                 <div class="stat-value" id="goal-progress">0%</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="nextfriendiversary">Next friendiversary</div>
+                <div class="stat-label" id="nextfriendiversary_label">Next Friendiversary</div>
                 <div class="stat-value" id="anniversary-countdown">--</div>
             </div>
-        <div class="birthday-section" id="birthday-section">
             <div class="stat-item">
-             <div class="stat-label" id="toyeeesbirthday">Toyeee’s Birthday</div>
-             <div class="stat-value" id="birthday-countdown_toyeee">--</div>
-             </div>
-            <div class="stat-item">
-             <div class="stat-label" id="toyaaasbirthday">Toyaaa’s Birthday</div>
-             <div class="stat-value" id="birthday-countdown_toyaaa">--</div>
-             </div>
+                <div class="stat-label" id="totalminutes_label">Total Minutes</div>
+                <div class="stat-value" id="total-minutes">0</div>
+            </div>
         </div>
 
+        <div class="achievements-section stats-hidden" id="achievements-section">
+            <h2 class="achievements-title">🏆 Friendship Achievements</h2>
+            <div class="achievements-grid" id="achievements-grid">
+                <!-- Achievements will be populated by JavaScript -->
+            </div>
         </div>
-        <br>
+
+        <div class="birthday-section">
+            <h2 class="birthday-title">🎂 Birthday Countdowns</h2>
+            <div class="birthday-grid">
+                <div class="stat-item">
+                    <div class="stat-label" id="toyeeesbirthday_label">Toyeee's Birthday</div>
+                    <div class="stat-value" id="birthday-countdown_toyeee">--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label" id="toyaaasbirthday_label">Toyaaa's Birthday</div>
+                    <div class="stat-value" id="birthday-countdown_toyaaa">--</div>
+                </div>
+            </div>
+        </div>
+
         <div class="timezone-section">
-            <h2 class="timezone-title" id="ourtimezone">🌍 Our Timezone</h2>
+            <h2 class="timezone-title" id="ourtimezone_label">🌍 Our Timezones</h2>
             <div class="timezone-grid">
                 <div class="timezone-item">
-                    <div class="timezone-item">
-                    <div class="timezone-label">Toyeee's Timezone</div>
+                    <div class="timezone-label">Toyeee's Time (Jakarta)</div>
                     <div class="timezone-value" id="friend-time">--:--</div>
                 </div>
-                    <div class="timezone-label">Toyaaa's Timezone</div>
+                <div class="timezone-item">
+                    <div class="timezone-label">Toyaaa's Time (Bratislava)</div>
                     <div class="timezone-value" id="your-time">--:--</div>
                 </div>
             </div>
@@ -786,249 +870,234 @@ body.dark-mode a:hover {
 
         <div class="notification" id="notification"></div>
 
-        <p>other websites: 
-        <br>    
-        <a href="../notes/">Leave a notes</a>
-    </p>
+        <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
+            💌 Other features: 
+            <br>    
+            <a href="../notes/">Leave a note</a> | 
+            <a href="#" onclick="exportStats()">📊 Export Stats</a> | 
+            <a href="#" onclick="shareLink()">🔗 Share</a>
+        </p>
     </div>
-<script src="../libs/web.lib.js"></script>
+
     <script>
+        // Enhanced Friendship Counter JavaScript
 
-        // NOTIFICATION SETUP
+        // Configuration
+        const CONFIG = {
+            startDate: new Date('2025-03-14T00:00:00'),
+            friendshipGoalDays: 1000,
+            toyeeeBirthday: { month: 2, day: 14 }, // February 14
+            toyaaaBirthday: { month: 7, day: 13 }, // July 13
+            timezones: {
+                toyeee: 'Asia/Jakarta',
+                toyaaa: 'Europe/Bratislava'
+            }
+        };
 
+        // State
+        let state = {
+            showDetailedTime: false,
+            showStats: false,
+            showAchievements: false,
+            currentLanguage: 'id',
+            darkMode: false,
+            lastNotifiedMilestone: localStorage.getItem('lastMilestoneNotified') || ''
+        };
 
-        // Ask user permission for system notifications
-        if (Notification.permission !== 'granted') {
-            Notification.requestPermission();
+        // Translations
+        const translations = {
+            en: {
+                title_friendship: "✨ Friendship Journey",
+                years_label: "Years",
+                months_label: "Months", 
+                days_label: "Days",
+                hours_label: "Hours",
+                minutes_label: "Minutes",
+                seconds_label: "Seconds",
+                show_more_btn: "⏰ Show More",
+                show_less_btn: "⏰ Show Less",
+                show_stats_btn: "📊 Show Stats",
+                hide_stats_btn: "📊 Hide Stats",
+                show_achievements_btn: "🏆 Achievements",
+                hide_achievements_btn: "🏆 Hide Achievements",
+                totaldays_label: "Total Days",
+                totalhours_label: "Total Hours",
+                totalweeks_label: "Total Weeks",
+                totalminutes_label: "Total Minutes",
+                goalprogress_label: "Goal Progress (1000 Days)",
+                nextfriendiversary_label: "Next Friendiversary",
+                toyeeesbirthday_label: "Toyeee's Birthday",
+                toyaaasbirthday_label: "Toyaaa's Birthday",
+                ourtimezone_label: "🌍 Our Timezones"
+            },
+            id: {
+                title_friendship: "💝 Perjalanan Persahabatan",
+                years_label: "Tahun",
+                months_label: "Bulan",
+                days_label: "Hari", 
+                hours_label: "Jam",
+                minutes_label: "Menit",
+                seconds_label: "Detik",
+                show_more_btn: "⏰ Tampilkan Lebih",
+                show_less_btn: "⏰ Tampilkan Kurang",
+                show_stats_btn: "📊 Tampilkan Statistik",
+                hide_stats_btn: "📊 Sembunyikan Statistik",
+                show_achievements_btn: "🏆 Pencapaian",
+                hide_achievements_btn: "🏆 Sembunyikan Pencapaian",
+                totaldays_label: "Total Hari",
+                totalhours_label: "Total Jam",
+                totalweeks_label: "Total Minggu",
+                totalminutes_label: "Total Menit",
+                goalprogress_label: "Progress Target (1000 Hari)",
+                nextfriendiversary_label: "Anniversary Selanjutnya",
+                toyeeesbirthday_label: "Ulang Tahun Toyeee",
+                toyaaasbirthday_label: "Ulang Tahun Toyaaa",
+                ourtimezone_label: "🌍 Zona Waktu Kita"
+            }
+        };
+
+        // Achievements system
+        const achievements = [
+            { id: 'first_week', icon: '✨', name: 'First Week', days: 7, name_id: 'Minggu Pertama' },
+            { id: 'first_month', icon: '🥳', name: 'First Month', days: 30, name_id: 'Bulan Pertama' },
+            { id: 'fifty_days', icon: '🎁', name: '50 Days', days: 50, name_id: '50 Hari' },
+            { id: 'hundred_days', icon: '💫', name: '100 Days', days: 100, name_id: '100 Hari' },
+            { id: 'half_year', icon: '🌟', name: '6 Months', days: 180, name_id: '6 Bulan' },
+            { id: 'one_year', icon: '🎉', name: '1 Year', days: 365, name_id: '1 Tahun' },
+            { id: 'five_hundred', icon: '🏆', name: '500 Days', days: 500, name_id: '500 Hari' },
+            { id: 'two_years', icon: '👑', name: '2 Years', days: 730, name_id: '2 Tahun' },
+            { id: 'thousand_days', icon: '💎', name: '1000 Days', days: 1000, name_id: '1000 Hari' }
+        ];
+
+        // Utility Functions
+        function getElement(id) {
+            return document.getElementById(id);
         }
 
-        
+        function formatNumber(num) {
+            return num.toLocaleString();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = getElement('notification');
+            notification.textContent = message;
+            notification.className = `notification show ${type}`;
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
         function sendSystemNotification(title, body) {
-            if (Notification.permission === 'granted') {
+            if ('Notification' in window && Notification.permission === 'granted') {
                 new Notification(title, {
                     body: body,
                     icon: 'favicon.ico'
                 });
             }
         }
-        
 
+        // Language Functions
+        function switchLanguage(lang) {
+            state.currentLanguage = lang;
+            
+            // Update language switcher
+            const switcher = getElement('languageSwitcher');
+            switcher.className = `language-switcher ${lang}`;
+            
+            document.querySelectorAll('.language-switcher button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            getElement(`switch-to-${lang}`).classList.add('active');
 
+            // Apply translations
+            const texts = translations[lang];
+            Object.keys(texts).forEach(key => {
+                const element = getElement(key);
+                if (element) {
+                    element.textContent = texts[key];
+                }
+            });
 
+            updateAchievementsDisplay();
+            localStorage.setItem('preferredLanguage', lang);
+        }
 
+        // Dark Mode
+        function toggleDarkMode() {
+            state.darkMode = !state.darkMode;
+            document.body.classList.toggle('dark-mode', state.darkMode);
+            
+            const toggle = document.querySelector('.mode-toggle');
+            toggle.textContent = state.darkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
+            
+            localStorage.setItem('darkMode', state.darkMode);
+        }
 
-        const startDate = new Date('2025-03-14T00:00:00');
-        let showDetailedTime = false;
-        let showStats = false;
-        const friendshipGoalDays = 1000;
-
+        // Toggle Functions
         function toggleTimeUnits() {
             const minutesItem = document.querySelector('.minutes-item');
             const secondsItem = document.querySelector('.seconds-item');
-            const buttonText = document.getElementById('button-text');
+            const buttonText = getElement('show_more_btn');
 
-            showDetailedTime = !showDetailedTime;
+            state.showDetailedTime = !state.showDetailedTime;
 
-            if (showDetailedTime) {
+            if (state.showDetailedTime) {
                 minutesItem.classList.remove('minutes-hidden');
                 secondsItem.classList.remove('seconds-hidden');
-                buttonText.textContent = 'Show Less';
+                buttonText.textContent = state.currentLanguage === 'en' ? '⏰ Show Less' : '⏰ Tampilkan Kurang';
             } else {
                 minutesItem.classList.add('minutes-hidden');
                 secondsItem.classList.add('seconds-hidden');
-                buttonText.textContent = 'Show More';
+                buttonText.textContent = state.currentLanguage === 'en' ? '⏰ Show More' : '⏰ Tampilkan Lebih';
             }
         }
 
         function toggleStats() {
-            const statsSection = document.getElementById('stats-section');
-            const buttonText = document.getElementById('stats-text');
+            const statsSection = getElement('stats-section');
+            const buttonText = getElement('show_stats_btn');
 
-            showStats = !showStats;
+            state.showStats = !state.showStats;
 
-            if (showStats) {
+            if (state.showStats) {
                 statsSection.classList.remove('stats-hidden');
-                buttonText.textContent = 'Hide Stats';
+                buttonText.textContent = state.currentLanguage === 'en' ? '📊 Hide Stats' : '📊 Sembunyikan Statistik';
             } else {
                 statsSection.classList.add('stats-hidden');
-                buttonText.textContent = 'Show Stats';
+                buttonText.textContent = state.currentLanguage === 'en' ? '📊 Show Stats' : '📊 Tampilkan Statistik';
             }
         }
 
+        function toggleAchievements() {
+            const achievementsSection = getElement('achievements-section');
+            const buttonText = getElement('show_achievements_btn');
+
+            state.showAchievements = !state.showAchievements;
+
+            if (state.showAchievements) {
+                achievementsSection.classList.remove('stats-hidden');
+                buttonText.textContent = state.currentLanguage === 'en' ? '🏆 Hide Achievements' : '🏆 Sembunyikan Pencapaian';
+            } else {
+                achievementsSection.classList.add('stats-hidden');
+                buttonText.textContent = state.currentLanguage === 'en' ? '🏆 Achievements' : '🏆 Pencapaian';
+            }
+        }
+
+        // Copy to clipboard
         function copyToClipboard(unit) {
-            const value = document.getElementById(unit).textContent;
-            const label = unit.charAt(0).toUpperCase() + unit.slice(1);
+            const value = getElement(unit).textContent;
+            const label = getElement(`${unit}_label`).textContent;
 
             navigator.clipboard.writeText(`${value} ${label}`).then(() => {
                 showNotification(`Copied: ${value} ${label}`);
+            }).catch(() => {
+                showNotification('Copy failed!', 'error');
             });
         }
 
-            function updateTimezones() {
-                const yourTime = new Date().toLocaleString('en-US', {
-                    timeZone: 'Europe/Bratislava',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-            
-                const friendTime = new Date().toLocaleString('en-US', {
-                    timeZone: 'Asia/Jakarta',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
-            
-                document.getElementById('your-time').textContent = yourTime;
-                document.getElementById('friend-time').textContent = friendTime;
-            }
-
-
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        function updateCounter() {
-            const now = new Date();
-            const diff = now - startDate;
-
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-            animateNumber('years', years);
-            animateNumber('months', months);
-            animateNumber('days', days);
-            animateNumber('hours', hours);
-            animateNumber('minutes', minutes);
-            animateNumber('seconds', seconds);
-
-            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const totalHours = Math.floor(diff / (1000 * 60 * 60));
-            const totalWeeks = Math.floor(totalDays / 7);
-
-            document.getElementById('total-days').textContent = totalDays.toLocaleString();
-            document.getElementById('total-hours').textContent = totalHours.toLocaleString();
-            document.getElementById('total-weeks').textContent = totalWeeks.toLocaleString();
-
-            updateMilestone(totalDays);
-            updateGoalProgress(totalDays);
-            updateAnniversaryCountdown();
-            updateBirthdayCountdown_toyeee()
-            updateBirthdayCountdown_toyaaa();
-        }
-
-        function updateGoalProgress(totalDays) {
-            const progress = Math.min(100, Math.floor((totalDays / friendshipGoalDays) * 100));
-            document.getElementById('goal-progress').textContent = `${progress}%`;
-        }
-
-        function updateAnniversaryCountdown() {
-            const now = new Date();
-            const anniversary = new Date(now.getFullYear(), 2, 14); // March 14
-            if (now > anniversary) anniversary.setFullYear(now.getFullYear() + 1);
-
-            const diff = anniversary - now;
-            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('anniversary-countdown').textContent = `${daysLeft} days left`;
-        }
-        function updateBirthdayCountdown_toyeee() {
-            const now = new Date();
-            now.setHours(0, 0, 0, 0); // Normalize now
-        
-            const actualMonth = 2; // ✅ February (1-based)
-            const birthday = new Date(now.getFullYear(), actualMonth - 1, 14); // 🎂 Feb 15
-        
-            birthday.setHours(0, 0, 0, 0); // Normalize birthday
-        
-            if (now >= birthday) {
-                birthday.setFullYear(birthday.getFullYear() + 1);
-            }
-        
-            const diff = birthday - now;
-            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-        
-            const message = daysLeft === 0
-                ? `🎉 Today is Toyeee's birthday! 🎂`
-                : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
-        
-            document.getElementById('birthday-countdown_toyeee').textContent = message;
-        }
-
-        function updateBirthdayCountdown_toyaaa() {
-            const now = new Date();
-            now.setHours(0, 0, 0, 0); // Normalize now
-        
-            const actualMonth = 7; // ✅ July (1-based)
-            const birthday = new Date(now.getFullYear(), actualMonth - 1, 13); // 🎂 July 13
-        
-            birthday.setHours(0, 0, 0, 0); // Normalize birthday
-        
-            if (now >= birthday) {
-                birthday.setFullYear(birthday.getFullYear() + 1);
-            }
-        
-            const diff = birthday - now;
-            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-        
-            const message = daysLeft === 0
-                ? `🎉 Today is Toyaaa's birthday! 🎂`
-                : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`;
-        
-            document.getElementById('birthday-countdown_toyaaa').textContent = message;
-        }
-
-
-
-
-        function updateMilestone(totalDays) {
-            const milestone = document.getElementById('milestone');
-        
-            // Define milestone map in descending order to match the biggest first
-            const milestones = [
-                { days: 730, key: '2y', message: '😱 Friends since 2 years, yeayyy!!' },
-                { days: 365, key: '1y', message: '🎉 Over a year of friendship!' },
-                { days: 300, key: '300', message: '✨ Almost a full year together!' },
-                { days: 200, key: '200', message: '🌟 200+ days and counting!' },
-                { days: 100, key: '100', message: '💫 Over 100 days of friendship!' },
-                { days: 50,  key: '50',  message: '☺️ 50+ days together!' },
-                { days: 30,  key: '30',  message: '🎈 A month of friendship!' },
-                { days: 7,   key: '7',   message: '🌸 A week of friendship!' },
-                { days: 0,   key: 'start', message: '🌱 Growing friendship!' }
-            ];
-        
-            // Find the highest milestone that fits
-            const currentMilestone = milestones.find(m => totalDays >= m.days);
-            
-            if (!currentMilestone) return;
-        
-            // Update milestone message in UI
-            milestone.textContent = currentMilestone.message;
-        
-            // Get saved milestone from localStorage
-            const savedMilestone = localStorage.getItem('lastMilestoneNotified') || '';
-        
-            // Only notify if it's a new milestone
-            if (savedMilestone !== currentMilestone.key) {
-                localStorage.setItem('lastMilestoneNotified', currentMilestone.key);
-                showNotification(currentMilestone.message); // In-page toast
-                sendSystemNotification("🎉 Friendship Milestone!", currentMilestone.message); // OS-level
-            }
-        }
-
-
-
+        // Animation functions
         function animateNumber(elementId, newValue) {
-            const element = document.getElementById(elementId);
+            const element = getElement(elementId);
             const currentValue = parseInt(element.textContent);
 
             if (currentValue !== newValue) {
@@ -1040,26 +1109,270 @@ body.dark-mode a:hover {
             }
         }
 
-        function formatDate() {
-            document.getElementById('friendship-date').textContent = 'March 14, 2025';
+        function celebrateElement(elementId) {
+            const element = getElement(elementId);
+            element.classList.add('celebrate');
+            setTimeout(() => {
+                element.classList.remove('celebrate');
+            }, 600);
         }
 
-        window.addEventListener('load', () => {
+        // Update Functions
+        function updateTimezones() {
+            const now = new Date();
+            
+            const toyaaaTime = now.toLocaleString('en-US', {
+                timeZone: CONFIG.timezones.toyaaa,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        
+            const toyeeeTime = now.toLocaleString('en-US', {
+                timeZone: CONFIG.timezones.toyeee,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+        
+            getElement('your-time').textContent = toyaaaTime;
+            getElement('friend-time').textContent = toyeeeTime;
+        }
+
+        function updateBirthdayCountdown(person) {
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+        
+            const config = CONFIG[`${person}Birthday`];
+            const birthday = new Date(now.getFullYear(), config.month - 1, config.day);
+            birthday.setHours(0, 0, 0, 0);
+        
+            if (now >= birthday) {
+                birthday.setFullYear(birthday.getFullYear() + 1);
+            }
+        
+            const diff = birthday - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        
+            const messages = {
+                en: daysLeft === 0 ? `🎉 Today is ${person}'s birthday! 🎂` : `${daysLeft} day${daysLeft !== 1 ? 's' : ''} left 🥳`,
+                id: daysLeft === 0 ? `🎉 Hari ini ulang tahun ${person}! 🎂` : `${daysLeft} hari lagi 🥳`
+            };
+        
+            getElement(`birthday-countdown_${person}`).textContent = messages[state.currentLanguage];
+        }
+
+        function updateAnniversaryCountdown() {
+            const now = new Date();
+            const anniversary = new Date(now.getFullYear(), 2, 14); // March 14
+            if (now > anniversary) anniversary.setFullYear(now.getFullYear() + 1);
+
+            const diff = anniversary - now;
+            const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            
+            const messages = {
+                en: `${daysLeft} days left`,
+                id: `${daysLeft} hari lagi`
+            };
+            
+            getElement('anniversary-countdown').textContent = messages[state.currentLanguage];
+        }
+
+        function updateGoalProgress(totalDays) {
+            const progress = Math.min(100, Math.floor((totalDays / CONFIG.friendshipGoalDays) * 100));
+            getElement('goal-progress').textContent = `${progress}%`;
+        }
+
+        function updateMilestone(totalDays) {
+            const milestone = getElement('milestone');
+        
+            const milestones = [
+                { days: 2555, key: '7y', message: { en: '🚀 7 years of amazing friendship!', id: '🚀 7 tahun persahabatan luar biasa!' }},
+                { days: 2190, key: '6y', message: { en: '🌟 6 years strong!', id: '🌟 6 tahun yang kuat!' }},
+                { days: 1825, key: '5y', message: { en: '🎊 Half a decade together!', id: '🎊 Setengah dekade bersama!' }},
+                { days: 1460, key: '4y', message: { en: '✨ 4 years of friendship!', id: '✨ 4 tahun persahabatan!' }},
+                { days: 1095, key: '3y', message: { en: '🎈 3 years and going strong!', id: '🎈 3 tahun dan terus kuat!' }},
+                { days: 730, key: '2y', message: { en: '😱 Friends for 2 years, yeayyy!!', id: '😱 Berteman selama 2 tahun, yeayyy!!' }},
+                { days: 365, key: '1y', message: { en: '🎉 Over a year of friendship!', id: '🎉 Lebih dari setahun persahabatan!' }},
+                { days: 300, key: '300', message: { en: '✨ Almost a full year together!', id: '✨ Hampir setahun penuh bersama!' }},
+                { days: 200, key: '200', message: { en: '🌟 200+ days and counting!', id: '🌟 200+ hari dan terus bertambah!' }},
+                { days: 100, key: '100', message: { en: '💫 Over 100 days of friendship!', id: '💫 Lebih dari 100 hari persahabatan!' }},
+                { days: 50, key: '50', message: { en: '☺️ 50+ days together!', id: '☺️ 50+ hari bersama!' }},
+                { days: 30, key: '30', message: { en: '🎈 A month of friendship!', id: '🎈 Sebulan persahabatan!' }},
+                { days: 7, key: '7', message: { en: '🌸 A week of friendship!', id: '🌸 Seminggu persahabatan!' }},
+                { days: 0, key: 'start', message: { en: '🌱 Growing friendship!', id: '🌱 Persahabatan yang tumbuh!' }}
+            ];
+        
+            const currentMilestone = milestones.find(m => totalDays >= m.days);
+            
+            if (!currentMilestone) return;
+        
+            milestone.textContent = currentMilestone.message[state.currentLanguage];
+        
+            // Milestone notifications
+            if (state.lastNotifiedMilestone !== currentMilestone.key) {
+                state.lastNotifiedMilestone = currentMilestone.key;
+                localStorage.setItem('lastMilestoneNotified', currentMilestone.key);
+                
+                showNotification(currentMilestone.message[state.currentLanguage]);
+                sendSystemNotification("🎉 Friendship Milestone!", currentMilestone.message[state.currentLanguage]);
+                celebrateElement('milestone');
+            }
+        }
+
+        function updateAchievementsDisplay() {
+            const grid = getElement('achievements-grid');
+            const now = new Date();
+            const totalDays = Math.floor((now - CONFIG.startDate) / (1000 * 60 * 60 * 24));
+            
+            grid.innerHTML = '';
+            
+            achievements.forEach(achievement => {
+                const item = document.createElement('div');
+                item.className = `achievement-item ${totalDays >= achievement.days ? 'unlocked' : ''}`;
+                item.onclick = () => {
+                    const status = totalDays >= achievement.days ? 
+                        (state.currentLanguage === 'en' ? 'Unlocked!' : 'Terbuka!') : 
+                        (state.currentLanguage === 'en' ? 'Locked' : 'Terkunci');
+                    showNotification(`${achievement[state.currentLanguage === 'en' ? 'name' : 'name_id']}: ${status}`);
+                };
+                
+                item.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-name">${achievement[state.currentLanguage === 'en' ? 'name' : 'name_id']}</div>
+                `;
+                
+                grid.appendChild(item);
+            });
+        }
+
+        // Main counter update function
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - CONFIG.startDate;
+
+            // Calculate time units
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Animate numbers
+            animateNumber('years', years);
+            animateNumber('months', months);
+            animateNumber('days', days);
+            animateNumber('hours', hours);
+            animateNumber('minutes', minutes);
+            animateNumber('seconds', seconds);
+
+            // Calculate totals
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor(diff / (1000 * 60 * 60));
+            const totalMinutes = Math.floor(diff / (1000 * 60));
+            const totalWeeks = Math.floor(totalDays / 7);
+
+            // Update stats
+            getElement('total-days').textContent = formatNumber(totalDays);
+            getElement('total-hours').textContent = formatNumber(totalHours);
+            getElement('total-minutes').textContent = formatNumber(totalMinutes);
+            getElement('total-weeks').textContent = formatNumber(totalWeeks);
+
+            // Update other sections
+            updateMilestone(totalDays);
+            updateGoalProgress(totalDays);
+            updateAnniversaryCountdown();
+            updateBirthdayCountdown('toyeee');
+            updateBirthdayCountdown('toyaaa');
+        }
+
+        // Export and Share functions
+        function exportStats() {
+            const now = new Date();
+            const diff = now - CONFIG.startDate;
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            const stats = {
+                friendshipStartDate: CONFIG.startDate.toISOString().split('T')[0],
+                currentDate: now.toISOString().split('T')[0],
+                totalDays: totalDays,
+                totalHours: Math.floor(diff / (1000 * 60 * 60)),
+                totalMinutes: Math.floor(diff / (1000 * 60)),
+                totalWeeks: Math.floor(totalDays / 7),
+                goalProgress: Math.min(100, Math.floor((totalDays / CONFIG.friendshipGoalDays) * 100)),
+                unlockedAchievements: achievements.filter(a => totalDays >= a.days).length
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(stats, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "friendship_stats.json");
+            downloadAnchor.click();
+            
+            showNotification('Stats exported successfully!');
+        }
+
+        function shareLink() {
+            const url = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Toyeee & Toyaaa Friendship Counter',
+                    text: 'Check out our amazing friendship journey!',
+                    url: url,
+                });
+            } else {
+                navigator.clipboard.writeText(url).then(() => {
+                    showNotification('Link copied to clipboard!');
+                });
+            }
+        }
+
+        // Initialize the application
+        function init() {
+            // Request notification permission
+            if ('Notification' in window && Notification.permission !== 'granted') {
+                Notification.requestPermission();
+            }
+
+            // Load saved preferences
+            const savedLang = localStorage.getItem('preferredLanguage') || 'id';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            switchLanguage(savedLang);
+
+            // Initialize hidden states
             document.querySelector('.minutes-item').classList.add('minutes-hidden');
             document.querySelector('.seconds-item').classList.add('seconds-hidden');
-        });
 
-        formatDate();
-        updateCounter();
-        // Update Counter
-        setInterval(updateCounter, 1000);
+            // Initialize achievements
+            updateAchievementsDisplay();
 
-        // Update Timezones
-        updateTimezones();
-        setInterval(updateTimezones, 1000);
+            // Start counters
+            updateCounter();
+            updateTimezones();
+            
+            // Set intervals
+            setInterval(updateCounter, 1000);
+            setInterval(updateTimezones, 1000);
 
+            // Show welcome notification
+            setTimeout(() => {
+                showNotification(state.currentLanguage === 'en' ? 
+                    '💝 Welcome to your friendship journey!' : 
+                    '💝 Selamat datang di perjalanan persahabatan!'
+                );
+            }, 1000);
+        }
+
+        // Start the application when page loads
+        window.addEventListener('load', init);
     </script>
 </body>
-<script src="traffic.js"></script>
-<script src="JS/language-selector.js"></script>
 </html>

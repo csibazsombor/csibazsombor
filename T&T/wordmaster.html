@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Master - Multiplayer Language Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-firestore-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.2/firebase-auth-compat.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-screen {
+            text-align: center;
+        }
+
+        .login-screen h1 {
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .language-selection {
+            display: none;
+            text-align: center;
+        }
+
+        .language-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .language-btn {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 1.5rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            min-width: 200px;
+        }
+
+        .language-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .game-screen {
+            display: none;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e1e1e1;
+        }
+
+        .user-info {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .option {
+            padding: 1rem;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background: white;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .leaderboard {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .leaderboard h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e1e1e1;
+        }
+
+        .error {
+            color: #dc3545;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+        }
+
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .language-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="login-screen">
+            <h1>🎯 Word Master</h1>
+            <p style="margin-bottom: 1rem; color: #666;">Test your language skills in Indonesian and Hungarian!</p>
+            <p style="margin-bottom: 2rem; color: #888; font-size: 0.9rem; font-style: italic;">Made with Claude AI</p>
+            
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" />
+            </div>
+            
+            <button class="btn" onclick="login()">Join Game</button>
+            <div id="loginError" class="error"></div>
+        </div>
+
+        <!-- Language Selection Screen -->
+        <div id="languageSelection" class="language-selection">
+            <h2>Choose Your Language to Study</h2>
+            <p style="margin: 1rem 0; color: #666;">Select which language you want to practice:</p>
+            
+            <div class="language-buttons">
+                <div class="language-btn" onclick="selectLanguage('indonesian')">
+                    <h3>🇮🇩 Indonesian</h3>
+                    <p>Learn and correct Indonesian words</p>
+                </div>
+                <div class="language-btn" onclick="selectLanguage('hungarian')">
+                    <h3>🇭🇺 Hungarian</h3>
+                    <p>Learn and correct Hungarian words</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="game-screen">
+            <div class="game-header">
+                <div class="user-info">
+                    <span id="currentUser"></span> | 
+                    <span id="currentLanguage"></span>
+                </div>
+                <div class="score">
+                    Score: <span id="userScore">0</span>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question" id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
+            </div>
+
+            <div class="text-center">
+                <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">Next Question</button>
+                <button class="btn" onclick="logout()" style="background: #dc3545;">Logout</button>
+            </div>
+
+            <div class="leaderboard">
+                <h3>🏆 Leaderboard</h3>
+                <div id="leaderboardList"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; color: #888; font-size: 0.9rem; font-style: italic;">
+                Made with Claude AI
+            </div>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
+        const firebaseConfig = {
+  apiKey: "AIzaSyCmfBilSi1wB566wWPEJFiSptdtmVY4ZTo",
+  authDomain: "memory-keeper-daefe.firebaseapp.com",
+  databaseURL: "https://memory-keeper-daefe-default-rtdb.firebaseio.com",
+  projectId: "memory-keeper-daefe",
+  storageBucket: "memory-keeper-daefe.firebasestorage.app",
+  messagingSenderId: "957376229693",
+  appId: "1:957376229693:web:32c2f3ce919a58ced29554",
+  measurementId: "G-5VRN12SMMV"
+        };
+
+        // Initialize Firebase
+        let db, auth;
+        let firebaseReady = false;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            auth = firebase.auth();
+            firebaseReady = true;
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.log("Firebase initialization failed, using local storage:", error);
+            firebaseReady = false;
+        }
+
+        let currentUser = null;
+        let currentQuestion = 0;
+        let userScore = 0;
+        let selectedAnswer = null;
+        let gameData = {};
+
+        // Expanded Question banks
+        const questionBanks = {
+            indonesian: [
+                {
+                    question: "Choose the correct spelling of 'mango':",
+                    incorrect: "manggah",
+                    correct: "mangga",
+                    options: ["manggah", "mangga", "mangah", "mangka"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'water'?",
+                    incorrect: "aer",
+                    correct: "air",
+                    options: ["aer", "air", "ayr", "ayer"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'house':",
+                    incorrect: "ruma",
+                    correct: "rumah",
+                    options: ["ruma", "rumah", "rumaah", "rumoh"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'book'?",
+                    incorrect: "bukku",
+                    correct: "buku",
+                    options: ["bukku", "buku", "booku", "bko"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'beautiful':",
+                    incorrect: "cantiek",
+                    correct: "cantik",
+                    options: ["cantiek", "cantik", "chantik", "cantyk"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'rice'?",
+                    incorrect: "nasie",
+                    correct: "nasi",
+                    options: ["nasie", "nasi", "nasy", "nasee"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'fish':",
+                    incorrect: "ikkan",
+                    correct: "ikan",
+                    options: ["ikkan", "ikan", "ikahn", "ykan"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'chicken'?",
+                    incorrect: "ayaam",
+                    correct: "ayam",
+                    options: ["ayaam", "ayam", "ayem", "ayom"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'friend':",
+                    incorrect: "temaan",
+                    correct: "teman",
+                    options: ["temaan", "teman", "temman", "theman"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'school'?",
+                    incorrect: "sekola",
+                    correct: "sekolah",
+                    options: ["sekola", "sekolah", "skola", "sekolaah"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'time':",
+                    incorrect: "waqtu",
+                    correct: "waktu",
+                    options: ["waqtu", "waktu", "waktuu", "woktu"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'child'?",
+                    incorrect: "anaq",
+                    correct: "anak",
+                    options: ["anaq", "anak", "anakk", "anahk"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'morning':",
+                    incorrect: "pagee",
+                    correct: "pagi",
+                    options: ["pagee", "pagi", "pagy", "pegee"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'night'?",
+                    incorrect: "malem",
+                    correct: "malam",
+                    options: ["malem", "malam", "malaam", "molam"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'money':",
+                    incorrect: "uaang",
+                    correct: "uang",
+                    options: ["uaang", "uang", "wang", "oeang"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'food'?",
+                    incorrect: "makanan",
+                    correct: "makanan",
+                    options: ["makanen", "makanan", "makannan", "makan"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'red':",
+                    incorrect: "merah",
+                    correct: "merah",
+                    options: ["mera", "merah", "merrah", "meraah"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'white'?",
+                    incorrect: "putie",
+                    correct: "putih",
+                    options: ["putie", "putih", "puthy", "pute"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'black':",
+                    incorrect: "hitaam",
+                    correct: "hitam",
+                    options: ["hitaam", "hitam", "hytam", "hitm"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'green'?",
+                    incorrect: "hijau",
+                    correct: "hijau",
+                    options: ["hyjauw", "hijau", "hijaw", "hyjau"],
+                    correctIndex: 1
+                }
+            ],
+            hungarian: [
+                {
+                    question: "Choose the correct spelling of 'book':",
+                    incorrect: "könyf",
+                    correct: "könyv",
+                    options: ["könyf", "könyv", "konyv", "könyb"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'water'?",
+                    incorrect: "wiz",
+                    correct: "víz",
+                    options: ["wiz", "víz", "viz", "vyz"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'house':",
+                    incorrect: "haaz",
+                    correct: "ház",
+                    options: ["haaz", "ház", "haz", "haás"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'beautiful'?",
+                    incorrect: "szep",
+                    correct: "szép",
+                    options: ["szep", "szép", "szeep", "zzép"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'good':",
+                    incorrect: "jo",
+                    correct: "jó",
+                    options: ["jo", "jó", "yó", "joe"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'bread'?",
+                    incorrect: "kenyér",
+                    correct: "kenyér",
+                    options: ["kenyar", "kenyér", "kenyeer", "kenyir"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'milk':",
+                    incorrect: "taej",
+                    correct: "tej",
+                    options: ["taej", "tej", "tey", "teej"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'meat'?",
+                    incorrect: "hús",
+                    correct: "hús",
+                    options: ["hus", "hús", "huus", "hyús"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'apple':",
+                    incorrect: "aalma",
+                    correct: "alma",
+                    options: ["aalma", "alma", "alm", "almaa"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'dog'?",
+                    incorrect: "kutya",
+                    correct: "kutya",
+                    options: ["kuty", "kutya", "kutyaa", "kootya"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'cat':",
+                    incorrect: "macskaa",
+                    correct: "macska",
+                    options: ["macskaa", "macska", "machka", "matska"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'car'?",
+                    incorrect: "autoo",
+                    correct: "autó",
+                    options: ["autoo", "autó", "auto", "awtó"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'tree':",
+                    incorrect: "faa",
+                    correct: "fa",
+                    options: ["faa", "fa", "fah", "phaa"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'flower'?",
+                    incorrect: "virág",
+                    correct: "virág",
+                    options: ["virag", "virág", "viraag", "wyrág"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'sun':",
+                    incorrect: "naap",
+                    correct: "nap",
+                    options: ["naap", "nap", "nahp", "nyap"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'moon'?",
+                    incorrect: "hoold",
+                    correct: "hold",
+                    options: ["hoold", "hold", "holt", "holld"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'fire':",
+                    incorrect: "tűz",
+                    correct: "tűz",
+                    options: ["tuz", "tűz", "tuuz", "tyűz"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is the correct spelling of 'wind'?",
+                    incorrect: "szeel",
+                    correct: "szél",
+                    options: ["szeel", "szél", "szel", "zzél"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Choose the correct spelling of 'rain':",
+                    incorrect: "essö",
+                    correct: "eső",
+                    options: ["essö", "eső", "esö", "eszö"],
+                    correctIndex: 1
+                },
+                {
+                    question: "Which is correct for 'snow'?",
+                    incorrect: "hoo",
+                    correct: "hó",
+                    options: ["hoo", "hó", "ho", "hóó"],
+                    correctIndex: 1
+                }
+            ]
+        };
+
+        function showScreen(screenId) {
+            const screens = ['loginScreen', 'languageSelection', 'gameScreen', 'loading'];
+            screens.forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+            document.getElementById(screenId).style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loginError').textContent = message;
+        }
+
+        async function authenticateUser(username) {
+            if (!firebaseReady) return null;
+            
+            try {
+                // Sign in anonymously first
+                const userCredential = await auth.signInAnonymously();
+                console.log('Authenticated anonymously');
+                return userCredential.user;
+            } catch (error) {
+                console.error('Authentication error:', error);
+                return null;
+            }
+        }
+
+        async function saveUserData(userData) {
+            if (firebaseReady) {
+                try {
+                    // Ensure user is authenticated
+                    if (!auth.currentUser) {
+                        await authenticateUser(userData.username);
+                    }
+                    
+                    if (auth.currentUser) {
+                        await db.collection('users').doc(userData.username).set(userData);
+                        console.log('User data saved to Firebase');
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Firebase save error:', error);
+                }
+            }
+            
+            // Fallback to localStorage if Firebase is not available
+            localStorage.setItem('wordmaster_' + userData.username, JSON.stringify(userData));
+            console.log('User data saved to localStorage');
+        }
+
+        async function loadUserData(username) {
+            if (firebaseReady) {
+                try {
+                    // Ensure user is authenticated
+                    if (!auth.currentUser) {
+                        await authenticateUser(username);
+                    }
+                    
+                    if (auth.currentUser) {
+                        const doc = await db.collection('users').doc(username).get();
+                        if (doc.exists) {
+                            console.log('User data loaded from Firebase');
+                            return doc.data();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Firebase load error:', error);
+                }
+            }
+            
+            // Fallback to localStorage
+            const stored = localStorage.getItem('wordmaster_' + username);
+            if (stored) {
+                console.log('User data loaded from localStorage');
+                return JSON.parse(stored);
+            }
+            
+            return null;
+        }
+
+        async function loadLeaderboard() {
+            const leaderboard = [];
+            
+            if (firebaseReady) {
+                try {
+                    // Ensure user is authenticated
+                    if (!auth.currentUser) {
+                        await authenticateUser('anonymous');
+                    }
+                    
+                    if (auth.currentUser) {
+                        const snapshot = await db.collection('users').orderBy('score', 'desc').limit(10).get();
+                        snapshot.forEach(doc => {
+                            leaderboard.push(doc.data());
+                        });
+                        console.log('Leaderboard loaded from Firebase');
+                        return leaderboard;
+                    }
+                } catch (error) {
+                    console.error('Firebase leaderboard load error:', error);
+                }
+            }
+            
+            // Fallback to localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('wordmaster_')) {
+                    try {
+                        const userData = JSON.parse(localStorage.getItem(key));
+                        leaderboard.push(userData);
+                    } catch (e) {
+                        console.error('Error parsing localStorage data:', e);
+                    }
+                }
+            }
+            
+            leaderboard.sort((a, b) => (b.score || 0) - (a.score || 0));
+            console.log('Leaderboard loaded from localStorage');
+            return leaderboard.slice(0, 10);
+        }
+
+        async function login() {
+            const username = document.getElementById('username').value.trim();
+            
+            if (!username) {
+                showError('Please enter a username');
+                return;
+            }
+
+            showScreen('loading');
+
+            try {
+                const existingUserData = await loadUserData(username);
+                
+                if (existingUserData) {
+                    // Existing user
+                    currentUser = username;
+                    gameData = existingUserData;
+                    startGame();
+                } else {
+                    // New user - show language selection
+                    currentUser = username;
+                    gameData = {
+                        username: username,
+                        language: null,
+                        score: 0,
+                        gamesPlayed: 0,
+                        createdAt: new Date().toISOString()
+                    };
+                    showScreen('languageSelection');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Login failed. Please try again.');
+                showScreen('loginScreen');
+            }
+        }
+
+        async function selectLanguage(language) {
+            showScreen('loading');
+            
+            gameData.language = language;
+            gameData.score = 0;
+            gameData.gamesPlayed = 0;
+            
+            // Save to Firebase/localStorage
+            await saveUserData(gameData);
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+            startGame();
+        }
+
+        async function startGame() {
+            userScore = gameData.score;
+            currentQuestion = Math.floor(Math.random() * questionBanks[gameData.language].length);
+            
+            document.getElementById('currentUser').textContent = currentUser;
+            document.getElementById('currentLanguage').textContent = 
+                gameData.language.charAt(0).toUpperCase() + gameData.language.slice(1);
+            document.getElementById('userScore').textContent = userScore;
+            
+            showScreen('gameScreen');
+            loadQuestion();
+            await updateLeaderboard();
+        }
+
+        function loadQuestion() {
+            const questions = questionBanks[gameData.language];
+            const question = questions[currentQuestion];
+            
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectAnswer(index, question.correctIndex);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('nextBtn').style.display = 'none';
+            selectedAnswer = null;
+        }
+
+        async function selectAnswer(selectedIndex, correctIndex) {
+            if (selectedAnswer !== null) return; // Already answered
+            
+            selectedAnswer = selectedIndex;
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && selectedIndex !== correctIndex) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+
+            if (selectedIndex === correctIndex) {
+                userScore += 10;
+                document.getElementById('userScore').textContent = userScore;
+                
+                // Update and save user data
+                gameData.score = userScore;
+                gameData.gamesPlayed += 1;
+                await saveUserData(gameData);
+            }
+
+            document.getElementById('nextBtn').style.display = 'inline-block';
+            await updateLeaderboard();
+        }
+
+        function nextQuestion() {
+            // Get random question from the bank
+            const questions = questionBanks[gameData.language];
+            let newQuestion;
+            do {
+                newQuestion = Math.floor(Math.random() * questions.length);
+            } while (newQuestion === currentQuestion && questions.length > 1);
+            
+            currentQuestion = newQuestion;
+            loadQuestion();
+        }
+
+        async function updateLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '<div style="text-align: center; color: #666;">Loading...</div>';
+            
+            try {
+                const leaderboard = await loadLeaderboard();
+                leaderboardList.innerHTML = '';
+                
+                leaderboard.slice(0, 5).forEach((player, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'leaderboard-item';
+                    item.innerHTML = `
+                        <span>${index + 1}. ${player.username} (${player.language || 'N/A'})</span>
+                        <span>${player.score || 0} pts</span>
+                    `;
+                    leaderboardList.appendChild(item);
+                });
+                
+                if (leaderboard.length === 0) {
+                    leaderboardList.innerHTML = '<div style="text-align: center; color: #666;">No players yet</div>';
+                }
+            } catch (error) {
+                console.error('Leaderboard update error:', error);
+                leaderboardList.innerHTML = '<div style="text-align: center; color: #dc3545;">Error loading leaderboard</div>';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            gameData = {};
+            userScore = 0;
+            currentQuestion = 0;
+            document.getElementById('username').value = '';
+            document.getElementById('loginError').textContent = '';
+            showScreen('loginScreen');
+        }
+
+        // Initialize the game
+        showScreen('loginScreen');
+    </script>
+</body>
+</html>
