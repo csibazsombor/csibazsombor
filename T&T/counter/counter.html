@@ -30,8 +30,8 @@
             --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             --gradient-primary: linear-gradient(135deg, #ea6666 0%, #8e4ba2 100%);
-            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --gradient-accent: linear-gradient(135deg, #00000007 50%, #27151518 80%);
+            --gradient-success: linear-gradient(135deg, #380c0c 10%, #7e1111 80%);
             --transition-fast: all 0.15s ease;
             --transition-medium: all 0.3s ease;
             --transition-slow: all 0.6s ease;
@@ -805,23 +805,23 @@
 
         <div class="stats-grid stats-hidden" id="stats-section">
             <div class="stat-item">
-                <div class="stat-label" id="totaldays_label">Total Days</div>
+                <div class="stat-label" id="totaldays_label">Total Days☀️</div>
                 <div class="stat-value" id="total-days">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="totalhours_label">Total Hours</div>
+                <div class="stat-label" id="totalhours_label">Total Hours🕰️</div>
                 <div class="stat-value" id="total-hours">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="totalweeks_label">Total Weeks</div>
+                <div class="stat-label" id="totalweeks_label">Total Weeks📅</div>
                 <div class="stat-value" id="total-weeks">0</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="goalprogress_label">Goal Progress (1000 Days)</div>
+                <div class="stat-label" id="goalprogress_label">Goal Progress (1000 Days)🥇</div>
                 <div class="stat-value" id="goal-progress">0%</div>
             </div>
             <div class="stat-item">
-                <div class="stat-label" id="nextfriendiversary_label">Next Friendiversary</div>
+                <div class="stat-label" id="nextfriendiversary_label">Next Anniversary💗</div>
                 <div class="stat-value" id="anniversary-countdown">--</div>
             </div>
             <div class="stat-item">
@@ -917,18 +917,18 @@
                 hide_stats_btn: "📊 Hide Stats",
                 show_achievements_btn: "🏆 Achievements",
                 hide_achievements_btn: "🏆 Hide Achievements",
-                totaldays_label: "Total Days",
-                totalhours_label: "Total Hours",
-                totalweeks_label: "Total Weeks",
+                totaldays_label: "Total Days ☀️",
+                totalhours_label: "Total Hours 🕰️",
+                totalweeks_label: "Total Weeks 📅",
                 totalminutes_label: "Total Minutes",
-                goalprogress_label: "Goal Progress (1000 Days)",
-                nextfriendiversary_label: "Next Friendiversary",
+                goalprogress_label: "Goal Progress (1000 Days) 🥇",
+                nextfriendiversary_label: "Next Friendiversary 💗",
                 toyeeesbirthday_label: "Toyeee's Birthday",
                 toyaaasbirthday_label: "Toyaaa's Birthday",
                 ourtimezone_label: "🌍 Our Timezones"
             },
             id: {
-                title_friendship: "💕 hubungan kita",
+                title_friendship: "💕 Hubungan kita",
                 years_label: "Tahun",
                 months_label: "Bulan",
                 days_label: "Hari", 
@@ -941,12 +941,12 @@
                 hide_stats_btn: "📊 Sembunyikan Statistik",
                 show_achievements_btn: "🏆 Pencapaian",
                 hide_achievements_btn: "🏆 Sembunyikan Pencapaian",
-                totaldays_label: "Total Hari",
-                totalhours_label: "Total Jam",
-                totalweeks_label: "Total Minggu",
-                totalminutes_label: "Total Menit",
-                goalprogress_label: "Progress Target (1000 Hari)",
-                nextfriendiversary_label: "Anniversary Selanjutnya",
+                totaldays_label: "Total Hari ☀️",
+                totalhours_label: "Total Jam 🕰️",
+                totalweeks_label: "Total Minggu 📅",
+                totalminutes_label: "Total Menit ",
+                goalprogress_label: "Progress Target (1000 Hari) 🥇",
+                nextfriendiversary_label: "Anniversary Selanjutnya  💗",
                 toyeeesbirthday_label: "Ulang Tahun Toyeee",
                 toyaaasbirthday_label: "Ulang Tahun Toyaaa",
                 ourtimezone_label: "🌍 Zona Waktu Kita"
@@ -959,7 +959,7 @@
             { id: 'first_month', icon: '🥳', name: 'First Month', days: 30, name_id: 'Bulan Pertama' },
             { id: 'fifty_days', icon: '🎁', name: '50 Days', days: 50, name_id: '50 Hari' },
             { id: 'hundred_days', icon: '💫', name: '100 Days', days: 100, name_id: '100 Hari' },
-            { id: 'hundred_days', icon: '💞', name: 'IN LOVE', days: 100, name_id: '100 Hari' },
+            { id: 'hundred_days', icon: '💞', name: 'IN LOVE', days: 100, name_id: 'Hubungan kita' },
             { id: 'half_year', icon: '🌟', name: '6 Months', days: 180, name_id: '6 Bulan' },
             { id: 'one_year', icon: '🎉', name: '1 Year', days: 365, name_id: '1 Tahun' },
             { id: 'five_hundred', icon: '🏆', name: '500 Days', days: 500, name_id: '500 Hari' },
@@ -1154,8 +1154,11 @@
 
         function updateAnniversaryCountdown() {
             const now = new Date();
-            const anniversary = new Date(now.getFullYear(), 2, 14); // March 14
-            if (now > anniversary) anniversary.setFullYear(now.getFullYear() + 1);
+            const anniversary = new Date(now.getFullYear(), 7, 23); // August 23 (month is zero-indexed, so 7 = August)
+            anniversary.setHours(0, 0, 0, 0);
+            if (now > anniversary) {
+                anniversary.setFullYear(now.getFullYear() + 1);
+            }
 
             const diff = anniversary - now;
             const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -1167,6 +1170,7 @@
             
             getElement('anniversary-countdown').textContent = messages[state.currentLanguage];
         }
+
 
         function updateGoalProgress(totalDays) {
             const progress = Math.min(100, Math.floor((totalDays / CONFIG.friendshipGoalDays) * 100));
