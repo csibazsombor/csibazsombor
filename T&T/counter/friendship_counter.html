@@ -17,22 +17,19 @@
 
         :root {
             /* Light mode colors */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #1a202c;
-            --text-secondary: #718096;
-            --text-muted: #a0aec0;
-            --border-color: #e2e8f0;
-            --accent-primary: #667eea;
-            --accent-secondary: #764ba2;
+            --bg-primary: #180f0f;
+            --bg-secondary: #1e293b;
+            --bg-card: #00000013;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --error-color: #ef4444;
             --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-primary: linear-gradient(135deg, #ea6666 0%, #8e4ba2 100%);
             --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
             --transition-fast: all 0.15s ease;
@@ -49,13 +46,13 @@
 
         /* Dark mode colors */
         body.dark-mode {
-            --bg-primary: #0f172a;
+            --bg-primary: #180f0f;
             --bg-secondary: #1e293b;
-            --bg-card: #334155;
+            --bg-card: #00000013;
             --text-primary: #f8fafc;
             --text-secondary: #cbd5e1;
             --text-muted: #64748b;
-            --border-color: #475569;
+            --border-color: #47556900;
             --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
             --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
             --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
@@ -340,7 +337,7 @@
 
         .birthday-section {
             border-color: var(--warning-color);
-            background: linear-gradient(135deg, #fff8e1, #fef3e2);
+            background: linear-gradient(135deg, #553838, #332986);
         }
 
         body.dark-mode .birthday-section {
@@ -349,7 +346,7 @@
 
         .timezone-section {
             border-color: #2196f3;
-            background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+            background: linear-gradient(135deg, #4b2f3e, #2f1431);
         }
 
         body.dark-mode .timezone-section {
@@ -408,7 +405,7 @@
             right: var(--spacing-md);
             z-index: 1000;
             display: flex;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(31, 16, 16, 0.644);
             backdrop-filter: blur(10px);
             border-radius: 50px;
             padding: 6px;
@@ -757,10 +754,9 @@
     <div class="container">
         <div class="header">
             <div></div>
-            <button class="mode-toggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
         </div>
 
-        <h1 class="title" id="title_friendship">✨ Friendship Journey</h1>
+        <h1 class="title" id="title_friendship">💕 Our Relationship</h1>
         <div class="milestone" id="milestone">🌱 Growing friendship!</div>
 
         <div class="counter-grid">
@@ -858,11 +854,11 @@
             <h2 class="timezone-title" id="ourtimezone_label">🌍 Our Timezones</h2>
             <div class="timezone-grid">
                 <div class="timezone-item">
-                    <div class="timezone-label">Toyeee's Time (Jakarta)</div>
+                    <div class="timezone-label">Toyeee's Time </div>
                     <div class="timezone-value" id="friend-time">--:--</div>
                 </div>
                 <div class="timezone-item">
-                    <div class="timezone-label">Toyaaa's Time (Bratislava)</div>
+                    <div class="timezone-label">Toyaaa's Time </div>
                     <div class="timezone-value" id="your-time">--:--</div>
                 </div>
             </div>
@@ -907,7 +903,7 @@
         // Translations
         const translations = {
             en: {
-                title_friendship: "✨ Friendship Journey",
+                title_friendship: "💕 Our Relationship",
                 years_label: "Years",
                 months_label: "Months", 
                 days_label: "Days",
@@ -931,7 +927,7 @@
                 ourtimezone_label: "🌍 Our Timezones"
             },
             id: {
-                title_friendship: "✨ Perjalanan Persahabatan",
+                title_friendship: "💕 hubungan kita",
                 years_label: "Tahun",
                 months_label: "Bulan",
                 days_label: "Hari", 
@@ -1023,16 +1019,6 @@
             localStorage.setItem('preferredLanguage', lang);
         }
 
-        // Dark Mode
-        function toggleDarkMode() {
-            state.darkMode = !state.darkMode;
-            document.body.classList.toggle('dark-mode', state.darkMode);
-            
-            const toggle = document.querySelector('.mode-toggle');
-            toggle.textContent = state.darkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
-            
-            localStorage.setItem('darkMode', state.darkMode);
-        }
 
         // Toggle Functions
         function toggleTimeUnits() {
