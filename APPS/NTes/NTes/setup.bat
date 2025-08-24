@@ -1,1 +1,0 @@
-npm run installers/setupEvents.js
