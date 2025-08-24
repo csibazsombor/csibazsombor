@@ -787,7 +787,8 @@
         </div>
 
         <div class="description">
-            Since <span class="date-highlight" id="friendship-date">March 14, 2025</span> with Toyeee & Toyaaa 😏
+            Friend since <span class="date-highlight" id="friendship-date">March 14, 2025</span> with Toyeee & Toyaaa 😏<br>
+            Lover Since <span class="date-highlight" id="friendship-date">August 24, 2025</span>💞💗
         </div>
 
         <div class="controls">
@@ -958,6 +959,7 @@
             { id: 'first_month', icon: '🥳', name: 'First Month', days: 30, name_id: 'Bulan Pertama' },
             { id: 'fifty_days', icon: '🎁', name: '50 Days', days: 50, name_id: '50 Hari' },
             { id: 'hundred_days', icon: '💫', name: '100 Days', days: 100, name_id: '100 Hari' },
+            { id: 'hundred_days', icon: '💞', name: 'IN LOVE', days: 100, name_id: '100 Hari' },
             { id: 'half_year', icon: '🌟', name: '6 Months', days: 180, name_id: '6 Bulan' },
             { id: 'one_year', icon: '🎉', name: '1 Year', days: 365, name_id: '1 Tahun' },
             { id: 'five_hundred', icon: '🏆', name: '500 Days', days: 500, name_id: '500 Hari' },
@@ -1175,16 +1177,16 @@
             const milestone = getElement('milestone');
         
             const milestones = [
-                { days: 2555, key: '7y', message: { en: '🚀 7 years of amazing friendship!', id: '🚀 7 tahun persahabatan luar biasa!' }},
+                { days: 2555, key: '7y', message: { en: '🚀 7 years of amazing relationship!', id: '🚀 7 tahun persahabatan luar biasa!' }},
                 { days: 2190, key: '6y', message: { en: '🌟 6 years strong!', id: '🌟 6 tahun yang kuat!' }},
                 { days: 1825, key: '5y', message: { en: '🎊 Half a decade together!', id: '🎊 Setengah dekade bersama!' }},
-                { days: 1460, key: '4y', message: { en: '✨ 4 years of friendship!', id: '✨ 4 tahun persahabatan!' }},
+                { days: 1460, key: '4y', message: { en: '✨ 4 years of relationship!', id: '✨ 4 tahun persahabatan!' }},
                 { days: 1095, key: '3y', message: { en: '🎈 3 years and going strong!', id: '🎈 3 tahun dan terus kuat!' }},
                 { days: 730, key: '2y', message: { en: '😱 Friends for 2 years, yeayyy!!', id: '😱 Berteman selama 2 tahun, yeayyy!!' }},
-                { days: 365, key: '1y', message: { en: '🎉 Over a year of friendship!', id: '🎉 Lebih dari setahun persahabatan!' }},
+                { days: 365, key: '1y', message: { en: '🎉 Over a year of relationship!', id: '🎉 Lebih dari setahun hubungan!' }},
                 { days: 300, key: '300', message: { en: '✨ Almost a full year together!', id: '✨ Hampir setahun penuh bersama!' }},
                 { days: 200, key: '200', message: { en: '🌟 200+ days and counting!', id: '🌟 200+ hari dan terus bertambah!' }},
-                { days: 100, key: '100', message: { en: '💫 Over 100 days of friendship!', id: '💫 Lebih dari 100 hari persahabatan!' }},
+                { days: 100, key: '100', message: { en: '💫 Over 100 days of relationship!', id: '💫 Lebih dari 100 hari hubungan!' }},
                 { days: 50, key: '50', message: { en: '☺️ 50+ days together!', id: '☺️ 50+ hari bersama!' }},
                 { days: 30, key: '30', message: { en: '🎈 A month of friendship!', id: '🎈 Sebulan persahabatan!' }},
                 { days: 7, key: '7', message: { en: '🌸 A week of friendship!', id: '🌸 Seminggu persahabatan!' }},
@@ -1324,13 +1326,7 @@
             }
 
             // Load saved preferences
-            const savedLang = localStorage.getItem('preferredLanguage') || 'id';
-            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            
-            if (savedDarkMode) {
-                toggleDarkMode();
-            }
-            
+            const savedLang = localStorage.getItem('preferredLanguage') || 'id';         
             switchLanguage(savedLang);
 
             // Initialize hidden states
