@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #ffe6f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+  background: #fff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+h1 {
+  color: #ff1a75;
+  font-size: 2.5rem;
+}
+
+p {
+  color: #ff4da6;
+  font-size: 1.2rem;
+}
