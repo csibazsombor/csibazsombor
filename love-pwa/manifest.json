@@ -1,6 +1,9 @@
 {
-  "name": "Love PWA",
-  "short_name": "Love",
+  "name": "T&T APP",
+  "short_name": "T&T APP",
+  "version": "1.0.3",
+  "author": "Csiba Zsombor",
+  "description": "Our relationship!",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#ffe6f0",
