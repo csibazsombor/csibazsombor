@@ -1,1 +1,6 @@
-{"version": "0.0.6"}
+{
+  "version": "0.0.7",
+  "galleryImages": [
+    "https://cdn.delmagyar.hu/2025/08/l5Z8i-EZoQDWDIYjxznXwiThdpS-NYuEhAf2yOyqvxs/fill/1347/758/no/1/aHR0cHM6Ly9jbXNjZG4uYXBwLmNvbnRlbnQucHJpdmF0ZS9jb250ZW50LzVhYTEzMDY1N2NiYTRkNDNiMTM0MDk5MjljZmZkODRj.jpg"
+  ]
+}
