@@ -79,11 +79,11 @@ p {
 }
 
 .updateBtn {
-  display: block;
+  display: none;
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: #4481db;
+  background-color: #224899;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -91,7 +91,7 @@ p {
   border-radius: 18px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: opacity 0.5s ease, transform 0.2s ease;
 }
 
 .updateBtn:hover {

@@ -91,25 +91,32 @@ async function updateLocalVersion(newVersion) {
 
 // Check if updates are available
 function checkForUpdates() {
-  if (!version) {
+  if (typeof version === 'undefined' || !version) {
     document.getElementById('status').textContent = 'Loading version...';
     return;
   }
 
   const currentLocalVersion = localStorage.getItem("appVersion") || "0.0.0";
   const statusDiv = document.getElementById('status');
+  const updateBtn = document.getElementById('updateBtn');
 
   if (compareVersions(version, currentLocalVersion) > 0) {
+    // New version available
+    updateBtn.style.display = 'block';
     statusDiv.textContent = `Update available: ${currentLocalVersion} → ${version}`;
     statusDiv.className = 'status update-available';
+  
     showUpdateModal();
   } else {
+    // Already up-to-date
+    updateBtn.style.display = 'none';
     statusDiv.textContent = 'Your application is up to date!';
     statusDiv.className = 'status up-to-date';
     closeUpdateModal();
     closeVersionInfo();
   }
 }
+
 
 // Modal functions
 function showUpdateModal() {
@@ -158,6 +165,7 @@ function performUpdate() {
 
     progressFill.style.width = progress + '%';
   }, 200);
+  window.location.reload();
 }
 
 // Close gallery modal
