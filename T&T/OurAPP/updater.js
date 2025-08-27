@@ -181,8 +181,14 @@ async function performUpdate() {
 
   updateStatus.textContent = 'Update completed successfully!';
   await new Promise(r => setTimeout(r, 500));
-  manualUpdate();
+  updateApp()
   window.location.reload();
+}
+// Trigger manual update (e.g. from update button)
+function updateApp() {
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: "MANUAL_UPDATE" });
+  }
 }
 
 // --- Close gallery modal ---
