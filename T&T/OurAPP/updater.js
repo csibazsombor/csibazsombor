@@ -9,7 +9,7 @@ let galleryImages = [];
 function getLocalVersion() {
   let lv = localStorage.getItem('appVersion');
   if (!lv) {
-    lv = '0.0.5';
+    lv = '0.0.7'; // Default version
     localStorage.setItem('appVersion', lv);
   }
   return lv;
@@ -116,16 +116,35 @@ async function checkForUpdates() {
   if (compareVersions(serverVersion, localVersion) > 0) {
     localStorage.setItem("newVersionAvailable", "true");
     statusDiv.textContent = `Update available: ${localVersion} → ${serverVersion}`;
-    statusDiv.className = 'status update-available';
+    statusDiv.className = 'status update-available fade-in show';
     updateBtn.style.display = 'inline-block';
     showUpdateModal();
   } else {
     updateBtn.style.display = 'none';
     statusDiv.textContent = 'Your application is up to date!';
-    statusDiv.className = 'status up-to-date';
+    statusDiv.className = 'status up-to-date fade-in show';
+
+    closeversioninfo();
     closeUpdateModal();
+
+    // Wait 2s then fade out
+    setTimeout(() => {
+      statusDiv.classList.remove("fade-in", "show");
+      statusDiv.classList.add("fade-out", "hide");
+
+      // After fade-out, hide completely
+      setTimeout(() => {
+        statusDiv.style.display = "none";
+        statusDiv.classList.remove("fade-out", "hide");
+      }, 500); // match transition duration
+    }, 2000);
   }
 }
+
+function closeversioninfo(){
+  document.getElementById('versionInfo').style.display = 'none';
+}
+
 
 // --- Perform update with progress ---
 async function performUpdate() {
@@ -162,7 +181,7 @@ async function performUpdate() {
 
   updateStatus.textContent = 'Update completed successfully!';
   await new Promise(r => setTimeout(r, 500));
-
+  manualUpdate();
   window.location.reload();
 }
 
