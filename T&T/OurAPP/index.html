@@ -73,7 +73,9 @@
     //App installed
     window.addEventListener('appinstalled', () => {
       installBtn.classList.remove('show'); // fade-out button
-      updateBtn.style.display = 'inline-block'; // Show update button
+      if (localStorage.getItem("newVersionAvailable") === "true") {
+              updateBtn.style.display = 'inline-block'; // Show update butto
+      }
     });
 
 

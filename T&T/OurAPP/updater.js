@@ -62,12 +62,8 @@ async function updateLocalVersion(newVersion) {
 
     // Inject gallery images
     const galleryContent = document.getElementById('galleryContent');
-    if (galleryContent && galleryImages.length) {
-      // Remove old images first
-      const oldImages = galleryContent.querySelectorAll('img');
-      oldImages.forEach(img => img.remove());
-
-      // Add new images
+    if (galleryContent && galleryImages && galleryImages.length > 0) {
+      // Append new images without removing old ones
       galleryImages.forEach((imgSrc, index) => {
         const img = document.createElement('img');
         img.src = imgSrc;
@@ -82,12 +78,11 @@ async function updateLocalVersion(newVersion) {
       await Promise.all(keys.map(key => caches.delete(key)));
     }
 
-    // Optionally reload page
-    // window.location.reload();
   } else {
     console.log("Already up-to-date:", currentLocalVersion);
   }
 }
+
 
 // Check if updates are available
 function checkForUpdates() {
@@ -102,7 +97,7 @@ function checkForUpdates() {
 
   if (compareVersions(version, currentLocalVersion) > 0) {
     // New version available
-    updateBtn.style.display = 'block';
+    localStorage.setItem("newVersionAvailable", "true");
     statusDiv.textContent = `Update available: ${currentLocalVersion} → ${version}`;
     statusDiv.className = 'status update-available';
   
@@ -136,7 +131,7 @@ function closeVersionInfo() {
 }
 
 // Fake progress update
-function performUpdate() {
+async function performUpdate() {
   const progressBar = document.getElementById('progressBar');
   const progressFill = document.getElementById('progressFill');
   const updateStatus = document.getElementById('updateStatus');
@@ -154,19 +149,19 @@ function performUpdate() {
       progress = 100;
       clearInterval(updateInterval);
 
-      setTimeout(() => {
+      setTimeout(async () => {
         updateStatus.textContent = 'Installing update...';
-        setTimeout(() => {
+        setTimeout(async () => {
           updateStatus.textContent = 'Update completed successfully!';
-          updateLocalVersion(version);
+          await updateLocalVersion(version); // ensure async finishes
+          window.location.reload();          // reload after storage updated
         }, 1000);
       }, 500);
     }
-
     progressFill.style.width = progress + '%';
   }, 200);
-  window.location.reload();
 }
+
 
 // Close gallery modal
 function closeGallery() {
