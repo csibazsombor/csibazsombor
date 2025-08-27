@@ -1,7 +1,7 @@
 // Remote version URL
 var version = null;
 var galleryImages = [];
-var versionUrl = "https://csibazsombor.github.io/csibazsombor/T&T/OurAPP/version.txt"; 
+var versionUrl = "https://csibazsombor.github.io/csibazsombor/T&T/OurAPP/version.json"; 
 
 var localVersion = getLocalVersion();
 
