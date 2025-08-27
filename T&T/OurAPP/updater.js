@@ -1,161 +1,99 @@
 // Remote version URL
-var version = null;
-var galleryImages = [];
-var versionUrl = "https://csibazsombor.github.io/csibazsombor/T&T/OurAPP/version.json"; 
+const versionUrl = "https://csibazsombor.github.io/csibazsombor/T&T/OurAPP/version.json"; 
 
-var localVersion = getLocalVersion();
+let localVersion = getLocalVersion();
+let serverVersion = null;
+let galleryImages = [];
 
-// Get local version from localStorage
+// --- Get local version from localStorage ---
 function getLocalVersion() {
-  let loversion = localStorage.getItem('appVersion');
-  if (!loversion) {
-    loversion = '0.0.6';
-    localStorage.setItem('appVersion', loversion);
+  let lv = localStorage.getItem('appVersion');
+  if (!lv) {
+    lv = '0.0.5';
+    localStorage.setItem('appVersion', lv);
   }
-  return loversion;
+  return lv;
 }
 
-// Compare two versions
-function compareVersions(version1, version2) {
-  const v1parts = version1.split('.').map(Number);
-  const v2parts = version2.split('.').map(Number);
+// --- Compare versions ---
+function compareVersions(v1, v2) {
+  const v1parts = v1.split('.').map(Number);
+  const v2parts = v2.split('.').map(Number);
   for (let i = 0; i < Math.max(v1parts.length, v2parts.length); i++) {
-    const v1part = v1parts[i] || 0;
-    const v2part = v2parts[i] || 0;
-    if (v1part > v2part) return 1;
-    if (v1part < v2part) return -1;
+    const p1 = v1parts[i] || 0;
+    const p2 = v2parts[i] || 0;
+    if (p1 > p2) return 1;
+    if (p1 < p2) return -1;
   }
   return 0;
 }
 
-// Fetch version and gallery images from remote JSON
-async function fetchVersionFromUrl() {
+// --- Fetch remote version and gallery ---
+async function fetchRemoteData() {
   try {
     document.getElementById('currentVersion').textContent = 'Fetching...';
-
     const response = await fetch(versionUrl);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const data = await response.json();
-    version = data.version.trim();
+    serverVersion = data.version.trim();
     galleryImages = data.galleryImages || [];
-    localStorage.setItem("serverVersion", version);
+    localStorage.setItem("serverVersion", serverVersion);
 
-    document.getElementById('currentVersion').textContent = version;
-    return version;
-
-  } catch (error) {
-    console.error('Error fetching version:', error);
-    document.getElementById('currentVersion').textContent = 'Error loading version';
-    version = "0.0.5"; // fallback
-    return version;
-  }
-}
-async function updateFiles(files) {
-  for (const file of files) {
-    try {
-      const response = await fetch(file.url + '?v=' + version); // cache busting
-      if (!response.ok) throw new Error(`Failed to fetch ${file.url}`);
-      const content = await response.text();
-      localStorage.setItem(file.name, content); // store file content
-      console.log(`Updated ${file.name}`);
-    } catch (err) {
-      console.error('File update error:', err);
-    }
+    document.getElementById('currentVersion').textContent = serverVersion;
+    return data;
+  } catch (err) {
+    console.error('Error fetching remote data:', err);
+    document.getElementById('currentVersion').textContent = 'Error';
+    serverVersion = "0.0.5";
+    return null;
   }
 }
 
-await updateFiles([
-  { name: 'index.html', url: '/index.html' },
-  { name: 'style.css', url: '/style.css' },
-  { name: 'manifest.json', url: '/manifest.json' }
-]);
-
+// --- Clear gallery ---
 function clearGallery() {
   const galleryContent = document.getElementById('galleryContent');
-  if (galleryContent) {
-    galleryContent.innerHTML = '';
-  }
+  if (galleryContent) galleryContent.innerHTML = '';
 }
 
-async function refreshGallery(newImages) {
+// --- Refresh gallery with new images ---
+function refreshGallery(newImages) {
   clearGallery();
   galleryImages = newImages;
   const galleryContent = document.getElementById('galleryContent');
-  galleryImages.forEach((imgSrc, index) => {
+  galleryImages.forEach((src, idx) => {
     const img = document.createElement('img');
-    img.src = imgSrc;
-    img.alt = `Gallery ${index + 1}`;
+    img.src = src;
+    img.alt = `Gallery ${idx + 1}`;
     galleryContent.appendChild(img);
   });
 }
 
-
-// Update local version and gallery images
+// --- Update local version ---
 async function updateLocalVersion(newVersion) {
-  const currentLocalVersion = localStorage.getItem("appVersion") || "0.0.0";
-
-  if (compareVersions(currentLocalVersion, newVersion) < 0) {
-    console.log(`Updating from ${currentLocalVersion} → ${newVersion}`);
+  const currentLocal = localStorage.getItem("appVersion") || "0.0.0";
+  if (compareVersions(currentLocal, newVersion) < 0) {
+    console.log(`Updating local version ${currentLocal} → ${newVersion}`);
     localStorage.setItem("appVersion", newVersion);
+    localVersion = newVersion;
 
-    // Inject gallery images
-    const galleryContent = document.getElementById('galleryContent');
-    if (galleryContent && galleryImages && galleryImages.length > 0) {
-      // Append new images without removing old ones
-      galleryImages.forEach((imgSrc, index) => {
-        const img = document.createElement('img');
-        img.src = imgSrc;
-        img.alt = `Gallery ${index + 1}`;
-        galleryContent.appendChild(img);
-      });
-    }
+    // Refresh gallery
+    refreshGallery(galleryImages);
 
     // Clear caches if any
     if ("caches" in window) {
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-
   } else {
-    console.log("Already up-to-date:", currentLocalVersion);
+    console.log("Already up-to-date:", currentLocal);
   }
 }
 
-
-// Check if updates are available
-function checkForUpdates() {
-  if (typeof version === 'undefined' || !version) {
-    document.getElementById('status').textContent = 'Loading version...';
-    return;
-  }
-
-  const currentLocalVersion = localStorage.getItem("appVersion") || "0.0.0";
-  const statusDiv = document.getElementById('status');
-  const updateBtn = document.getElementById('updateBtn');
-
-  if (compareVersions(version, currentLocalVersion) > 0) {
-    // New version available
-    localStorage.setItem("newVersionAvailable", "true");
-    statusDiv.textContent = `Update available: ${currentLocalVersion} → ${version}`;
-    statusDiv.className = 'status update-available';
-  
-    showUpdateModal();
-  } else {
-    // Already up-to-date
-    updateBtn.style.display = 'none';
-    statusDiv.textContent = 'Your application is up to date!';
-    statusDiv.className = 'status up-to-date';
-    closeUpdateModal();
-    closeVersionInfo();
-  }
-}
-
-
-// Modal functions
+// --- Show / Close update modal ---
 function showUpdateModal() {
-  document.getElementById('newVersionSpan').textContent = version;
-  document.getElementById('currentVersionSpan').textContent = localStorage.getItem("appVersion");
+  document.getElementById('newVersionSpan').textContent = serverVersion;
+  document.getElementById('currentVersionSpan').textContent = localVersion;
   document.getElementById('updateModal').classList.add('show');
 }
 
@@ -165,11 +103,31 @@ function closeUpdateModal() {
   modal.classList.remove('show');
 }
 
-function closeVersionInfo() {
-  document.getElementById('versionInfo').style.display = 'none';
+// --- Check for updates ---
+async function checkForUpdates() {
+  if (!serverVersion) {
+    document.getElementById('status').textContent = 'Loading version...';
+    return;
+  }
+
+  const statusDiv = document.getElementById('status');
+  const updateBtn = document.getElementById('updateBtn');
+
+  if (compareVersions(serverVersion, localVersion) > 0) {
+    localStorage.setItem("newVersionAvailable", "true");
+    statusDiv.textContent = `Update available: ${localVersion} → ${serverVersion}`;
+    statusDiv.className = 'status update-available';
+    updateBtn.style.display = 'inline-block';
+    showUpdateModal();
+  } else {
+    updateBtn.style.display = 'none';
+    statusDiv.textContent = 'Your application is up to date!';
+    statusDiv.className = 'status up-to-date';
+    closeUpdateModal();
+  }
 }
 
-// Fake progress update
+// --- Perform update with progress ---
 async function performUpdate() {
   const progressBar = document.getElementById('progressBar');
   const progressFill = document.getElementById('progressFill');
@@ -178,41 +136,46 @@ async function performUpdate() {
 
   progressBar.style.display = 'block';
   updateButtons.style.display = 'none';
-  updateFiles();
-  refreshGallery(galleryImages);
   updateStatus.textContent = 'Downloading update...';
-  let progress = 0;
 
+  let progress = 0;
   const updateInterval = setInterval(() => {
     progress += Math.random() * 15;
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(updateInterval);
-
-      setTimeout(async () => {
-        updateStatus.textContent = 'Installing update...';
-        setTimeout(async () => {
-          updateStatus.textContent = 'Update completed successfully!';
-          await updateLocalVersion(version); // ensure async finishes
-          window.location.reload();          // reload after storage updated
-        }, 1000);
-      }, 500);
-    }
+    if (progress >= 100) progress = 100;
     progressFill.style.width = progress + '%';
   }, 200);
+
+  await new Promise(resolve => {
+    const intervalCheck = setInterval(() => {
+      if (progress >= 100) {
+        clearInterval(intervalCheck);
+        clearInterval(updateInterval);
+        resolve();
+      }
+    }, 100);
+  });
+
+  updateStatus.textContent = 'Installing update...';
+  await new Promise(r => setTimeout(r, 1000));
+
+  await updateLocalVersion(serverVersion);
+
+  updateStatus.textContent = 'Update completed successfully!';
+  await new Promise(r => setTimeout(r, 500));
+
+  window.location.reload();
 }
 
-
-// Close gallery modal
+// --- Close gallery modal ---
 function closeGallery() {
   document.getElementById('galleryModal').style.display = 'none';
 }
 
-// Init
+// --- Initialize app ---
 async function init() {
   document.getElementById('localVersion').textContent = localVersion;
-  await fetchVersionFromUrl();
-  setTimeout(checkForUpdates, 500);
+  await fetchRemoteData();
+  await checkForUpdates();
 }
 
 init();
