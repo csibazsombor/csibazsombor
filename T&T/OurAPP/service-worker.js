@@ -1,10 +1,11 @@
-const cacheName = 'love-pwa-cache-v1';
+const cacheName = 'our-relationship-cache-v1';
 const filesToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/manifest.json',
-  '/icon.png'
+  '/icon.png',
+  '/Images'
 ];
 
 self.addEventListener('install', e => {
