@@ -1,4 +1,6 @@
-/* Body & container */
+/* ==============================
+   Body & Container
+   ============================== */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -21,7 +23,9 @@ body {
   animation: fadeIn 1s ease;
 }
 
-/* Titles & texts */
+/* ==============================
+   Titles & Texts
+   ============================== */
 h1 {
   color: #df4242;
   font-size: 2.5rem;
@@ -44,7 +48,9 @@ p {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Install button */
+/* ==============================
+   Install & Update Buttons
+   ============================== */
 .add {
   position: absolute;
   top: 20px;
@@ -57,14 +63,14 @@ p {
   border-radius: 18px;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease, opacity 0.5s ease;
   opacity: 0;
-  display: none;
+  visibility: hidden;
+  transition: opacity 0.5s ease, transform 0.2s ease;
 }
 
 .add.show {
-  display: inline-block;
   opacity: 1;
+  visibility: visible;
 }
 
 .add:hover {
@@ -72,7 +78,30 @@ p {
   transform: translateY(-2px);
 }
 
-/* Buttons */
+.updateBtn {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #4481db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.updateBtn:hover {
+  background-color: #366bb5;
+  transform: translateY(-2px);
+}
+
+/* ==============================
+   Generic Buttons
+   ============================== */
 button {
   background-color: #fc5656fd;
   color: white;
@@ -85,23 +114,25 @@ button {
 }
 
 button:hover {
-  background-color: #e64b4b;
+  background-color: #e64b4b79;
   transform: translateY(-2px);
 }
 
-/* Images */
+/* ==============================
+   Images
+   ============================== */
 img {
-  max-width: 500px;
-  max-height: 200px;
-  width: auto;
-  height: auto;
-  border-radius: 12px;
+  max-width: 15%;
+  height: 500px;
+  border-radius: 15px;
   box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
   object-fit: cover;
   margin: 10px 0;
 }
 
-/* Gallery modal */
+/* ==============================
+   Gallery Modal
+   ============================== */
 #galleryModal {
   display: none;
   position: fixed;
@@ -132,36 +163,160 @@ img {
   font-size: 1.2rem;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  h1 {
-    font-size: 2rem;
-  }
-
-  p,
-  #together {
-    font-size: 1rem;
-  }
-
-  .container {
-    padding: 20px;
-    border-radius: 15px;
-  }
-
-  img {
-    max-width: 70%;
-  }
-
-  .add {
-    top: 10px;
-    right: 10px;
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
+/* ==============================
+   Version Info & Status
+   ============================== */
+.version-info {
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
 }
 
-/* Animations */
+.status {
+  margin: 15px 0;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.status.up-to-date {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status.update-available {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* ==============================
+   Update Modal
+   ============================== */
+#updateModal {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 1000;
+}
+
+#updateModal.hide {
+  display: none;
+  opacity: 0;
+}
+#updateModal.show {
+  display: flex;
+  opacity: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+.update-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+.update-icon {
+  font-size: 48px;
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+.update-button {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 10px;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.update-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+.cancel-button {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 10px;
+}
+
+.cancel-button:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* ==============================
+   Progress Bar
+   ============================== */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  margin: 20px 0;
+  overflow: hidden;
+  display: none;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  background-size: 200% 100%;
+  transition: width 0.3s ease;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* ==============================
+   Animations
+   ============================== */
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(-10px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ==============================
+   Responsive
+   ============================== */
+@media (max-width: 600px) {
+  h1 { font-size: 2rem; }
+  p, #together { font-size: 1rem; }
+  .container { padding: 20px; border-radius: 15px; }
+  img { max-width: 70%; }
+  .add { top: 10px; right: 10px; padding: 8px 12px; font-size: 0.9rem; }
 }

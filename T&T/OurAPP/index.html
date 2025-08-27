@@ -6,15 +6,40 @@
   <title>Our Relationship APP</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
-  <style>
-  </style>
+
 </head>
 <body>
 
   <div class="container">
-    <button class="add" id="installBtn" onclick="installApp()">Install APP</button>
+
+    <button class="updateBtn" onclick="checkForUpdates()">Update APP</button>
     <h1>Our Relationship APP</h1>
     <button onclick="showGallery()">Our Gallery💗</button>
+        <div class="version-info" id="versionInfo">
+            <strong>Current Version:</strong> <span id="currentVersion">Loading...</span><br>
+            <strong>Local Version:</strong> <span id="localVersion">Loading...</span>
+        </div>
+        <div id="status" class="status"></div>
+            <!-- Update Modal -->
+    <div id="updateModal" class="update-modal">
+        <div class="update-content">
+            <div class="update-icon">🔄</div>
+            <h2>Update Available!</h2>
+            <p>A newer version (<span id="newVersionSpan"></span>) is available.</p>
+            <p>Current version: <span id="currentVersionSpan"></span></p>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="updateStatus"></div>
+            
+            <div id="updateButtons">
+                <button class="update-button" onclick="performUpdate()">Update Now</button>
+                <button class="cancel-button" onclick="closeUpdateModal()">Later</button>
+            </div>
+        </div>
+    </div>
   </div>
 
   <!-- Gallery Modal -->
@@ -78,7 +103,7 @@
   </script>
 
   <!--Updater-->
-  <script src=""></script>
+  <script src="updater.js"></script>
 
 </body>
 </html>
