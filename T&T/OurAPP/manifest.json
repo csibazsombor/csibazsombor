@@ -1,7 +1,7 @@
 {
   "name": "Our Relationship APP",
   "short_name": "Our APP",
-  "version": "1.0.5",
+  "version": "0.0.7",
   "author": "Csiba Zsombor and Febriyanti Aulia Adinda",
   "description": "Our Relationship!",
   "start_url": "index.html",

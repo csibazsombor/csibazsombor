@@ -9,7 +9,7 @@ var localVersion = getLocalVersion();
 function getLocalVersion() {
   let loversion = localStorage.getItem('appVersion');
   if (!loversion) {
-    loversion = '0.0.5';
+    loversion = '0.0.6';
     localStorage.setItem('appVersion', loversion);
   }
   return loversion;
@@ -51,6 +51,45 @@ async function fetchVersionFromUrl() {
     return version;
   }
 }
+async function updateFiles(files) {
+  for (const file of files) {
+    try {
+      const response = await fetch(file.url + '?v=' + version); // cache busting
+      if (!response.ok) throw new Error(`Failed to fetch ${file.url}`);
+      const content = await response.text();
+      localStorage.setItem(file.name, content); // store file content
+      console.log(`Updated ${file.name}`);
+    } catch (err) {
+      console.error('File update error:', err);
+    }
+  }
+}
+
+await updateFiles([
+  { name: 'index.html', url: '/index.html' },
+  { name: 'style.css', url: '/style.css' },
+  { name: 'manifest.json', url: '/manifest.json' }
+]);
+
+function clearGallery() {
+  const galleryContent = document.getElementById('galleryContent');
+  if (galleryContent) {
+    galleryContent.innerHTML = '';
+  }
+}
+
+async function refreshGallery(newImages) {
+  clearGallery();
+  galleryImages = newImages;
+  const galleryContent = document.getElementById('galleryContent');
+  galleryImages.forEach((imgSrc, index) => {
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.alt = `Gallery ${index + 1}`;
+    galleryContent.appendChild(img);
+  });
+}
+
 
 // Update local version and gallery images
 async function updateLocalVersion(newVersion) {
@@ -139,7 +178,8 @@ async function performUpdate() {
 
   progressBar.style.display = 'block';
   updateButtons.style.display = 'none';
-
+  updateFiles();
+  refreshGallery(galleryImages);
   updateStatus.textContent = 'Downloading update...';
   let progress = 0;
 
