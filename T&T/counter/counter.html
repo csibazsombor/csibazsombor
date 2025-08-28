@@ -1348,13 +1348,6 @@
             setInterval(updateCounter, 1000);
             setInterval(updateTimezones, 1000);
 
-            // Show welcome notification
-            setTimeout(() => {
-                showNotification(state.currentLanguage === 'en' ? 
-                    '👋 Welcome to your friendship journey!' : 
-                    '👋 Selamat datang di perjalanan persahabatan!'
-                );
-            }, 1000);
         }
 
         // Start the application when page loads
