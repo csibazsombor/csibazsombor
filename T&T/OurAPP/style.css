@@ -119,9 +119,16 @@ p {
 /* ==============================
    Generic Buttons
    ============================== */
+
+@font-face {
+    font-family: 'Love-Font';
+    src: url(FONTS/Love.ttf);
+}
+
 button {
-  background-color: #fc5656fd;
-  color: white;
+  background-color: #ffdfe0fd;
+  color: rgb(36, 36, 36);
+  font-family: 'Love-Font';
   border: none;
   padding: 10px 20px;
   font-size: 1rem;

@@ -28,6 +28,14 @@ function compareVersions(v1, v2) {
   return 0;
 }
 
+// Links
+function togetherSince() {
+  window.location.href = "https://csibazsombor.github.io/csibazsombor/T&T/counter/counter.html";
+}
+function ourStory() {
+  window.location.href = "https://csibazsombor.github.io/csibazsombor/T&T/ourstory.html";
+}
+
 // --- Fetch remote version and gallery ---
 async function fetchRemoteData() {
   try {
@@ -45,7 +53,7 @@ async function fetchRemoteData() {
   } catch (err) {
     console.error('Error fetching remote data:', err);
     document.getElementById('currentVersion').textContent = 'Error';
-    serverVersion = "0.0.5";
+    serverVersion = "0.0.7"; // Fallback version
     return null;
   }
 }
