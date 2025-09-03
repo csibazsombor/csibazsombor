@@ -1,0 +1,110 @@
+body{
+        background-color: black;
+        color: white;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 20px;
+        text-align: center;
+        margin-top: 2cm;
+}
+.earlyaccess{
+        font-family: 'Courier New', Courier, monospace;
+       text-align: center; 
+       margin-top: 5cm;
+       font-size-adjust: 0.7;
+       background-color: black;
+       transition: color 0.6s ease;
+}
+.earlyaccess:hover{
+        color: green;
+        transition: color 0.6s ease;
+}
+hr{
+        border: 5px solid white;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 18px;
+}
+
+button{
+        cursor: pointer;
+        color: white;
+        font-size: 0.9cm;
+        border-radius: 12px;
+        border: none;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        background: linear-gradient(90deg, rgb(50, 196, 127), green);
+        transition: background 0.4s ease, transform 0.4s ease;
+}
+
+button:hover {
+        transform: scale(1.05);
+}
+.fade-out {
+        animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+        from {
+                opacity: 1;
+        }
+        to {
+                opacity: 0;
+        }
+}
+.fade-in {
+        animation: fadeIn 1s forwards;
+}
+.beta{
+        font-size: 0.5cm;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        background: linear-gradient(90deg, rgb(50, 196, 127), green);
+        padding: 5px;
+        border-radius: 15px;
+
+        position: absolute;
+        top: 10px;
+        right: 10px;
+}
+input{
+        background-color: black;
+        color: white;
+        font-size: 20px;
+        border: 2px solid white;
+        border-radius: 12px;
+        padding: 10px;
+        width: 60%;
+        font-family: 'Courier New', Courier, monospace;
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        margin-bottom: 80px;
+        transform: translateX(-50%);
+}
+.send-btn{
+        display: none;
+        background: linear-gradient(90deg, rgb(50, 196, 127), green);
+        border: none;
+        color: white;
+        font-size: 20px;
+        border-radius: 12px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        position: fixed;
+        right: 20%;
+        bottom: 0;
+        margin-bottom: 80px;
+}
+@keyframes fadeIn {
+        from {
+                opacity: 0;
+        }
+        to {
+                opacity: 1;
+        }
+}
+button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
