@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="shortcut icon" href="icon.png" type="image/x-icon">
-
 </head>
 <body>
 
@@ -18,12 +17,14 @@
     <button onclick="showGallery()">Our Gallery💗</button>
     <button onclick="togetherSince()">Together since🔗</button><br>
     <button onclick="ourStory()">How we met?🕰️</button>
-        <div class="version-info" id="versionInfo">
-            <strong>Current Version:</strong> <span id="currentVersion">Loading...</span><br>
-            <strong>Local Version:</strong> <span id="localVersion">Loading...</span>
-        </div>
-        <div id="status" class="status"></div>
-            <!-- Update Modal -->
+        
+    <div class="version-info" id="versionInfo">
+        <strong>Current Version:</strong> <span id="currentVersion">Loading...</span><br>
+        <strong>Local Version:</strong> <span id="localVersion">Loading...</span>
+    </div>
+    <div id="status" class="status"></div>
+    
+    <!-- Update Modal -->
     <div id="updateModal" class="update-modal">
         <div class="update-content">
             <div class="update-icon">🔄</div>
@@ -50,38 +51,598 @@
     <div id="galleryContent">
       <span id="closeGallery" onclick="closeGallery()">✖ Close</span>
       <h2>Our Moments</h2>
-      <img src="Images/IMG_20250824_100846_110.jpg" alt="Gallery 1">
-      <img src="Images/IMG_20250826_123404_967.jpg" alt="Gallery 2">
-      <img src="Images/20241203_190719.jpg" alt="Gallery 3">
-      <img src="Images/20250825_132713.jpg" alt="Gallery 4">
-      <img src="Images/20250826_130719.jpg" alt="Gallery 5">
-      <img src="Images/IMG_20250824_100853_542.jpg" alt="Gallery 6">
+      
+      <!-- Gallery Controls -->
+      <div id="galleryControls">
+        <button onclick="toggleSlideshow()" id="slideshowBtn">▶️ Slideshow</button>
+        <button onclick="shuffleGallery()">🔀 Shuffle</button>
+        <button onclick="showFavorites()">⭐ Favorites</button>
+        <button onclick="sortByDate()">📅 Sort by Date</button>
+        <button onclick="toggleGridView()">🔲 Grid View</button>
+      </div>
+
+      <!-- Search Bar -->
+      <div id="searchSection">
+        <input type="text" id="searchInput" placeholder="Search photos by memory..." oninput="searchPhotos()">
+        <button onclick="clearSearch()">❌</button>
+      </div>
+
+      <!-- Filter Options -->
+      <div id="filterSection">
+        <select id="yearFilter" onchange="filterByYear()">
+          <option value="">All Years</option>
+        </select>
+        <select id="monthFilter" onchange="filterByMonth()">
+          <option value="">All Months</option>
+          <option value="01">January</option>
+          <option value="02">February</option>
+          <option value="03">March</option>
+          <option value="04">April</option>
+          <option value="05">May</option>
+          <option value="06">June</option>
+          <option value="07">July</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+
+      <div id="galleryGrid" class="grid-view">
+        <div class="photo-container">
+          <img src="Images/IMG_20250824_100846_110.jpg" alt="Gallery 1" onclick="viewFullImage(this, 0)" data-id="1" data-date="2025-08-24" data-memory="Beautiful morning together">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(1, this)">🤍</span>
+            <span class="photo-date">Aug 24, 2025</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/IMG_20250826_123404_967.jpg" alt="Gallery 2" onclick="viewFullImage(this, 1)" data-id="2" data-date="2025-08-26" data-memory="Lunch date adventure">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(2, this)">🤍</span>
+            <span class="photo-date">Aug 26, 2025</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/20241203_190719.jpg" alt="Gallery 3" onclick="viewFullImage(this, 2)" data-id="3" data-date="2024-12-03" data-memory="Winter evening memories">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(3, this)">🤍</span>
+            <span class="photo-date">Dec 3, 2024</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/IMG_20250907_102637_959.jpg" alt="Gallery 4" onclick="viewFullImage(this, 3)" data-id="4" data-date="2025-09-07" data-memory="Weekend getaway">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(4, this)">🤍</span>
+            <span class="photo-date">Sep 7, 2025</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/20250921_133048.jpg" alt="Gallery 5" onclick="viewFullImage(this, 4)" data-id="5" data-date="2025-09-21" data-memory="Perfect Saturday">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(5, this)">🤍</span>
+            <span class="photo-date">Sep 21, 2025</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/20250826_130719.jpg" alt="Gallery 6" onclick="viewFullImage(this, 5)" data-id="6" data-date="2025-08-26" data-memory="Afternoon happiness">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(6, this)">🤍</span>
+            <span class="photo-date">Aug 26, 2025</span>
+          </div>
+        </div>
+        <div class="photo-container">
+          <img src="Images/IMG_20250824_100853_542.jpg" alt="Gallery 7" onclick="viewFullImage(this, 6)" data-id="7" data-date="2025-08-24" data-memory="Morning coffee together">
+          <div class="photo-overlay">
+            <span class="favorite-btn" onclick="toggleFavorite(7, this)">🤍</span>
+            <span class="photo-date">Aug 24, 2025</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Photo Stats -->
+      <div id="photoStats">
+        <span id="photoCount">7 photos</span> • 
+        <span id="favoriteCount">0 favorites</span> • 
+        <span id="dateRange">2024 - 2025</span>
+      </div>
     </div>
   </div>
+
+  <!-- Full Image Modal -->
+  <div id="fullImageModal">
+    <div id="fullImageContent">
+      <span onclick="closeFullImage()">✖ Close</span>
+      <img id="fullImage" src="" alt="">
+      
+      <!-- Photo Info Panel -->
+      <div id="photoInfo">
+        <h3 id="photoTitle">Photo Title</h3>
+        <p id="photoMemory">Memory description</p>
+        <span id="photoDate">Date</span>
+        <button onclick="toggleFullscreenFavorite()" id="fullFavoriteBtn">🤍 Add to Favorites</button>
+      </div>
+
+      <!-- Enhanced Navigation -->
+      <div id="imageNavigation">
+        <button onclick="previousImage()" id="prevBtn">‹ Previous</button>
+        <span id="imageCounter">1 / 7</span>
+        <button onclick="nextImage()" id="nextBtn">Next ›</button>
+      </div>
+
+      <!-- Zoom and Pan Controls -->
+      <div id="zoomControls">
+        <button onclick="zoomIn()">🔍+</button>
+        <button onclick="zoomOut()">🔍-</button>
+        <button onclick="resetZoom()">↻ Reset</button>
+        <button onclick="downloadPhoto()">⬇️ Download</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Together Since Modal -->
+  <div id="togetherModal">
+    <div id="togetherContent">
+      <span onclick="closeModal('togetherModal')">✖ Close</span>
+      <h2>Together Since</h2>
+      <div id="togetherCounter">Loading...</div>
+      <input type="date" id="relationshipStart" onchange="updateCounter()" placeholder="When did you start dating?">
+      <p>Every day with you is a blessing! 💖</p>
+    </div>
+  </div>
+
+  <!-- Story Modal -->
+  <div id="storyModal">
+    <div id="storyContent">
+      <span onclick="closeModal('storyModal')">✖ Close</span>
+      <h2>How We Met</h2>
+      <textarea id="ourStoryText" placeholder="Write your beautiful love story here..."></textarea>
+      <button onclick="saveStory()">Save Story</button>
+    </div>
+  </div>
+
+  <!-- Slideshow Modal -->
+  <div id="slideshowModal">
+    <div id="slideshowContent">
+      <span onclick="stopSlideshow()">✖ Close</span>
+      <img id="slideshowImage" src="" alt="">
+      <div id="slideshowInfo">
+        <h3 id="slideshowTitle">Photo Title</h3>
+        <p id="slideshowMemory">Memory</p>
+      </div>
+      <div id="slideshowControls">
+        <button onclick="pauseSlideshow()" id="pauseBtn">⏸️ Pause</button>
+        <button onclick="resumeSlideshow()" id="playBtn" style="display:none">▶️ Play</button>
+        <select id="speedControl" onchange="changeSpeed()">
+          <option value="1000">Fast (1s)</option>
+          <option value="3000" selected>Normal (3s)</option>
+          <option value="5000">Slow (5s)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Gallery Controls */
+    #galleryControls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0;
+      justify-content: center;
+    }
+
+    #galleryControls button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      color: white;
+      cursor: pointer;
+      font-size: 12px;
+      transition: transform 0.2s;
+    }
+
+    #galleryControls button:hover {
+      transform: scale(1.05);
+    }
+
+    /* Search and Filter */
+    #searchSection {
+      display: flex;
+      margin: 10px 0;
+      gap: 5px;
+    }
+
+    #searchInput {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+
+    #filterSection {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+      justify-content: center;
+    }
+
+    #filterSection select {
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+
+    /* Enhanced Gallery Grid */
+    .photo-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+
+    .photo-container:hover {
+      transform: scale(1.03);
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .photo-overlay {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      background: linear-gradient(transparent 60%, rgba(0,0,0,0.7));
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 10px;
+    }
+
+    .photo-container:hover .photo-overlay {
+      opacity: 1;
+    }
+
+    .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .favorite-btn.favorited {
+      color: #ff6b6b;
+    }
+
+    .photo-date {
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    /* Grid Views */
+    .grid-view {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+    }
+
+    .list-view {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .list-view .photo-container {
+      display: flex;
+      align-items: center;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 15px;
+    }
+
+    .list-view img {
+      width: 100px;
+      height: 100px;
+      margin-right: 15px;
+    }
+
+    /* Photo Stats */
+    #photoStats {
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 10px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Full Image Enhancements */
+    #fullImageModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1001;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #fullImageContent {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      text-align: center;
+    }
+
+    #fullImage {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      transition: transform 0.3s;
+      cursor: grab;
+    }
+
+    #fullImage:active {
+      cursor: grabbing;
+    }
+
+    #photoInfo {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 15px 0;
+      color: white;
+    }
+
+    #zoomControls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    #zoomControls button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      cursor: pointer;
+    }
+
+    #imageNavigation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    #imageCounter {
+      color: white;
+      font-weight: bold;
+      min-width: 50px;
+    }
+
+    /* Slideshow */
+    #slideshowModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      z-index: 1002;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #slideshowContent {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #slideshowImage {
+      max-width: 90%;
+      max-height: 70%;
+      object-fit: contain;
+    }
+
+    #slideshowInfo {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: white;
+      background: rgba(0,0,0,0.7);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    #slideshowControls {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    #slideshowControls button, #slideshowControls select {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 25px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Other modals */
+    #togetherModal, #storyModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #togetherContent, #storyContent {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
+
+    #togetherContent span, #storyContent span {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #togetherCounter {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #e74c3c;
+    }
+
+    #relationshipStart {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    #ourStoryText {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      margin: 15px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    #storyContent button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #28a745;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .grid-view {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      
+      #galleryControls {
+        gap: 5px;
+      }
+      
+      #galleryControls button {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+    }
+  </style>
 
   <script>
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
     const updateBtn = document.getElementById('updateBtn');
+    let currentImageIndex = 0;
+    let allPhotos = [];
+    let filteredPhotos = [];
+    let favorites = JSON.parse(localStorage.getItem('photoFavorites') || '[]');
+    let isGridView = true;
+    let zoomLevel = 1;
+    let slideshowInterval;
+    let isSlideshow = false;
 
-    //Before install
+    // Initialize gallery
+    function initializeGallery() {
+      allPhotos = Array.from(document.querySelectorAll('.photo-container')).map((container, index) => {
+        const img = container.querySelector('img');
+        return {
+          element: container,
+          img: img,
+          id: parseInt(img.dataset.id),
+          date: img.dataset.date,
+          memory: img.dataset.memory,
+          src: img.src,
+          alt: img.alt,
+          index: index
+        };
+      });
+      filteredPhotos = [...allPhotos];
+      updatePhotoStats();
+      loadFavorites();
+      populateYearFilter();
+    }
+
+    // Before install
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       console.log('beforeinstallprompt event captured');
-      installBtn.classList.add('show'); // fade-in install button
-      updateBtn.style.display = 'none'; // Hide update button
+      installBtn.classList.add('show');
+      updateBtn.style.display = 'none';
     });
 
-
-    //App installed
+    // App installed
     window.addEventListener('appinstalled', () => {
-      installBtn.classList.remove('show'); // fade-out button
+      installBtn.classList.remove('show');
       if (localStorage.getItem("newVersionAvailable") === "true") {
-              updateBtn.style.display = 'inline-block'; // Show update butto
+        updateBtn.style.display = 'inline-block';
       }
     });
-
 
     // Trigger install prompt
     function installApp() {
@@ -96,25 +657,343 @@
       }
     }
 
-    // Gallery modal functions
     function showGallery() {
       document.getElementById('galleryModal').style.display = 'flex';
+      if (allPhotos.length === 0) initializeGallery();
     }
 
     function closeGallery() {
       document.getElementById('galleryModal').style.display = 'none';
+      if (isSlideshow) stopSlideshow();
     }
 
-    // Service Worker registration
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registered'))
-        .catch(err => console.log('ERROR:', err));
+    function togetherSince() { 
+      showModal('togetherModal');
+      updateCounter();
+    }
+
+    function ourStory() { 
+      showModal('storyModal');
+      loadStory();
+    }
+
+    function showModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Gallery Functions
+    function toggleSlideshow() {
+      if (isSlideshow) {
+        stopSlideshow();
+      } else {
+        startSlideshow();
+      }
+    }
+
+    function startSlideshow() {
+      isSlideshow = true;
+      currentImageIndex = 0;
+      document.getElementById('slideshowModal').style.display = 'flex';
+      updateSlideshowImage();
+      slideshowInterval = setInterval(nextSlideshowImage, 3000);
+      document.getElementById('slideshowBtn').textContent = '⏹️ Stop';
+    }
+
+    function stopSlideshow() {
+      isSlideshow = false;
+      clearInterval(slideshowInterval);
+      document.getElementById('slideshowModal').style.display = 'none';
+      document.getElementById('slideshowBtn').textContent = '▶️ Slideshow';
+    }
+
+    function pauseSlideshow() {
+      clearInterval(slideshowInterval);
+      document.getElementById('pauseBtn').style.display = 'none';
+      document.getElementById('playBtn').style.display = 'inline-block';
+    }
+
+    function resumeSlideshow() {
+      const speed = parseInt(document.getElementById('speedControl').value);
+      slideshowInterval = setInterval(nextSlideshowImage, speed);
+      document.getElementById('pauseBtn').style.display = 'inline-block';
+      document.getElementById('playBtn').style.display = 'none';
+    }
+
+    function changeSpeed() {
+      if (isSlideshow) {
+        clearInterval(slideshowInterval);
+        const speed = parseInt(document.getElementById('speedControl').value);
+        slideshowInterval = setInterval(nextSlideshowImage, speed);
+      }
+    }
+
+    function nextSlideshowImage() {
+      currentImageIndex = (currentImageIndex + 1) % filteredPhotos.length;
+      updateSlideshowImage();
+    }
+
+    function updateSlideshowImage() {
+      const photo = filteredPhotos[currentImageIndex];
+      document.getElementById('slideshowImage').src = photo.src;
+      document.getElementById('slideshowTitle').textContent = photo.alt;
+      document.getElementById('slideshowMemory').textContent = photo.memory;
+    }
+
+    function shuffleGallery() {
+      filteredPhotos = [...filteredPhotos].sort(() => Math.random() - 0.5);
+      renderGallery();
+    }
+
+    function showFavorites() {
+      if (favorites.length === 0) {
+        alert('No favorite photos yet! Heart some photos to see them here.');
+        return;
+      }
+      filteredPhotos = allPhotos.filter(photo => favorites.includes(photo.id));
+      renderGallery();
+      updatePhotoStats();
+    }
+
+    function sortByDate() {
+      filteredPhotos = [...filteredPhotos].sort((a, b) => new Date(b.date) - new Date(a.date));
+      renderGallery();
+    }
+
+    function toggleGridView() {
+      isGridView = !isGridView;
+      const gallery = document.getElementById('galleryGrid');
+      gallery.className = isGridView ? 'grid-view' : 'list-view';
+      document.querySelector('#galleryControls button:last-child').textContent = 
+        isGridView ? '📋 List View' : '🔲 Grid View';
+    }
+
+    function searchPhotos() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      if (query === '') {
+        filteredPhotos = [...allPhotos];
+      } else {
+        filteredPhotos = allPhotos.filter(photo => 
+          photo.memory.toLowerCase().includes(query) || 
+          photo.alt.toLowerCase().includes(query)
+        );
+      }
+      renderGallery();
+      updatePhotoStats();
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      filteredPhotos = [...allPhotos];
+      renderGallery();
+      updatePhotoStats();
+    }
+
+    function populateYearFilter() {
+      const years = [...new Set(allPhotos.map(photo => photo.date.substring(0, 4)))].sort();
+      const yearFilter = document.getElementById('yearFilter');
+      years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
+      });
+    }
+
+    function filterByYear() {
+      const year = document.getElementById('yearFilter').value;
+      if (year === '') {
+        filteredPhotos = [...allPhotos];
+      } else {
+        filteredPhotos = allPhotos.filter(photo => photo.date.startsWith(year));
+      }
+      renderGallery();
+      updatePhotoStats();
+    }
+
+    function filterByMonth() {
+      const month = document.getElementById('monthFilter').value;
+      if (month === '') {
+        filteredPhotos = [...allPhotos];
+      } else {
+        filteredPhotos = allPhotos.filter(photo => photo.date.substring(5, 7) === month);
+      }
+      renderGallery();
+      updatePhotoStats();
+    }
+
+    function renderGallery() {
+      const gallery = document.getElementById('galleryGrid');
+      gallery.innerHTML = '';
+      filteredPhotos.forEach((photo, index) => {
+        photo.element.style.display = 'block';
+        photo.img.onclick = () => viewFullImage(photo.img, index);
+        gallery.appendChild(photo.element);
+      });
+    }
+
+    function updatePhotoStats() {
+      document.getElementById('photoCount').textContent = `${filteredPhotos.length} photos`;
+      document.getElementById('favoriteCount').textContent = `${favorites.length} favorites`;
+      
+      if (filteredPhotos.length > 0) {
+        const dates = filteredPhotos.map(photo => new Date(photo.date));
+        const minDate = new Date(Math.min(...dates));
+        const maxDate = new Date(Math.max(...dates));
+        const minYear = minDate.getFullYear();
+        const maxYear = maxDate.getFullYear();
+        document.getElementById('dateRange').textContent = 
+          minYear === maxYear ? minYear : `${minYear} - ${maxYear}`;
+      }
+    }
+
+    function toggleFavorite(photoId, element) {
+      if (favorites.includes(photoId)) {
+        favorites = favorites.filter(id => id !== photoId);
+        element.textContent = '🤍';
+        element.classList.remove('favorited');
+      } else {
+        favorites.push(photoId);
+        element.textContent = '❤️';
+        element.classList.add('favorited');
+      }
+      localStorage.setItem('photoFavorites', JSON.stringify(favorites));
+      updatePhotoStats();
+    }
+
+    function loadFavorites() {
+      favorites.forEach(photoId => {
+        const favoriteBtn = document.querySelector(`[onclick="toggleFavorite(${photoId}, this)"]`);
+        if (favoriteBtn) {
+          favoriteBtn.textContent = '❤️';
+          favoriteBtn.classList.add('favorited');
+        }
+      });
+    }
+
+    // View Full Image
+    function viewFullImage(img, index) {
+      currentImageIndex = index;
+      const photo = filteredPhotos[index];
+      document.getElementById('fullImage').src = photo.src;
+      document.getElementById('photoTitle').textContent = photo.alt;
+      document.getElementById('photoMemory').textContent = photo.memory;
+      document.getElementById('photoDate').textContent = photo.date;
+      
+      // Update favorite button
+      const fullFavBtn = document.getElementById('fullFavoriteBtn');
+      if (favorites.includes(photo.id)) {
+        fullFavBtn.textContent = '❤️ Remove from Favorites';
+      } else {
+        fullFavBtn.textContent = '🤍 Add to Favorites';
+      }
+
+      document.getElementById('imageCounter').textContent = `${index + 1} / ${filteredPhotos.length}`;
+      document.getElementById('fullImageModal').style.display = 'flex';
+    }
+
+    function closeFullImage() {
+      document.getElementById('fullImageModal').style.display = 'none';
+      resetZoom();
+    }
+
+    function previousImage() {
+      currentImageIndex = (currentImageIndex - 1 + filteredPhotos.length) % filteredPhotos.length;
+      viewFullImage(filteredPhotos[currentImageIndex].img, currentImageIndex);
+    }
+
+    function nextImage() {
+      currentImageIndex = (currentImageIndex + 1) % filteredPhotos.length;
+      viewFullImage(filteredPhotos[currentImageIndex].img, currentImageIndex);
+    }
+
+    // Fullscreen Favorite toggle
+    function toggleFullscreenFavorite() {
+      const photo = filteredPhotos[currentImageIndex];
+      const fullFavBtn = document.getElementById('fullFavoriteBtn');
+      if (favorites.includes(photo.id)) {
+        favorites = favorites.filter(id => id !== photo.id);
+        fullFavBtn.textContent = '🤍 Add to Favorites';
+      } else {
+        favorites.push(photo.id);
+        fullFavBtn.textContent = '❤️ Remove from Favorites';
+      }
+      localStorage.setItem('photoFavorites', JSON.stringify(favorites));
+      updatePhotoStats();
+      loadFavorites();
+    }
+
+    // Zoom Functions
+    function zoomIn() {
+      zoomLevel += 0.1;
+      document.getElementById('fullImage').style.transform = `scale(${zoomLevel})`;
+    }
+
+    function zoomOut() {
+      if (zoomLevel > 0.2) {
+        zoomLevel -= 0.1;
+        document.getElementById('fullImage').style.transform = `scale(${zoomLevel})`;
+      }
+    }
+
+    function resetZoom() {
+      zoomLevel = 1;
+      document.getElementById('fullImage').style.transform = 'scale(1)';
+    }
+
+    function downloadPhoto() {
+      const photo = filteredPhotos[currentImageIndex];
+      const link = document.createElement('a');
+      link.href = photo.src;
+      link.download = photo.alt || 'photo';
+      link.click();
+    }
+
+    // Together Counter
+    function updateCounter() {
+      const startDate = document.getElementById('relationshipStart').value;
+      if (!startDate) return;
+      const start = new Date(startDate);
+      const now = new Date();
+      const diff = now - start;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const years = Math.floor(days / 365);
+      const months = Math.floor((days % 365) / 30);
+
+      let result = `${days} days together 💖`;
+      if (years > 0 || months > 0) {
+        result += ` (${years} years, ${months} months)`;
+      }
+
+      document.getElementById('togetherCounter').textContent = result;
+      localStorage.setItem('relationshipStart', startDate);
+    }
+
+    // Load saved relationship start
+    window.addEventListener('load', () => {
+      const savedDate = localStorage.getItem('relationshipStart');
+      if (savedDate) {
+        document.getElementById('relationshipStart').value = savedDate;
+        updateCounter();
+      }
+    });
+
+    // Story save/load
+    function saveStory() {
+      const story = document.getElementById('ourStoryText').value;
+      localStorage.setItem('ourStory', story);
+      alert('Story saved! 💌');
+    }
+
+    function loadStory() {
+      const story = localStorage.getItem('ourStory') || '';
+      document.getElementById('ourStoryText').value = story;
     }
   </script>
-
-  <!--Updater-->
   <script src="updater.js"></script>
-
 </body>
 </html>

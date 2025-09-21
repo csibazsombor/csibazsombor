@@ -9,7 +9,7 @@ let galleryImages = [];
 function getLocalVersion() {
   let lv = localStorage.getItem('appVersion');
   if (!lv) {
-    lv = '0.0.7'; // Default version
+    lv = '0.1.0'; // Default version
     localStorage.setItem('appVersion', lv);
   }
   return lv;
@@ -61,7 +61,7 @@ async function fetchRemoteData() {
   } catch (err) {
     console.error('Error fetching remote data:', err);
     document.getElementById('currentVersion').textContent = 'Error';
-    serverVersion = "0.0.7"; // Fallback version
+    serverVersion = "0.1.0"; // Fallback version
     return null;
   }
 }

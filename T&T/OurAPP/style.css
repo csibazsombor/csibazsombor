@@ -146,8 +146,8 @@ button:hover {
    Images
    ============================== */
 img {
-  max-width: 15%;
-  height: 500px;
+  max-width: 80%;
+  height: auto;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
   object-fit: cover;
