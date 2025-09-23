@@ -5,7 +5,16 @@
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
     }
+    
+    function showGallery() {
+      document.getElementById('galleryModal').style.display = 'flex';
+      if (allPhotos.length === 0) initializeGallery();
+    }
 
+    function closeGallery() {
+      document.getElementById('galleryModal').style.display = 'none';
+      if (isSlideshow) stopSlideshow();
+    }
     // Gallery Functions
     function toggleSlideshow() {
       if (isSlideshow) {
@@ -195,26 +204,6 @@
       });
     }
 
-    // View Full Image
-    function viewFullImage(img, index) {
-      currentImageIndex = index;
-      const photo = filteredPhotos[index];
-      document.getElementById('fullImage').src = photo.src;
-      document.getElementById('photoTitle').textContent = photo.alt;
-      document.getElementById('photoMemory').textContent = photo.memory;
-      document.getElementById('photoDate').textContent = photo.date;
-      
-      // Update favorite button
-      const fullFavBtn = document.getElementById('fullFavoriteBtn');
-      if (favorites.includes(photo.id)) {
-        fullFavBtn.textContent = '❤️ Remove from Favorites';
-      } else {
-        fullFavBtn.textContent = '🤍 Add to Favorites';
-      }
-
-      document.getElementById('imageCounter').textContent = `${index + 1} / ${filteredPhotos.length}`;
-      document.getElementById('fullImageModal').style.display = 'flex';
-    }
 
     function closeFullImage() {
       document.getElementById('fullImageModal').style.display = 'none';

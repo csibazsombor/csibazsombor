@@ -182,28 +182,6 @@
   </div>
 </div>
 
-
-  <!-- Together Since Modal -->
-  <div id="togetherModal">
-    <div id="togetherContent">
-      <span onclick="closeModal('togetherModal')">✖ Close</span>
-      <h2>Together Since</h2>
-      <div id="togetherCounter">Loading...</div>
-      <input type="date" id="relationshipStart" onchange="updateCounter()" placeholder="When did you start dating?">
-      <p>Every day with you is a blessing! 💖</p>
-    </div>
-  </div>
-
-  <!-- Story Modal -->
-  <div id="storyModal">
-    <div id="storyContent">
-      <span onclick="closeModal('storyModal')">✖ Close</span>
-      <h2>How We Met</h2>
-      <textarea id="ourStoryText" placeholder="Write your beautiful love story here..."></textarea>
-      <button onclick="saveStory()">Save Story</button>
-    </div>
-  </div>
-
   <!-- Slideshow Modal -->
   <div id="slideshowModal">
     <div id="slideshowContent">
@@ -239,8 +217,7 @@
       padding: 8px 12px;
       border: none;
       border-radius: 20px;
-      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-      color: white;
+      color: rgb(182, 55, 55);
       cursor: pointer;
       font-size: 12px;
       transition: transform 0.2s;
@@ -523,75 +500,6 @@
       color: white;
       cursor: pointer;
     }
-
-    /* Other modals */
-    #togetherModal, #storyModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #togetherContent, #storyContent {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 90%;
-      position: relative;
-    }
-
-    #togetherContent span, #storyContent span {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    #togetherCounter {
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-      margin: 20px 0;
-      color: #e74c3c;
-    }
-
-    #relationshipStart {
-      width: 100%;
-      padding: 10px;
-      margin: 15px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
-
-    #ourStoryText {
-      width: 100%;
-      height: 200px;
-      padding: 10px;
-      margin: 15px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      resize: vertical;
-    }
-
-    #storyContent button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-      background: #28a745;
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
     /* Responsive */
     @media (max-width: 768px) {
       .grid-view {
@@ -673,71 +581,36 @@
         console.log('Install prompt not available');
       }
     }
-
-    function showGallery() {
-      document.getElementById('galleryModal').style.display = 'flex';
-      if (allPhotos.length === 0) initializeGallery();
-    }
-
-    function closeGallery() {
-      document.getElementById('galleryModal').style.display = 'none';
-      if (isSlideshow) stopSlideshow();
-    }
-
-    function togetherSince() { 
-      showModal('togetherModal');
-      updateCounter();
-    }
-
     function ourStory() { 
       showModal('storyModal');
       loadStory();
     }
 
-    // Together Counter
-    function updateCounter() {
-      const startDate = document.getElementById('relationshipStart').value;
-      if (!startDate) return;
-      const start = new Date(startDate);
-      const now = new Date();
-      const diff = now - start;
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const years = Math.floor(days / 365);
-      const months = Math.floor((days % 365) / 30);
-
-      let result = `${days} days together 💖`;
-      if (years > 0 || months > 0) {
-        result += ` (${years} years, ${months} months)`;
+    // View Full Image
+    function viewFullImage(img, index) {
+      currentImageIndex = index;
+      const photo = filteredPhotos[index];
+      document.getElementById('fullImage').src = photo.src;
+      document.getElementById('photoTitle').textContent = photo.alt;
+      document.getElementById('photoMemory').textContent = photo.memory;
+      document.getElementById('photoDate').textContent = photo.date;
+      
+      // Update favorite button
+      const fullFavBtn = document.getElementById('fullFavoriteBtn');
+      if (favorites.includes(photo.id)) {
+        fullFavBtn.textContent = '❤️ Remove from Favorites';
+      } else {
+        fullFavBtn.textContent = '🤍 Add to Favorites';
       }
 
-      document.getElementById('togetherCounter').textContent = result;
-      localStorage.setItem('relationshipStart', startDate);
+      document.getElementById('imageCounter').textContent = `${index + 1} / ${filteredPhotos.length}`;
+      document.getElementById('fullImageModal').style.display = 'flex';
     }
 
-    // Load saved relationship start
-    window.addEventListener('load', () => {
-      const savedDate = localStorage.getItem('relationshipStart');
-      if (savedDate) {
-        document.getElementById('relationshipStart').value = savedDate;
-        updateCounter();
-      }
-    });
-
-    // Story save/load
-    function saveStory() {
-      const story = document.getElementById('ourStoryText').value;
-      localStorage.setItem('ourStory', story);
-      alert('Story saved! 💌');
-    }
-
-    function loadStory() {
-      const story = localStorage.getItem('ourStory') || '';
-      document.getElementById('ourStoryText').value = story;
-    }
   </script>
   
   <script src="updater.js"></script>
   <script src="gallery-function.js"></script>
+  <script src="button-function.js"></script>
 </body>
 </html>
