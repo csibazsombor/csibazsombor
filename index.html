@@ -54,9 +54,9 @@
             <p id="udvozles-text">Discover the wonders of the world with us!</p>
             
             <div class="action-buttons">
-                <p><a href="#Galeria" class="button" id="galeria_link">Gallery</a></p>
-                <p><a href="https://www.instagram.com/csibazsombor" class="social-button instagram-button" id="instagram-button" target="_blank">Instagram</a></p>
-                <p><a href="https://www.youtube.com/@csibazsombortravel" class="social-button youtube-button" id="youtube-button" target="_blank">YouTube Channel</a></p>
+                <a href="#Galeria" class="button" id="galeria_link">Gallery</a>
+                <a href="https://www.instagram.com/csibazsombor" class="social-button instagram-button" id="instagram-button" target="_blank"><img style="border-radius: 5px;" height="35" src="icons/instagram.png" alt="">Instagram</a>
+                <a href="https://www.youtube.com/@csibazsombortravel" class="social-button youtube-button" id="youtube-button" target="_blank"><img style="border-radius: 5px;" height="32" src="icons/youtube.png" alt="">YouTube Channel</a>
             </div>
         </section>
         
@@ -73,13 +73,15 @@
         <div class="filter-container">
             <select id="location-filter">
                 <option value="">All Locations</option>
+                <option value="Slovakia">Slovakia</option>
                 <option value="Hungary">Hungary</option>
-                <option value="Example location">Example location</option>
                 <!-- More locations can be added dynamically -->
             </select>
             <select id="year-filter">
                 <option value="">All Years</option>
+                <option value="2025">2025</option>
                 <option value="2024">2024</option>
+                <option value="2023">2023</option>
                 <!-- More years can be added dynamically -->
             </select>
             <button id="reset-filters">Reset Filters</button>
@@ -236,7 +238,7 @@
     <script src="JS/language.js"></script>
     <script src="JS/lazy.loading.js"></script>
     <script src="traffic.js"></script>
-    
+    <script src="JS/gallery.js"></script>
     <script>
       window.onload = loadLanguage;
 
