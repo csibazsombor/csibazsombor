@@ -10,9 +10,7 @@
             bekezdes5: "A mi történetünk több, mint egy egyszerű kapcsolat: ez a szeretet, a hit és az álmok közös útja. Biztos vagyok benne, hogy minden nehézség, amit most átélünk, csak erősebbé és szorosabbá teszi a kötelékünket a jövőben.",
 
 
-            
-            // New translations for header, footer, and main content
-            verzio: "V4.2",
+            verzio: "V4.3",
             update: "2025 Frissítés",
             udvozles: "Üdvözöljük az oldalán!",
             udvozlesText: "Fedezze fel a világ csodáit velünk!",
@@ -24,7 +22,7 @@
             kovess: "Kövessen minket",
             youtube: "YouTube",
             instagram: "Instagram",
-            copyright: "&copy; 2025 Zsombor Travel - Minden jog fenntartva.",
+            copyright: "&copy; 2025 CZsombor Vlogs - Minden jog fenntartva.",
             keszitette: "Készítette: Csiba Zsombor",
             comingSoon: "Hamarosan",
             home: "Főoldal",
@@ -37,46 +35,82 @@
             countries_visited: "Látogatott helyek száma:",
             latest_adventure: "Legújabb Kalandok",
             notrip: "Jeleneg Nincsenek aktív utazások."
-        },
-        en: {
-            title_trips: "Trips",
-            title_inf: "Information",
-            rolamCim: "About Me",
-            bekezdes1: "Hi! I'm Zsombor Csiba, I live in Slovakia, and let me tell you a little about myself. I’m someone who values love, honesty, and building a future that feels meaningful. Recently, my life has changed because I got the sweetest person in my life — my girlfriend. She lives in Indonesia, and even though we can't see each other now, one day everything will become true.",
-            bekezdes2: "I want to marry her one day, which means everything will be new in my life. I believe that this relationship will bring us so many new things and open a beautiful future together.",
-            bekezdes3: "A lot of hobbies I had before don’t interest me anymore, but I wish that in the future I will find new hobbies together with the person I live with. Sharing moments and creating new experiences together will make life more meaningful.",
-            bekezdes4: "Sometimes it feels hard to wait, but the love we share gives me strength every single day. I know that patience, trust, and hope will guide us until we can finally be together.",
-            bekezdes5: "This journey is more than just a relationship, it's a story of love, dreams, and building a life with the one I truly care about. I believe that everything we go through now will make our bond even stronger for the future.",
+       },
+       en: {
+           title_trips: "Trips",
+           title_inf: "Information",
+           rolamCim: "About Me",
+           bekezdes1: "Hi! I'm Zsombor Csiba, I live in Slovakia, and let me tell you a little about myself. I’m someone who values love, honesty, and building a future that feels meaningful. Recently, my life has changed because I got the sweetest person in my life — my girlfriend. She lives in Indonesia, and even though we can't see each other now, one day everything will become true.",
+           bekezdes2: "I want to marry her one day, which means everything will be new in my life. I believe that this relationship will bring us so many new things and open a beautiful future together.",
+           bekezdes3: "A lot of hobbies I had before don’t interest me anymore, but I wish that in the future I will find new hobbies together with the person I live with. Sharing moments and creating new experiences together will make life more meaningful.",
+           bekezdes4: "Sometimes it feels hard to wait, but the love we share gives me strength every single day. I know that patience, trust, and hope will guide us until we can finally be together.",
+           bekezdes5: "This journey is more than just a relationship, it's a story of love, dreams, and building a life with the one I truly care about. I believe that everything we go through now will make our bond even stronger for the future",
 
-            
-            // New translations for header, footer, and main content
-            verzio: "V4.2",
-            update: "2025 Update",
-            udvozles: "Welcome!",
-            udvozlesText: "Discover the wonders of the world with us!",
-            galeria: "Gallery",
-            galeriaText: "New travel photos will be uploaded soon!",
-            kapcsolat: "Contact",
-            elerhetosegek: "Contact Information",
-            irjon: "Write to us",
-            kovess: "Follow us",
-            youtube: "YouTube",
-            instagram: "Instagram",
-            copyright: "&copy; 2025 Zsombor Travel - All rights reserved.",
-            keszitette: "Created by: Csiba Zsombor",
-            comingSoon: "Coming Soon",
-            home: "Home",
-            galeria_link: "Gallery",
-            trips: "Trips",
-            info: "Information",
-            currently_exploring: "CURRENTLY EXPLORING",
-            currently_in: "Currently in:",
-            days_on_road: "Days on road: ",
-            countries_visited: "Number of places visited",
-            latest_adventure: "Latest Adventures",
-            notrip: "No trips yet."
-        }
-    };
+
+           verzio: "V4.3",
+           update: "2025 Update",
+           udvozles: "Welcome!",
+           udvozlesText: "Discover the wonders of the world with us!",
+           galeria: "Gallery",
+           galeriaText: "New travel photos will be uploaded soon!",
+           kapcsolat: "Contact",
+           elerhetosegek: "Contact Information",
+           irjon: "Write to us",
+           kovess: "Follow us",
+           youtube: "YouTube",
+           instagram: "Instagram",
+           copyright: "&copy; 2025 CZsombor Vlogs - All rights reserved.",
+           keszitette: "Created by: Csiba Zsombor",
+           comingSoon: "Coming Soon",
+           home: "Home",
+           galeria_link: "Gallery",
+           trips: "Trips",
+           info: "Information",
+           currently_exploring: "CURRENTLY EXPLORING",
+           currently_in: "Currently in:",
+           days_on_road: "Days on road: ",
+           countries_visited: "Number of places visited",
+           latest_adventure: "Latest Adventures",
+           notrip: "No trips yet."
+       },
+       id: {
+           title_trips: "Perjalanan",
+           title_inf: "Informasi",
+           rolamCim: "Tentang Saya",
+           bekezdes1: "Hai! Saya Zsombor Csiba, saya tinggal di Slovakia, dan izinkan saya menceritakan sedikit tentang diri saya. Saya menghargai cinta, kejujuran, dan membangun masa depan yang bermakna. Baru-baru ini, hidup saya berubah karena saya mendapatkan orang tersayang dalam hidup saya — pacar saya. Dia tinggal di Indonesia, dan meskipun kami tidak dapat bertemu sekarang, suatu hari nanti semuanya akan terwujud.",
+           bekezdes2: "Suatu hari saya ingin menikahinya, yang berarti segalanya akan berubah dalam hidup saya. Saya percaya bahwa hubungan ini akan membawa banyak pengalaman baru dan membuka masa depan yang indah bersama.",
+           bekezdes3: "Banyak hobi saya sebelumnya tidak lagi menarik minat saya, namun saya berharap di masa depan saya akan menemukan hobi baru bersama pasangan saya. Berbagi momen dan menciptakan pengalaman baru bersama akan membuat hidup lebih bermakna.",
+           bekezdes4: "Kadang-kadang, menunggu terasa sulit, namun cinta yang kami bagi memberi saya kekuatan setiap hari. Saya tahu bahwa kesabaran, kepercayaan, dan harapan akan membawa kami bersama sampai akhirnya kita dapat bersama.",
+           bekezdes5: "Perjalanan ini lebih dari sekadar suatu hubungan, ini adalah kisah cinta, impian, dan membangun kehidupan bersama orang yang saya cintai. Saya percaya bahwa segala yang kita alami sekarang akan mempererat ikatan kita di masa depan.",
+
+
+           verzio: "V4.3",
+           update: "Pembaharuan 2025",
+           udvozles: "Selamat Datang!",
+           udvozlesText: "Temukan keajaiban dunia bersama kami!",
+           galeria: "Galeri",
+           galeriaText: "Foto perjalanan terbaru akan segera diupload!",
+           kapcsolat: "Kontak",
+           elerhetosegek: "Informasi Kontak",
+           irjon: "Tulis kepada kami",
+           kovess: "Ikuti kami",
+           youtube: "YouTube",
+           instagram: "Instagram",
+           copyright: "&copy; 2025 CZsombor Vlogs - Hak Cipta Dilindungi.",
+           keszitette: "Dibuat oleh: Csiba Zsombor",
+           comingSoon: "Segera Hadir",
+           home: "Beranda",
+           galeria_link: "Galeri",
+           trips: "Perjalanan",
+           info: "Informasi",
+           currently_exploring: "SEDANG MENJELAJAH",
+           currently_in: "Saat ini di:",
+           days_on_road: "Hari dalam perjalanan: ",
+           countries_visited: "Jumlah negara yang dikunjungi:",
+           latest_adventure: "Petualangan Terbaru",
+           notrip: "Belum ada perjalanan."
+       }
+   };
     function updateElement(id, value, isHTML = false) {
         const element = document.getElementById(id);
         if (element) {
@@ -134,13 +168,19 @@
         // Save the selected language to localStorage
         localStorage.setItem('selectedLanguage', lang);
     }
-    
     function loadLanguage() {
         const savedLang = localStorage.getItem('selectedLanguage');
         if (savedLang) {
             switchLanguage(savedLang);
         } else {
-            switchLanguage('en'); // Default language
+            // Get the browser language (e.g., "en-US" -> "en")
+            const browserLang = navigator.language.slice(0, 2);
+            // Use the browser language if available in translations; otherwise, default to English
+            if (translations[browserLang]) {
+                switchLanguage(browserLang);
+            } else {
+                switchLanguage('en'); // Default language
+            }
         }
     }
     

@@ -13,7 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script> 
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="kezdolap.css">
+    <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/ertekeles.css">
     <link rel="stylesheet" href="CSS/scrollbar.css">
     <link rel="stylesheet" href="CSS/all.min.css"/>
@@ -22,30 +22,24 @@
     <link rel="shortcut icon" href="favicon/favicon 256x256.ico" type="image/x-icon">
     
     <!-- Page Information -->
-    <title>Zsombor Travelling</title>
-    <meta property="og:title" content="Zsombor's Travelling">
+    <title>CZsombor Vlogs</title>
+    <meta property="og:title" content="CZsombor Vlogs">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://csibazsombor.github.io/csibazsombor">
-    <meta name="keywords" content="travel, tourism, world travel, Zsombor's Travelling">
-    <meta name="description" content="Explore the world with Zsombor's Travelling - discover destinations, travel tips, and exciting adventures.">
+    <meta name="keywords" content="travel, tourism, world travel, CZsombor Vlogs">
+    <meta name="description" content="Explore the world with CZsombor Vlogs - discover destinations, travel tips, and exciting adventures.">
     <meta name="author" content="Csiba Zsombor">
 </head>
 <body>
     <header>
         <nav class="gombok">
             <div class="nav-links">
-                <a href="index.html" id="home-link" class="kezdolapgomb"><strong>Home</strong></a>
-                <a href="PAGE/informacio.html" id="info-link" class="informaciokgomb"><strong>Information</strong></a>
+                <a href="index.html" id="home-link" ><strong>Home</strong></a>
+                <a href="PAGE/informacio.html" id="info-link"><strong>Information</strong></a>
                 <a href="PAGE/notrips.html" id="trips-link">Trips</a>
             </div>
         </nav>
     </header>
-
-    <div class="language-switcher">
-      <button id="switch-to-hu" onclick="switchLanguage('hu')">HU</button>
-      <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
-  </div>
-  
 
   </div>
     <main>
@@ -223,7 +217,7 @@
         </div>
         
         <div class="bottom-footer">
-            <p id="copyright">&copy; 2025 ZST - All rights reserved.</p>
+            <p id="copyright">&copy; 2025 CZsombor Vlogs - All rights reserved.</p>
             <p id="keszitette">Created by: Csiba Zsombor</p>
         </div>
     </footer>
@@ -241,18 +235,6 @@
     <script src="JS/gallery.js"></script>
     <script>
       window.onload = loadLanguage;
-
-      // Example of switching language buttons
-      document.getElementById("switch-to-hu").addEventListener('click', function() {
-          switchLanguage('hu');
-      });
-
-      document.getElementById("switch-to-en").addEventListener('click', function() {
-          switchLanguage('en');
-      });
-      document.getElementById("switch-to-jp").addEventListener('click', function() {
-          switchLanguage('jp');
-     });
   </script>
 </body>
 </html>
