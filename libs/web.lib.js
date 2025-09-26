@@ -1,12 +1,13 @@
-// Web Library Logger - Enhanced Version
+// Web Library Logger - Enhanced Version # 1.2
+console.log("Web Library Logger v1.2 loaded");
 // =====================================
 
 // Configuration constants
 const CONFIG = {
-    version: "1.2.1",
+    version: "1.2",
     developers: ["Zsombor"],
     storageKey: "web-lib-logs",
-    maxLogEntries: 50,
+    maxLogEntries: 10,
     logLevels: {
         INFO: "info",
         WARN: "warn", 

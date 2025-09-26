@@ -14,7 +14,7 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #535353 0%, #c4b49d 100%);
+            background: linear-gradient(135deg, #1C1C1C, #2E2E2E);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,14 +23,14 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 15px;
             padding: 40px;
             max-width: 400px;
             width: 100%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             animation: slideUp 0.8s ease-out;
         }
@@ -47,39 +47,34 @@
         }
 
         .profile-section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
-        .profile-pic{
+        .profile-pic {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 48px;
-            color: white;
-            font-weight: bold;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
+            margin: 0 auto 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .profile-pic:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
         }
 
         .name {
-            color: white;
-            font-size: 28px;
+            color: #fff;
+            font-size: 26px;
             font-weight: bold;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .bio {
             color: rgba(255, 255, 255, 0.8);
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.5;
             margin-bottom: 20px;
         }
@@ -91,25 +86,26 @@
         }
 
         .link-item {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 20px;
             text-decoration: none;
-            color: white;
+            color: #fff;
             font-weight: 500;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid transparent;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
         }
 
         .link-item:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
         .link-item::before {
@@ -140,9 +136,9 @@
         }
 
         .edit-mode {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: #f3f3f3;
+            border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
             animation: fadeIn 0.5s ease-out;
@@ -157,30 +153,32 @@
             width: 100%;
             padding: 10px;
             margin: 5px 0;
-            border: 1px solid #ddd;
+            border: 1px solid #444;
             border-radius: 5px;
+            background: transparent;
             font-size: 14px;
+            color: #f3f3f3;
         }
 
         .edit-btn, .save-btn, .cancel-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             margin: 5px;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         .edit-btn:hover, .save-btn:hover, .cancel-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-1px);
         }
 
         .footer {
-            margin-top: 30px;
-            color: rgba(255, 255, 255, 0.6);
+            margin-top: 25px;
+            color: rgba(255, 255, 255, 0.5);
             font-size: 12px;
         }
 
@@ -190,13 +188,12 @@
             }
             
             .name {
-                font-size: 24px;
+                font-size: 22px;
             }
             
             .profile-pic {
                 width: 100px;
                 height: 100px;
-                font-size: 40px;
             }
         }
     </style>
