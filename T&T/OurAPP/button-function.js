@@ -1,7 +1,7 @@
 // Links
 function togetherSince() {
   window.open(
-    "https://csibazsombor.github.io/csibazsombor/T&T/counter/counter.html",
+    "https://csibazsombor.github.io/csibazsombor/T&T/counter/index.html",
     "_blank"
   );
 }
