@@ -169,3 +169,10 @@ button:hover {
                 transform: translate(calc(-50% + 20px), calc(-50% - 20px)) scale(1.5);
         }
 }
+
+.page{
+        background-color: rgb(0, 0, 0);
+        background: linear-gradient(135deg, rgb(0, 0, 0), rgba(0, 0, 0, 0.05));
+        border-radius: 16px;
+        padding: 8px;
+}
