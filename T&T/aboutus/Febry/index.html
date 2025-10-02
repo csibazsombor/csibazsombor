@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz about Zsombor</title>
+        <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+        <div class="start">
+        <button onclick="showQuiz()">
+           <h2>Start</h2>
+        </button></div>
+
+        <div class="quiz">
+        <p>Why Zsombor falled in love with febry?😏</p>
+        <div class="page">1/10</div>
+        <div class="answers">
+        <input type="radio" id="a1" name="q1" value="a1">
+        <label for="a1">Because she SOSOSOOSOSO CUTIEEEE😻😻</label><br>
+        <input type="radio" id="a2" name="q1" value="a2">
+        <label for="a2">Because she is kinddd</label><br>
+        <input type="radio" id="a3" name="q1" value="a3">
+        <label for="a3">Because she is smartinoo professor</label><br>
+        <input type="radio" id="a4" name="q1" value="a4">
+        <label for="a4">Because she is funny and her pranks really skare me</label><br>
+        </div></div>
+
+
+        <div class="wrong">
+        <p>Bukan BAIK!😿</p>
+        </div>
+
+        <div class="correct">
+        <p>Kamu BAIK!🙀😼</p>
+        </div>
+
+</body>
+<script>
+function showQuiz() {
+        document.querySelector('.start').style.display = 'none';
+        document.querySelector('.quiz').style.display = 'block';
+        document.querySelector('.wrong').style.display = 'none';
+}
+
+const answers = document.querySelectorAll('.answers input');
+answers.forEach(answer => {
+        answer.addEventListener('change', () => {
+                if (answer.value === 'a1') {
+                        document.querySelector('.correct').style.display = 'block';
+                        document.querySelector('.wrong').style.display = 'none';
+                        showQuiz();
+                } else {
+                        document.querySelector('.wrong').style.display = 'block';
+                        document.querySelector('.correct').style.display = 'none';
+                }
+        });
+});
+</script>
+</html>
