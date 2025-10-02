@@ -3,11 +3,13 @@
 
     // List of files to update
     var filesToCacheBust = [
-        'CSS/kezdolap.css',
-        'JS/sütik.js',
+        'CSS/style.css',
+        'JS/engedélyek.js',
         'index.html',
         'traffic.js',
-        'countdown.html',
+        'PAGE/informacio.html',
+        'PAGE/vlogs.html',
+        'PAGE/Contact.html',
     ];
 
     // Function to append version query string to URLs
