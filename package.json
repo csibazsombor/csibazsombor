@@ -1,11 +1,12 @@
 {
   "name": "czsombor-vlogs",
-  "version": "4.3",
+  "version": "4.4",
   "description": "",
+  "releaseDate": "2023",
   "main": "index.js",
   "scripts": {
     "test": "Test.bat"
   },
-  "author": "UZX (Csiba zsombor)",
+  "author": "Csiba zsombor",
   "license": "ISC"
 }
