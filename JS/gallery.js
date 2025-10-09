@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
         item.style.display = "none";
       }
     });
-
+    
     // toggle "empty gallery" message
     emptyGallery.style.display = visibleCount === 0 ? "block" : "none";
   }
@@ -65,3 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // initial run
   filterGallery();
 });
+
+function filterByCountry(country) {
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => {
+        if(item.getAttribute('data-location') === country) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}

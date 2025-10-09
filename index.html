@@ -80,6 +80,12 @@
                 <!-- More years can be added dynamically -->
             </select>
             <button id="reset-filters">Reset Filters</button>
+        </div><br>
+        <!-- Country Buttons -->
+        <div class="country-buttons">
+            <button class="country-btn" onclick="filterByCountry('Slovakia')">Slovakia</button>
+            <button class="country-btn" onclick="filterByCountry('Hungary')">Hungary</button>
+            <!-- Additional country buttons can be added here -->
         </div>
     </div>
     
@@ -91,6 +97,38 @@
         
         <div class="gallery-grid" id="gallery-grid" draggable="false">
             
+           <!-- Images -->
+            <div class="gallery-item" 
+                 data-location="Slovakia" 
+                 data-date="2025.09.20"
+                 data-tags="outside,sky,summer,sun,atmosphere">
+                <img src="képek/Outside/20250920_115557.jpg"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     draggable="false">
+                <div class="image-info">
+                    <span class="description">🔅🌼<br></span>
+                    <span class="image-location">Slovakia</span>
+                    <span class="image-date">2025.09.20</span>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="gallery-item" 
+                 data-location="Slovakia" 
+                 data-date="2025.08.14"
+                 data-tags="outside,sky,summer,tree,atmosphere">
+                <img src="képek/Outside/20250814_070153.jpg"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     draggable="false">
+                <div class="image-info">
+                    <span class="description">Summer morning!☀️<br></span>
+                    <span class="image-location">Slovakia</span>
+                    <span class="image-date">2025.08.14</span>
+                </div>
+            </div>
+
             <!-- Images -->
             <div class="gallery-item" 
                  data-location="Slovakia" 
@@ -98,9 +136,10 @@
                  data-tags="outside,sky,summer,sun,atmosphere">
                 <img src="képek/Outside/20250611_125451.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">Summer Sky! ⛅</span>
+                    <span class="description">Summer Sky! ⛅<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2025.06.11</span>
                 </div>
@@ -110,14 +149,31 @@
             <div class="gallery-item" 
                  data-location="Slovakia" 
                  data-date="2025.06.08"
-                 data-tags="outside,sky,summer,sunset,atmosphere, bird">
+                 data-tags="outside,sky,summer,sunset,atmosphere,bird">
                 <img src="képek/Outside/20250608_192832.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">🪶🐦</span>
+                    <span class="description">🪶🐦<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2025.06.08</span>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="gallery-item" 
+                 data-location="Slovakia" 
+                 data-date="2025.05.13"
+                 data-tags="outside,forest,summer,tree,atmosphere">
+                <img src="képek/Outside/20250513_123123.jpg"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     draggable="false">
+                <div class="image-info">
+                    <span class="description">🌳💚<br></span>
+                    <span class="image-location">Slovakia</span>
+                    <span class="image-date">2025.05.13</span>
                 </div>
             </div>
 
@@ -128,9 +184,26 @@
                  data-tags="outside,sky,spring,atmosphere,sunset">
                 <img src="képek/Outside/IMG_20250331_182312_233.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">Sunset 🌇</span>
+                    <span class="description">Sunset ☀️<br></span>
+                    <span class="image-location">Slovakia</span>
+                    <span class="image-date">2025.03.31</span>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="gallery-item" 
+                 data-location="Slovakia" 
+                 data-date="2025.03.30"
+                 data-tags="outside,flover,spring,atmosphere,sunset">
+                <img src="képek/Outside/IMG_20250330_153759_966.jpg"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     draggable="false">
+                <div class="image-info">
+                    <span class="description">🏵️🌸<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2025.03.31</span>
                 </div>
@@ -143,16 +216,15 @@
                  data-tags="outside,sky,spring,atmosphere,blooming">
                 <img src="képek/Outside/20250326_180742.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">Blooming 🌸</span>
+                    <span class="description">Blooming 🌸<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2025.03.26</span>
                 </div>
             </div>
                                     
-
-
             <!-- Images -->
             <div class="gallery-item" 
                  data-location="Slovakia" 
@@ -160,9 +232,10 @@
                  data-tags="outside,sky,spring,atmosphere,sunset">
                 <img src="képek/Outside/20250317_182434.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">Spring sunset 🍃</span>
+                    <span class="description">Spring sunset 🍃<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2025.03.17</span>
                 </div>
@@ -171,13 +244,30 @@
             <!-- Images -->
             <div class="gallery-item" 
                  data-location="Slovakia" 
+                 data-date="2024.05.30"
+                 data-tags="outside,sky,winter,snow,atmosphere">
+                <img src="képek/Outside/20240530_212827.jpg"
+                     alt="Utazási kép / Travel Image"
+                     class="clickable-image"
+                     draggable="false">
+                <div class="image-info">
+                    <span class="description">Street light 🔅<br></span>
+                    <span class="image-location">Slovakia</span>
+                    <span class="image-date">2024.05.30</span>
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="gallery-item" 
+                 data-location="Slovakia" 
                  data-date="2023.12.23"
                  data-tags="outside,sky,winter,snow,atmosphere">
                 <img src="képek/Outside/20231223_152041.jpg"
                      alt="Utazási kép / Travel Image"
-                     class="clickable-image">
+                     class="clickable-image"
+                     draggable="false">
                 <div class="image-info">
-                    <span class="description">Winter ❄️</span>
+                    <span class="description">Winter ❄️<br></span>
                     <span class="image-location">Slovakia</span>
                     <span class="image-date">2023.12.23</span>
                 </div>
@@ -186,6 +276,7 @@
             <!-- Additional images can be added here -->
         </div>
     </div>
+</section>
     
 <!-- Modal structure with navigation buttons -->
 <div id="image-modal" class="modal" draggable="false">

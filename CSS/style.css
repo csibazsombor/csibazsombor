@@ -11,7 +11,7 @@
     --color-dark-secondary: #161b22;
     --color-dark-tertiary: #3d4b58;
     --color-accent: #60a5fa;
-    --color-accent-bright: #93c5fd;
+    --color-accent-bright: #3e5fcc;
     --color-accent-dim: #3b82f6;
     
     /* Text Colors */
@@ -47,8 +47,8 @@
     /* Spacing */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 10px;
+    --spacing-md: 20px;
+    --spacing-lg: 16px;
     --spacing-xl: 30px;
     --spacing-2xl: 48px;
     --spacing-3xl: 64px;
@@ -286,7 +286,7 @@ header {
 .gombok {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+    border: 0.5px solid var(--glass-border);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
     transition: all var(--transition-base);
@@ -460,7 +460,7 @@ main {
 .form-input,
 select {
     padding: 16px 20px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgb(0, 0, 0);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-md);
     color: var(--text-primary);
@@ -468,6 +468,26 @@ select {
     font-family: inherit;
     transition: all var(--transition-base);
     min-width: 200px;
+}
+
+select option {
+    background-color: var(--color-dark-secondary);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Hover effect for supported browsers */
+select option:hover {
+    background-color: var(--color-accent-dim);
+    color: var(--text-primary);
+}
+
+/* Selected option styling */
+select option:checked,
+select option[selected] {
+    background-color: var(--color-accent);
+    color: var(--text-primary);
 }
 
 .form-input:focus,
@@ -486,6 +506,7 @@ select:focus {
 
 select {
     appearance: none;
+    color: var(--text-primary);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2360a5fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 16px center;
     background-repeat: no-repeat;
@@ -564,6 +585,16 @@ select {
     color: var(--color-accent-bright);
     font-size: 1.1rem;
     margin-bottom: var(--spacing-xs);
+    animation: shining 2s infinite;
+}
+
+@keyframes shining {
+    0%, 100% {
+        text-shadow: 0 0 10px var(--color-accent-bright), 0 0 20px var(--color-accent-bright);
+    }
+    50% {
+        text-shadow: 0 0 20px var(--color-accent-bright), 0 0 30px var(--color-accent-bright);
+    }
 }
 
 /* ==================== MODAL SYSTEM ==================== */
@@ -846,7 +877,31 @@ display: none;
     position: relative;
     overflow: hidden;
 }
+.social-media-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
 
+.social-media-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    background: var(--glass-bg);
+    padding: 12px;
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+}
+
+.social-media-links a:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-md);
+}
 .instagram-button {
     background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
     color: white;
