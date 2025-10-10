@@ -10,7 +10,7 @@
             bekezdes5: "A mi történetünk több, mint egy egyszerű kapcsolat: ez a szeretet, a hit és az álmok közös útja. Biztos vagyok benne, hogy minden nehézség, amit most átélünk, csak erősebbé és szorosabbá teszi a kötelékünket a jövőben.",
 
 
-            verzio: "V4.3",
+            verzio: "V4.4",
             update: "2025 Frissítés",
             udvozles: "Üdvözöljük az oldalán!",
             udvozlesText: "Fedezze fel a világ csodáit velünk!",
@@ -27,6 +27,7 @@
             comingSoon: "Hamarosan",
             home: "Főoldal",
             galeria_link: "Galéria",
+            back_to_main: "Vissza a főoldalra",
             trips: "Utazások",
             info: "Információk",
             currently_exploring: "JELENLEGI FELFEDEZÉS",
@@ -47,7 +48,7 @@
            bekezdes5: "This journey is more than just a relationship, it's a story of love, dreams, and building a life with the one I truly care about. I believe that everything we go through now will make our bond even stronger for the future",
 
 
-           verzio: "V4.3",
+           verzio: "V4.4",
            update: "2025 Update",
            udvozles: "Welcome!",
            udvozlesText: "Discover the wonders of the world with us!",
@@ -64,6 +65,7 @@
            comingSoon: "Coming Soon",
            home: "Home",
            galeria_link: "Gallery",
+           back_to_main: "Back to the main page",
            trips: "Trips",
            info: "Information",
            currently_exploring: "CURRENTLY EXPLORING",
@@ -84,7 +86,7 @@
            bekezdes5: "Perjalanan ini lebih dari sekadar suatu hubungan, ini adalah kisah cinta, impian, dan membangun kehidupan bersama orang yang saya cintai. Saya percaya bahwa segala yang kita alami sekarang akan mempererat ikatan kita di masa depan.",
 
 
-           verzio: "V4.3",
+           verzio: "V4.4",
            update: "Pembaharuan 2025",
            udvozles: "Selamat Datang!",
            udvozlesText: "Temukan keajaiban dunia bersama kami!",
@@ -101,6 +103,7 @@
            comingSoon: "Segera Hadir",
            home: "Beranda",
            galeria_link: "Galeri",
+           back_to_main: "Kembali ke halaman utama",
            trips: "Perjalanan",
            info: "Informasi",
            currently_exploring: "SEDANG MENJELAJAH",

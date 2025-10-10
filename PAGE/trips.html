@@ -3,7 +3,7 @@
 <head manifest="../app_cache.appcache">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title_trips">trips</title>
+    <title>CZsombor | Trips</title>
 
     <link rel="stylesheet" href="../CSS/style.css">    
     <link rel="stylesheet" href="../CSS/ertekeles.css">
@@ -18,17 +18,13 @@
     <header>
         <nav class="gombok">
             <div class="nav-links">
-                <a href="../index.html" id="home-link" class="kezdolapgomb"><strong>Home</strong></a>
-                <a href="informacio.html" id="info-link" class="informaciokgomb"><strong>Information</strong></a>
-                <a href="#hamarosan" id="coming-soon" class="coming-soon">Coming Soon</a>
+                <a href="../index.html" id="home-link" class="kezdolapgomb">Home</a>
+                <a href="vlogs.html" id="home-link" class="kezdolapgomb">Vlogs</a>
+                <a href="informacio.html" id="info-link" class="informaciokgomb">Information</a>
+                <a href="trips.html" id="trips-link" class="active"><script>Trips</script></a>
             </div>
         </nav>
     </header>
-
-    <div class="language-switcher">
-      <button id="switch-to-hu" onclick="switchLanguage('hu')">HU</button>
-      <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
-  </div>
 
     <main>
         <section class="current-location">
@@ -115,8 +111,9 @@
             </div>
         </div>
         <div class="bottom-footer">
-            <p>&copy; 2025 World Traveler Blog. All rights reserved.</p>
-            <p>Designed with ❤️ from around the world</p>
+            <p id="copyright">&copy; 2025 CZsombor Vlogs - All rights reserved.</p>
+            <p id="keszitette">Created by: Csiba Zsombor</p>           
+            <p id="verzio"></p>
         </div>
     </footer>
 
@@ -179,6 +176,24 @@
     <script src="../JS/engedélyek.js"></script>
     <script src="../JS/language.js"></script>
     <script src="../JS/JSON-loader.js"></script>
+    <script>
+        window.onload = function() {
+        loadLanguage();
 
+        // Select the first element with the "active" class and update its style and text content
+        const activeElement = document.querySelector(".active");
+        if (activeElement) {
+            activeElement.style.color = "#394fe3";
+            activeElement.style.fontWeight = "bold";
+            activeElement.style.transition = "transform 0.3s ease-in-out";
+            activeElement.addEventListener("mouseenter", () => {
+                activeElement.style.transform = "scale(1.1)";
+            });
+            activeElement.addEventListener("mouseleave", () => {
+                activeElement.style.transform = "scale(1)";
+            });
+        }
+    };
+    </script>
 </body>
 </html>
