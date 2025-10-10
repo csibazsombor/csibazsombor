@@ -1,11 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CZsombor | Posts</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/scrollbar.css">
+
+  <title>CZsombor | Vlogs</title>
 </head>
 <body>
-        
+  <!-- Header -->
+  <header>
+    <nav class="gombok">
+      <div class="nav-links">
+        <a href="../index.html">Home</a>
+        <a href="vlogs.html" class="active"><strong>Vlogs</strong></a>
+        <a href="informacio.html">Information</a>
+        <a href="notrips.html">Trips</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <section class="section-modern">
+      <div class="section-title">
+        <h2>Vlogs</h2>
+        <p>Adventures around the world</p>
+      </div>
+
+      <!-- JS will overwrite this if it runs -->
+      <div id="vlog-container">
+            <p style="text-align:center; color:var(--text-muted);">No posts yet</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul class="footer-links">
+          <li><a href="Contact.html">Contact Information</a></li>
+          <li><a href="mailto:csibazsombor2023@gmail.com">Write to us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Follow us</h3>
+        <ul class="social-media-links">
+          <li><a href="https://www.youtube.com/@csibazsombortravel" target="_blank">YouTube</a></li>
+          <li><a href="https://www.instagram.com/csibazsombor" target="_blank">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom-footer">
+      <p>&copy; 2025 CZsombor Vlogs - All rights reserved.</p>
+      <p>Created by: Csiba Zsombor</p>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src=""></script>
+
+  <script>
+    const active_class = document.getElementsByClassName("active");
+    active_class[0].style.color = "#394fe3";
+  </script>
+
+  <!-- ================= SMALL STYLE TWEAK ================= -->
+  <style>
+    .hidden {
+      display: none;
+    }
+    .post-content {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(10px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    .toggle-btn {
+      cursor: pointer;
+    }
+    .toggle-btn:hover h3 {
+      color: var(--color-accent-bright);
+      transition: 0.3s;
+    }
+  </style>
 </body>
 </html>

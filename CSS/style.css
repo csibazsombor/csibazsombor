@@ -316,7 +316,11 @@ header {
     transform: translateY(-4px) scale(1.02);
     box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
-
+.gombok a:hover {
+    transform: scale(1.2);
+    opacity: 1;
+    color: #6777aa;
+}
 .gombok img {
     width: 80px;
     height: 80px;
@@ -342,10 +346,6 @@ header {
     transition: all var(--transition-fast);
 }
 
-.gombok:hover a {
-    color: var(--color-accent-bright);
-    transform: scale(1.05);
-}
 
 /* ==================== MAIN CONTENT SECTIONS ==================== */
 main {
@@ -769,8 +769,9 @@ display: none;
 
 /* ==================== TRAVEL POST CARDS ==================== */
 .travel-post {
+    text-align: center;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     margin-bottom: var(--spacing-xl);
@@ -780,7 +781,7 @@ display: none;
 }
 
 .travel-post:hover {
-    transform: translateY(-6px);
+    transform: translateY(-6px) scale(1.02);
     box-shadow: var(--shadow-xl), var(--shadow-glow);
     border-color: var(--color-accent);
 }
@@ -790,23 +791,32 @@ display: none;
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-lg);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
     border-bottom: 1px solid var(--glass-border);
 }
 
 .travel-post h3 {
     margin: 0;
-    padding: var(--spacing-xl);
-    font-size: 1.8rem;
+    padding: var(--spacing-xl) 0 var(--spacing-md);
+    font-size: 2rem;
     background: linear-gradient(135deg, var(--text-primary), var(--color-accent-bright));
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
 }
 
 .post-content {
     padding: var(--spacing-xl);
     line-height: 1.8;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+}
+
+.travel-post img {
+    max-width: 340px;
+    width: 100%;
+    height: auto;
 }
 
 /* ==================== CURRENT LOCATION ==================== */
@@ -1407,7 +1417,6 @@ footer {
 .tab-button.active::after {
     transform: scaleX(1);
 }
-
 .tab-content {
     padding: var(--spacing-xl);
     display: none;

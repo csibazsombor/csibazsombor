@@ -34,9 +34,9 @@
     <header>
         <nav class="gombok">
             <div class="nav-links">
-                <a href="index.html" id="home-link" ><strong>Home</strong></a>
-                <a href="PAGE/vlogs.html" id="home-link" ><strong>Vlogs</strong></a>
-                <a href="PAGE/informacio.html" id="info-link"><strong>Information</strong></a>
+                <a href="index.html" id="home-link" class="active"><strong>Home</strong></a>
+                <a href="PAGE/vlogs.html" id="home-link" >Vlogs</a>
+                <a href="PAGE/informacio.html" id="info-link">Information</a>
                 <a href="PAGE/notrips.html" id="trips-link">Trips</a>
             </div>
         </nav>
@@ -327,7 +327,23 @@
     <script src="traffic.js"></script>
 
     <script>
-      window.onload = loadLanguage;
+    window.onload = function() {
+        loadLanguage();
+
+        // Select the first element with the "active" class and update its style and text content
+        const activeElement = document.querySelector(".active");
+        if (activeElement) {
+            activeElement.style.color = "#394fe3";
+            activeElement.style.fontWeight = "bold";
+            activeElement.style.transition = "transform 0.3s ease-in-out";
+            activeElement.addEventListener("mouseenter", () => {
+                activeElement.style.transform = "scale(1.1)";
+            });
+            activeElement.addEventListener("mouseleave", () => {
+                activeElement.style.transform = "scale(1)";
+            });
+        }
+    };
   </script>
 </body>
 </html>
