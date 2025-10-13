@@ -30,6 +30,9 @@
             back_to_main: "Vissza a főoldalra",
             trips: "Utazások",
             info: "Információk",
+            vlog_title: "Vlogok",
+            vlog_p: "Kalandok a világ körül",
+            vlog_nopost: "Még nincsenek posztok",
             currently_exploring: "JELENLEGI FELFEDEZÉS",
             currently_in: "Jelenleg itt:",
             days_on_road: "Utazási napok: ",
@@ -68,6 +71,9 @@
            back_to_main: "Back to the main page",
            trips: "Trips",
            info: "Information",
+           vlog_title: "Vlogs",
+           vlog_p: "Adventures around the world",
+           vlog_nopost: "No posts yet",
            currently_exploring: "CURRENTLY EXPLORING",
            currently_in: "Currently in:",
            days_on_road: "Days on road: ",
@@ -106,6 +112,9 @@
            back_to_main: "Kembali ke halaman utama",
            trips: "Perjalanan",
            info: "Informasi",
+           vlog_title: "Vlog",
+           vlog_p: "Petualangan di seluruh dunia",
+           vlog_nopost: "Belum ada postingan",
            currently_exploring: "SEDANG MENJELAJAH",
            currently_in: "Saat ini di:",
            days_on_road: "Hari dalam perjalanan: ",
@@ -157,7 +166,13 @@
         updateElement("latest_adventures", t.latest_adventure);
         updateElement("currently_exploring", t.currently_exploring);
         updateElement("notrip", t.notrip);
-    
+        updateElement("trips-link", t.trips);
+        updateElement("info-link", t.info);
+        updateElement("back_to_main", t.back_to_main);
+        // VLOG
+        updateElement("vlog_title", t.vlog_title);
+        updateElement("vlog_p", t.vlog_p);
+        updateElement("vlog_nopost", t.vlog_nopost);
         // Footer
         updateElement("kapcsolat", t.kapcsolat);
         updateElement("elerhetosegek", t.elerhetosegek);
