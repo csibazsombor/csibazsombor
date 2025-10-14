@@ -1240,44 +1240,59 @@
 
         // Main counter update function
         function updateCounter() {
-            const now = new Date();
-            const diff = now - CONFIG.startDate;
+    const now = new Date();
+    const start = CONFIG.startDate;
 
-            // Calculate time units
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // Calculate total difference in milliseconds
+    const diff = now - start;
 
-            // Animate numbers
-            animateNumber('years', years);
-            animateNumber('months', months);
-            animateNumber('days', days);
-            animateNumber('hours', hours);
-            animateNumber('minutes', minutes);
-            animateNumber('seconds', seconds);
+    // Calculate total days etc. for stats
+    const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const totalHours = Math.floor(diff / (1000 * 60 * 60));
+    const totalMinutes = Math.floor(diff / (1000 * 60));
+    const totalWeeks = Math.floor(totalDays / 7);
 
-            // Calculate totals
-            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const totalHours = Math.floor(diff / (1000 * 60 * 60));
-            const totalMinutes = Math.floor(diff / (1000 * 60));
-            const totalWeeks = Math.floor(totalDays / 7);
+    // Calendar-based years / months / days
+    let years = now.getFullYear() - start.getFullYear();
+    let months = now.getMonth() - start.getMonth();
+    let days = now.getDate() - start.getDate();
 
-            // Update stats
-            getElement('total-days').textContent = formatNumber(totalDays);
-            getElement('total-hours').textContent = formatNumber(totalHours);
-            getElement('total-minutes').textContent = formatNumber(totalMinutes);
-            getElement('total-weeks').textContent = formatNumber(totalWeeks);
+    if (days < 0) {
+        months--;
+        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        days += prevMonth.getDate();
+    }
 
-            // Update other sections
-            updateMilestone(totalDays);
-            updateGoalProgress(totalDays);
-            updateAnniversaryCountdown();
-            updateBirthdayCountdown('toyeee');
-            updateBirthdayCountdown('toyaaa');
-        }
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    // Animate number updates
+    animateNumber('years', years);
+    animateNumber('months', months);
+    animateNumber('days', days);
+
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+
+    animateNumber('hours', hours);
+    animateNumber('minutes', minutes);
+    animateNumber('seconds', seconds);
+
+    // Update totals & milestones
+    getElement('total-days').textContent = formatNumber(totalDays);
+    getElement('total-hours').textContent = formatNumber(totalHours);
+    getElement('total-minutes').textContent = formatNumber(totalMinutes);
+    getElement('total-weeks').textContent = formatNumber(totalWeeks);
+
+    updateMilestone(totalDays);
+    updateGoalProgress(totalDays);
+    updateAnniversaryCountdown();
+    updateBirthdayCountdown('toyeee');
+    updateBirthdayCountdown('toyaaa');
+}
 
         // Export and Share functions
         function exportStats() {
