@@ -513,6 +513,186 @@ img:hover {
 .no-scroll {
   overflow: hidden;
 }
+/* ==============================
+   Button Grid Layout
+   ============================== */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  justify-content: center;
+  place-content: center;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.button-grid button:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: var(--shadow-md);
+  opacity: 0.95;
+}
+
+@media (max-width: 480px) {
+  .button-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+/* ==============================
+   Notes Modal
+   ============================== */
+.notes-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 27, 46, 0.92);
+  backdrop-filter: blur(10px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 20px;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.notes-content {
+  background: var(--white);
+  padding: 28px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  max-width: 900px;
+  width: 90%;
+  max-height: 85%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.closeNotes {
+  cursor: pointer;
+  font-size: 1.6rem;
+  color: var(--accent);
+  align-self: flex-end;
+  margin-bottom: 12px;
+  transition: color 0.2s ease;
+}
+
+.closeNotes:hover {
+  color: var(--primary);
+}
+
+.notes-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Add Note Form */
+.add-note {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.add-note input, 
+.add-note textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-note input:focus, 
+.add-note textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(226, 85, 85, 0.25);
+  outline: none;
+}
+
+.add-note button {
+  background: var(--secondary);
+  color: var(--white);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.add-note button:hover {
+  background: var(--primary);
+  transform: scale(1.03);
+}
+
+/* Notes List */
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+  max-height: 55vh;
+  padding-right: 4px; /* prevent scrollbar overlap */
+}
+
+.note-card {
+  background: #fff;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-name {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.note-date {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.note-text {
+  margin: 8px 0;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
+.note-heart {
+  cursor: pointer;
+  color: #aaa;
+  font-size: 1.3rem;
+  transition: 0.2s ease;
+}
+
+.note-heart.liked {
+  color: #e25555;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 
 /* ==============================
    Responsive Design

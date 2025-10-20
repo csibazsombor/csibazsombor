@@ -10,7 +10,7 @@ let updateInfo = ''; // new: details about the update, normalized to a string
 function getLocalVersion() {
   let lv = localStorage.getItem('appVersion');
   if (!lv) {
-    lv = '0.1.0'; // Default version
+    lv = '0.1.3'; // Default version
     localStorage.setItem('appVersion', lv);
   }
   return lv;

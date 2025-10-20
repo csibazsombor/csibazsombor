@@ -15,9 +15,13 @@
     <button class="add" id="installBtn" onclick="installApp()">Install APP</button>
     <h1>Our Relationship APP</h1>
     <p>Everything about us.</p>
-    <button onclick="showGallery()">Our Gallery💗</button>
-    <button onclick="togetherSince()">Together since🔗</button><br>
-    <button onclick="ourStory()">How we met?🕰️</button>
+    <!-- Buttons Grid -->
+    <div class="button-grid">
+      <button onclick="showGallery()">💗 Our Gallery</button>
+      <button onclick="showNotes()">📙 Notes</button>
+      <button onclick="togetherSince()">🔗 Together Since</button>
+      <button onclick="ourStory()">🕰️ How We Met?</button>
+    </div>
         
     <div class="version-info" id="versionInfo">
       <strong>Current Version:</strong> <span id="currentVersion">Loading...</span><br>
@@ -48,6 +52,26 @@
         </div>
     </div>
   </div>
+
+    <!-- Notes Modal -->
+    <div id="notesModal" class="notes-modal">
+      <div class="notes-content">
+        <span class="closeNotes" onclick="closeNotes()">✖ Close</span>
+        <h2>Our Notes 📙</h2>
+      
+        <div class="add-note">
+          <input id="noteName" placeholder="Your name" />
+          <textarea id="noteText" placeholder="Write something sweet..."></textarea>
+          <button onclick="addNote()">➕ Add Note</button>
+        </div>
+      
+        <div id="notesList" class="notes-list">
+          <p>Loading notes...</p>
+        </div>
+      </div>
+    </div>
+
+
 
   <!-- Gallery Modal -->
   <div id="galleryModal">
@@ -542,6 +566,7 @@
     }
   </style>
 
+
   <script>
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
@@ -632,7 +657,123 @@
     }
 
   </script>
-  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    deleteDoc,
+    doc,
+    query,
+    orderBy,
+    onSnapshot,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyBijXs21wEd7eJVUHyyxdJwe4_3x9l6DFw",
+    authDomain: "ourapp-a86b8.firebaseapp.com",
+    projectId: "ourapp-a86b8",
+    storageBucket: "ourapp-a86b8.appspot.com",
+    messagingSenderId: "245515530451",
+    appId: "1:245515530451:web:e50f7e8639355241b2a426",
+    measurementId: "G-1W27HB1R8M"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // DOM elements
+  const notesList = document.getElementById("notesList");
+  const noteName = document.getElementById("noteName");
+  const noteText = document.getElementById("noteText");
+
+  // Show modal
+  function showNotes() {
+    document.getElementById("notesModal").style.display = "flex";
+    loadNotes();
+  }
+
+  // Close modal
+  function closeNotes() {
+    document.getElementById("notesModal").style.display = "none";
+  }
+
+  // Add note
+  async function addNote() {
+    const name = noteName.value.trim();
+    const text = noteText.value.trim();
+
+    if (!name || !text) {
+      alert("Please enter your name and a note!");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "notes"), {
+        name,
+        text,
+        createdAt: serverTimestamp()
+      });
+      noteName.value = "";
+      noteText.value = "";
+    } catch (err) {
+      console.error("Error adding note:", err);
+    }
+  }
+
+  // Delete note
+  async function deleteNote(id) {
+    if (!confirm("Are you sure you want to delete this note?")) return;
+    try {
+      await deleteDoc(doc(db, "notes", id));
+    } catch (err) {
+      console.error("Error deleting note:", err);
+    }
+  }
+
+  // Render notes
+  function renderNotes(docs) {
+    notesList.innerHTML = "";
+    if (docs.length === 0) {
+      notesList.innerHTML = "<p>No notes yet. Be the first to write something sweet!</p>";
+      return;
+    }
+
+    docs.forEach(docSnap => {
+      const data = docSnap.data();
+      const createdAt = data.createdAt ? data.createdAt.toDate().toLocaleString() : "Just now";
+      const noteDiv = document.createElement("div");
+      noteDiv.className = "note-item";
+      noteDiv.innerHTML = `
+        <strong>${data.name}</strong> (${createdAt}): 
+        <span>${data.text}</span>
+        <button onclick="deleteNote('${docSnap.id}')">🗑️ Delete</button>
+      `;
+      notesList.appendChild(noteDiv);
+    });
+  }
+
+  // Load notes and listen for real-time updates
+  function loadNotes() {
+    const q = query(collection(db, "notes"), orderBy("createdAt", "desc"));
+    onSnapshot(q, snapshot => {
+      renderNotes(snapshot.docs);
+    });
+  }
+
+  // Expose functions globally
+  window.showNotes = showNotes;
+  window.closeNotes = closeNotes;
+  window.addNote = addNote;
+  window.deleteNote = deleteNote;
+</script>
+
+
+
   <script src="updater.js"></script>
   <script src="gallery-function.js"></script>
   <script src="button-function.js"></script>
