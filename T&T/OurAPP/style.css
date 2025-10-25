@@ -199,13 +199,15 @@ button:active {
 img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-lg);
+  border-radius: 15px;
   box-shadow: var(--shadow-sm);
-  object-fit: cover;
   margin: 16px 0;
   transition: all var(--transition);
   cursor: pointer;
 }
+
+
+
 
 img:hover {
   box-shadow: var(--shadow-md);
@@ -219,7 +221,7 @@ img:hover {
   display: none;
   position: fixed;
   top: 0; 
-  left: 0;
+  left: 1;
   width: 100%; 
   height: 100%;
   background: rgba(45, 27, 46, 0.92);
@@ -229,6 +231,24 @@ img:hover {
   z-index: 999;
   padding: 20px;
 }
+
+#galleryContent img {
+  width: 8000px;       /* all same width */
+  height: 250px;      /* all same height */
+  object-fit: cover;  /* crops to fill the box */
+  border-radius: 15px;
+  box-shadow: var(--shadow-sm);
+  margin: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+#galleryContent img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
 
 #galleryContent {
   background: var(--white);
@@ -716,7 +736,7 @@ img:hover {
   }
 
   img { 
-    border-radius: var(--radius-md);
+    border-radius: 15px;
   }
 
   .add, .updateBtn { 
