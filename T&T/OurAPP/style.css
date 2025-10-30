@@ -738,9 +738,18 @@ img:hover {
   }
 
   img { 
-    border-radius: 15px;
+    border-radius: 5px;;
+  
   }
+    .header-image {
+     text-align: center;
+    }
 
+    .header-image img {
+     max-width: 50%;
+     border-radius: 0;
+     height: auto;
+    }
   .add, .updateBtn { 
     top: 12px; 
     right: 12px; 
