@@ -787,7 +787,7 @@
         </div>
 
         <div class="description">
-            Friend since <span class="date-highlight" id="friendship-date">March 14, 2025</span> with Toyeee & Toyaaa 😏<br>
+            Friend since <span class="date-highlight" id="friendship-date">March 14, 2025</span>, Toyeee & Toyaaa 😏<br>
             Lover Since <span class="date-highlight" id="friendship-date">August 23, 2025</span>💞💗
         </div>
 
@@ -823,6 +823,10 @@
             <div class="stat-item">
                 <div class="stat-label" id="nextfriendiversary_label">Next Anniversary💗</div>
                 <div class="stat-value" id="anniversary-countdown">--</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Lover since</div>
+                <div class="stat-value" id="loversince-countdown">--</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label" id="totalminutes_label">Total Minutes</div>
@@ -1175,6 +1179,65 @@
             getElement('goal-progress').textContent = `${progress}%`;
         }
 
+        function updateLoverSinceCountdown() {
+            const now = new Date();
+            const loverStart = new Date('2025-08-23T00:00:00');
+            const el = getElement('loversince-countdown');
+
+            if (!el) return;
+
+            // If the start date is in the future show countdown to start
+            if (now < loverStart) {
+            const diffMs = loverStart - now;
+            const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            const messages = {
+                en: `${days} day${days !== 1 ? 's' : ''} until lover-since`,
+                id: `${days} hari lagi`
+            };
+            el.textContent = messages[state.currentLanguage];
+            return;
+            }
+
+            // Calculate calendar difference (years, months, days) since loverStart
+            let years = now.getFullYear() - loverStart.getFullYear();
+            let months = now.getMonth() - loverStart.getMonth();
+            let days = now.getDate() - loverStart.getDate();
+
+            if (days < 0) {
+            months--;
+            const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            days += prevMonth.getDate();
+            }
+
+            if (months < 0) {
+            years--;
+            months += 12;
+            }
+
+            // Build a localized message but hide zero units; if all units are zero show placeholder '--'
+            if (years === 0 && months === 0 && days === 0) {
+            el.textContent = '--';
+            return;
+            }
+
+            const partsEn = [];
+            if (years > 0) partsEn.push(`${years} year${years !== 1 ? 's' : ''}`);
+            if (months > 0) partsEn.push(`${months} month${months !== 1 ? 's' : ''}`);
+            if (days > 0) partsEn.push(`${days} day${days !== 1 ? 's' : ''}`);
+
+            const partsId = [];
+            if (years > 0) partsId.push(`${years} tahun`);
+            if (months > 0) partsId.push(`${months} bulan`);
+            if (days > 0) partsId.push(`${days} hari`);
+
+            const messages = {
+            en: partsEn.join(' '),
+            id: partsId.join(' ')
+            };
+
+            el.textContent = messages[state.currentLanguage] || '--';
+        }
+
         function updateMilestone(totalDays) {
             const milestone = getElement('milestone');
         
@@ -1290,6 +1353,7 @@
     updateMilestone(totalDays);
     updateGoalProgress(totalDays);
     updateAnniversaryCountdown();
+    updateLoverSinceCountdown();
     updateBirthdayCountdown('toyeee');
     updateBirthdayCountdown('toyaaa');
 }
