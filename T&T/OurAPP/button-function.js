@@ -12,3 +12,8 @@ function ourStory() {
     "_blank"
   );
 }
+
+function hoverimagehug() {
+  document.querySelector('.spotify_widget').style.display = 'block';
+  document.querySelector('.header_image-hug').style.display = 'none';
+}

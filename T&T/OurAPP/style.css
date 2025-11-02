@@ -38,7 +38,7 @@ body {
 }
 
 .container {
-
+    border-radius: var(--radius-lg);
 }
 
 /* ==============================
@@ -221,7 +221,9 @@ img:hover {
   z-index: 999;
   padding: 0px;
 }
-
+.spotify_widget {
+  display: none;
+}
 #galleryContent img {
   width: 8000px;       /* all same width */
   height: 250px;      /* all same height */
@@ -522,6 +524,10 @@ img:hover {
 
 .header-image {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .header-image img {
