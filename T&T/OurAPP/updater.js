@@ -10,7 +10,7 @@ let updateInfo = ''; // new: details about the update, normalized to a string
 function getLocalVersion() {
   let lv = localStorage.getItem('appVersion');
   if (!lv) {
-    lv = '0.1.4'; // Default version
+    lv = '0.1.5'; // Default version
     localStorage.setItem('appVersion', lv);
   }
   return lv;
@@ -87,7 +87,7 @@ async function fetchRemoteData() {
     console.error('Error fetching remote data:', err);
     const currentVersionEl = document.getElementById('currentVersion');
     if (currentVersionEl) currentVersionEl.textContent = 'Error';
-    serverVersion = "0.1.3"; // Fallback version
+    serverVersion = "0.1.4"; // Fallback version
     updateInfo = '';
     return null;
   }
