@@ -6,6 +6,10 @@ CSS/style.css
 index.html
 links.html
 PAGE/informacio.html
+PAGE/trips
+PAGE/notrips
+PAGE/vlogs
+PAGE/Contacts
 JS/engedélyek.js
 JS/jquery.min.js
 JS/jsdelivr.js
@@ -18,3 +22,13 @@ FONTS/Poppins/Poppins-Bold.ttf
 FONTS/Poppins/Poppins-Light.ttf
 FONTS/Tw Cen MT Condensed Bold.ttf
 FONTS/ZTGatha-SemiBold.ttf
+
+FALLBACK:
+# fallback to the app shell when offline
+/ index.html
+/ links.html
+/ PAGE/informacio.html
+/ PAGE/trips
+/ PAGE/notrips
+/ PAGE/vlogs
+/ PAGE/Contacts
