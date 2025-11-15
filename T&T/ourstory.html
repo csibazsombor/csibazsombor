@@ -12,14 +12,19 @@
         }
 
         body {
+            background-image: url("lovebackground.png");
+            background-repeat: no-repeat;
+            background-position: center center; /* Center horizontally & vertically */
+            background-size: cover; /* Scale to cover full screen */
+            background-attachment: fixed; /* Stick to screen even on scroll */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fef7f0 0%, #fff5f5 30%, #f0f9ff 60%, #f8fafc 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #1f2937;
             position: relative;
+            padding: 20px;
         }
 
         body::before {
@@ -38,6 +43,7 @@
 
         .container {
             max-width: 900px;
+            width: 100%;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
@@ -64,7 +70,6 @@
             top: 20%;
             left: 15%;
             opacity: 0.8;
-            color: #f59e0b;
         }
 
         .welcome-screen::after {
@@ -75,7 +80,6 @@
             top: 30%;
             right: 20%;
             opacity: 0.8;
-            color: #8b5cf6;
         }
 
         @keyframes sparkle {
@@ -93,8 +97,11 @@
             font-size: 4em;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #2c3e50;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #ec4899, #f59e0b, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
             animation: bounceIn 1s ease;
         }
 
@@ -130,13 +137,33 @@
             color: white;
             padding: 18px 48px;
             font-size: 1.1em;
-            border-radius: 12px;
+            border-radius: 50px;
             cursor: pointer;
             transition: all 0.4s ease;
             font-weight: 600;
             box-shadow: 0 8px 32px rgba(236, 72, 153, 0.3);
             animation: pulse 2s infinite;
             font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .begin-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .begin-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         @keyframes pulse {
@@ -160,7 +187,7 @@
         .story-page {
             display: none;
             padding: 60px 40px;
-            min-height: 700px;
+            min-height: 600px;
             text-align: center;
             position: relative;
             background: linear-gradient(135deg, #fef7f0 0%, #fff5f5 100%);
@@ -168,13 +195,13 @@
 
         .story-page.active {
             display: block;
-            animation: pageSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation: pageSlide 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         @keyframes pageSlide {
             from {
                 opacity: 0;
-                transform: translateX(50px);
+                transform: translateX(30px);
             }
             to {
                 opacity: 1;
@@ -186,47 +213,52 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            margin: 0 auto 40px;
+            margin: 0 auto 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 60px;
-            border: 5px solid rgba(118, 75, 162, 0.3);
+            border: 5px solid rgba(255, 255, 255, 0.5);
             transition: all 0.5s ease;
             animation: float 3s ease-in-out infinite;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
 
         .story-image:hover {
-            transform: translateY(-10px) scale(1.1);
+            transform: translateY(-10px) scale(1.1) rotate(5deg);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
         }
 
         .message-bubble {
             background: #ffffff;
-            padding: 25px 35px;
-            border-radius: 25px;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 20px 28px;
+            border-radius: 20px;
+            margin: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             position: relative;
-            font-size: 1.2em;
+            font-size: 1.1em;
             line-height: 1.6;
-            border: 2px solid rgba(118, 75, 162, 0.1);
-            max-width: 500px;
+            max-width: 75%;
             opacity: 0;
-            animation: messageAppear 0.6s ease forwards;
+            animation: messageAppear 0.5s ease forwards;
             font-family: 'Georgia', serif;
             color: #2c3e50;
+            display: inline-block;
+            text-align: left;
         }
 
-        .message-bubble:nth-child(4) { animation-delay: 0.3s; }
-        .message-bubble:nth-child(5) { animation-delay: 0.6s; }
-        .message-bubble:nth-child(6) { animation-delay: 0.9s; }
+        .message-bubble:nth-child(4) { animation-delay: 0.2s; }
+        .message-bubble:nth-child(5) { animation-delay: 0.4s; }
+        .message-bubble:nth-child(6) { animation-delay: 0.6s; }
+        .message-bubble:nth-child(7) { animation-delay: 0.8s; }
+        .message-bubble:nth-child(8) { animation-delay: 1s; }
+        .message-bubble:nth-child(9) { animation-delay: 1.2s; }
+        .message-bubble:nth-child(10) { animation-delay: 1.4s; }
 
         @keyframes messageAppear {
             from {
@@ -244,8 +276,7 @@
             color: white;
             margin-left: auto;
             margin-right: 20px;
-            border-color: #5a67d8;
-            transform: rotate(1deg);
+            border-bottom-right-radius: 5px;
         }
 
         .message-bubble.toya {
@@ -253,38 +284,18 @@
             color: #2c3e50;
             margin-right: auto;
             margin-left: 20px;
-            border-color: #e2e8f0;
-            transform: rotate(-1deg);
-        }
-
-        .message-bubble::before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 0;
-            top: 20px;
-        }
-
-        .message-bubble.you::before {
-            right: -15px;
-            border-left: 15px solid #f59e0b;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-        }
-
-        .message-bubble.toya::before {
-            left: -15px;
-            border-right: 15px solid #ddd6fe;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
+            border-bottom-left-radius: 5px;
+            border: 2px solid rgba(236, 72, 153, 0.1);
         }
 
         .story-title {
-            font-size: 3.2em;
+            font-size: 2.8em;
             font-weight: bold;
-            margin-bottom: 30px;
-            color: #2c3e50;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             animation: titleBounce 0.8s ease;
         }
 
@@ -295,9 +306,9 @@
         }
 
         .story-text {
-            font-size: 1.3em;
-            color: #555;
-            margin-bottom: 40px;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
             line-height: 1.8;
             font-weight: 400;
             font-style: italic;
@@ -315,24 +326,6 @@
             }
         }
 
-        .typewriter {
-            overflow: hidden;
-            border-right: 3px solid #667eea;
-            white-space: nowrap;
-            animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
-            display: inline-block;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: #667eea; }
-        }
-
         .navigation {
             display: flex;
             justify-content: space-between;
@@ -347,7 +340,7 @@
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
@@ -358,7 +351,8 @@
 
         .nav-btn:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+            box-shadow: 0 10px 25px rgba(118, 75, 162, 0.4);
+            background: linear-gradient(135deg, #764ba2, #ec4899);
         }
 
         .nav-btn:disabled {
@@ -373,45 +367,43 @@
             font-weight: bold;
             color: #374151;
             font-size: 1.1em;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 10px 20px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 24px;
+            border-radius: 25px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(236, 72, 153, 0.1);
+            border: 2px solid rgba(236, 72, 153, 0.2);
         }
 
-        /* Page-specific decorations with friendship and love colors */
         .page-1 .story-image { 
             background: linear-gradient(135deg, #60a5fa, #a78bfa);
-            animation: float 3s ease-in-out infinite, rainbow 6s ease-in-out infinite;
         }
         .page-2 .story-image { 
             background: linear-gradient(135deg, #34d399, #22d3ee);
-            animation: float 3s ease-in-out infinite 0.5s, rainbow 6s ease-in-out infinite;
         }
         .page-3 .story-image { 
             background: linear-gradient(135deg, #fbbf24, #fb7185);
-            animation: float 3s ease-in-out infinite 1s, rainbow 6s ease-in-out infinite;
         }
         .page-4 .story-image { 
             background: linear-gradient(135deg, #f472b6, #c084fc);
-            animation: float 3s ease-in-out infinite 1.5s, rainbow 6s ease-in-out infinite;
         }
         .page-5 .story-image { 
             background: linear-gradient(135deg, #ef4444, #ec4899);
-            animation: float 3s ease-in-out infinite 2s, rainbow 6s ease-in-out infinite;
         }
         .page-6 .story-image { 
-            background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6);
-            animation: float 3s ease-in-out infinite 2.5s, rainbow 6s ease-in-out infinite;
+            background: linear-gradient(135deg, #f59e0b, #ec4899);
+        }
+        .page-7 .story-image { 
+            background: linear-gradient(135deg, #ec4899, #8b5cf6, #f59e0b);
+            background-size: 200% 200%;
+            animation: float 3s ease-in-out infinite, gradientShift 4s ease infinite;
         }
 
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Hearts floating animation */
         .hearts {
             position: absolute;
             top: 0;
@@ -420,64 +412,124 @@
             height: 100%;
             overflow: hidden;
             pointer-events: none;
+            z-index: 1;
         }
 
         .heart {
             position: absolute;
-            color: rgba(255, 182, 193, 0.7);
             font-size: 20px;
             animation: floatHearts 6s linear infinite;
+            opacity: 0.7;
         }
 
         @keyframes floatHearts {
             0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+                transform: translateY(90vh) rotate(36deg) scale(1);
             }
             100% {
-                transform: translateY(-100px) rotate(360deg);
+                transform: translateY(-100px) rotate(360deg) scale(0.5);
                 opacity: 0;
             }
         }
 
-        /* Mobile responsiveness */
+        .final-message {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            font-style: italic;
+            color: #666;
+            border: 2px solid rgba(236, 72, 153, 0.2);
+            animation: fadeInUp 1s ease 1.5s both;
+            line-height: 1.8;
+        }
+
         @media (max-width: 768px) {
             .container {
-                margin: 20px;
-                max-width: calc(100vw - 40px);
+                margin: 10px;
+                max-width: calc(100vw - 20px);
+            }
+            
+            .welcome-screen {
+                padding: 60px 30px;
             }
             
             .welcome-screen h1 {
                 font-size: 2.5em;
             }
+
+            .welcome-screen p {
+                font-size: 1.1em;
+            }
+            
+            .story-page {
+                padding: 40px 20px;
+                min-height: 500px;
+            }
             
             .story-title {
-                font-size: 2.2em;
+                font-size: 2em;
+            }
+
+            .story-text {
+                font-size: 1em;
             }
             
             .message-bubble {
-                max-width: 90%;
-                margin-left: 5% !important;
-                margin-right: 5% !important;
+                max-width: 85%;
+                font-size: 1em;
+                padding: 16px 22px;
+            }
+
+            .message-bubble.you {
+                margin-right: 10px;
+            }
+
+            .message-bubble.toya {
+                margin-left: 10px;
+            }
+
+            .navigation {
+                padding: 20px;
+            }
+
+            .nav-btn {
+                padding: 12px 24px;
+                font-size: 0.9em;
+            }
+
+            .page-indicator {
+                font-size: 0.9em;
+                padding: 10px 18px;
+            }
+
+            .final-message {
+                padding: 20px;
+                font-size: 0.95em;
             }
         }
 
-        /* Made with Claude AI footer */
         .claude-footer {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 8px 16px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px 18px;
+            border-radius: 15px;
             font-size: 0.85em;
             color: #6b7280;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(236, 72, 153, 0.1);
+            border: 1px solid rgba(236, 72, 153, 0.2);
             animation: fadeInCorner 2s ease 1s both;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
+            z-index: 1000;
         }
 
         @keyframes fadeInCorner {
@@ -493,33 +545,39 @@
 
         .claude-footer:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .claude-footer {
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.75em;
+                padding: 8px 14px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Welcome Screen -->
         <div id="welcomeScreen" class="welcome-screen">
             <h1>Our Story 💕</h1>
             <p>The magical journey of two hearts finding each other...</p>
             <button class="begin-btn" onclick="beginStory()">✨ Begin Our Story ✨</button>
         </div>
 
-        <!-- Story Container -->
         <div id="storyContainer" class="story-container">
-            <!-- Page 1: First Meeting -->
             <div class="story-page page-1 active">
-                <div class="hearts" id="hearts"></div>
+                <div class="hearts" id="hearts-1"></div>
                 <h2 class="story-title">The First Hello 👋</h2>
                 <div class="story-image">😊</div>
-                <div class="story-text typewriter" id="text1">It all started with a simple message...</div>
+                <div class="story-text">It all started with a simple message...</div>
                 <div class="message-bubble you">Hi, i can help you practice english!🙂</div>
                 <div class="message-bubble toya">hello, i'm glad to hear that!</div>
             </div>
 
-            <!-- Page 2: Getting to Know Each Other -->
             <div class="story-page page-2">
+                <div class="hearts" id="hearts-2"></div>
                 <h2 class="story-title">Getting to Know You 💬</h2>
                 <div class="story-image">🤔</div>
                 <div class="story-text">We started talking more and more each day...</div>
@@ -527,19 +585,21 @@
                 <div class="message-bubble you">from Indonesia, and u?</div>
                 <div class="message-bubble toya">From Slovakia, but it's so cold yet, it's spring and in slovakia it's most of the times cold🥶</div>
             </div>
+
             <div class="story-page page-3">
-                <h2 class="story-title">Having so many fun because of a typo</h2>
+                <div class="hearts" id="hearts-3"></div>
+                <h2 class="story-title">Having Fun with Typos 😆</h2>
                 <div class="story-image">😆</div>
-                <div class="story-text">This is how our nickname created...</div>
+                <div class="story-text">This is how our nickname was created...</div>
                 <div class="message-bubble toya">And i played so many toya in kindergarten</div>
                 <div class="message-bubble you">toya?😭😭</div>
                 <div class="message-bubble toya">Typooo</div>
                 <div class="message-bubble you">i knoww, but it's so funnyyy, sorryy😂</div>
             </div>
 
-            <!-- Page 3: Becoming Close Friends -->
             <div class="story-page page-4">
-                <h2 class="story-title">Talk and talk 🗣️</h2>
+                <div class="hearts" id="hearts-4"></div>
+                <h2 class="story-title">Talk and Talk 🗣️</h2>
                 <div class="story-image">🌟</div>
                 <div class="story-text">Months passed, and we became inseparable friends...</div>
                 <div class="message-bubble you">toyaa, u knoww, in my school i have a guy who always bother me, broo😭</div>
@@ -549,11 +609,10 @@
                 <div class="message-bubble you">please don't say "oh", u often use it</div>
                 <div class="message-bubble toya">Sorryyyy, then: Ow😆</div>
                 <div class="message-bubble you">yes😂</div>
-
             </div>
 
-            <!-- Page 4: Realizing Feelings -->
             <div class="story-page page-5">
+                <div class="hearts" id="hearts-5"></div>
                 <h2 class="story-title">Something More... 💭</h2>
                 <div class="story-image">🦋</div>
                 <div class="story-text">One day, we both realized our feelings had grown into something deeper...</div>
@@ -567,8 +626,8 @@
                 <div class="message-bubble you">OMGGGGGGGGGGGGG, i'm so suprisedddddddddd</div>
             </div>
 
-            <!-- Page 5: The Confession -->
             <div class="story-page page-6">
+                <div class="hearts" id="hearts-6"></div>
                 <h2 class="story-title">The Magic Moment ✨</h2>
                 <div class="story-image">💝</div>
                 <div class="story-text">The moment that changed everything forever...</div>
@@ -576,11 +635,10 @@
                 <div class="message-bubble you">really? u feel the same??</div>
                 <div class="message-bubble toya">Yesss cute girll, i'm not lieee</div>
                 <div class="message-bubble you">omgggggg, my heartbeat is so high😆💗</div>
-
             </div>
 
-            <!-- Page 6: Together Forever -->
             <div class="story-page page-7">
+                <div class="hearts" id="hearts-7"></div>
                 <h2 class="story-title">Our Forever After 💖</h2>
                 <div class="story-image">🔗</div>
                 <div class="story-text">And so our beautiful love story began...</div>
@@ -590,38 +648,36 @@
                 <div class="message-bubble toya">No, i love you moreee, drágám😆</div>
                 <div class="message-bubble you">noottoo😈</div>
                 <div class="message-bubble toya">We love the same toyeee!😏💗</div>
-                <div class="story-text" style="margin-top: 40px; font-style: italic; color: #999; animation: fadeInUp 1s ease 1s both;">
+                <div class="final-message">
                     From friends to lovers, from that first hello to forever... this is our magical story! 💕✨
-                    <br> A little story about our love, but the most, in our heart! 💗 
-                    <br> Thank you for being my everything <br>  
-                    - Toya! 🥰
+                    <br><br>
+                    A little story about our love, but the most, in our heart! 💗
+                    <br><br>
+                    Thank you for being my everything
+                    <br>
+                    <strong>- Toya! 🥰</strong>
                 </div>
             </div>
         </div>
 
-        <!-- Navigation -->
         <div id="navigation" class="navigation" style="display: none;">
             <button class="nav-btn" id="prevBtn" onclick="previousPage()">← Previous</button>
-            <span class="page-indicator" id="pageIndicator">1 / 6</span>
+            <span class="page-indicator" id="pageIndicator">1 / 7</span>
             <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next →</button>
         </div>
-    </div>
-
-    <!-- Claude AI Footer -->
-    <div class="claude-footer">
-        Made with ❤️ & Claude AI
     </div>
 
     <script>
         let currentPage = 0;
         const totalPages = 7;
+        let heartIntervals = [];
 
         function beginStory() {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('storyContainer').style.display = 'block';
             document.getElementById('navigation').style.display = 'flex';
             updateNavigation();
-            createFloatingHearts();
+            createFloatingHearts(currentPage);
         }
 
         function nextPage() {
@@ -630,11 +686,7 @@
                 currentPage++;
                 document.querySelectorAll('.story-page')[currentPage].classList.add('active');
                 updateNavigation();
-                
-                // Add typewriter effect to story text on certain pages
-                if (currentPage === 1 || currentPage === 3 || currentPage === 5) {
-                    addTypewriterEffect();
-                }
+                createFloatingHearts(currentPage);
             }
         }
 
@@ -644,6 +696,7 @@
                 currentPage--;
                 document.querySelectorAll('.story-page')[currentPage].classList.add('active');
                 updateNavigation();
+                createFloatingHearts(currentPage);
             }
         }
 
@@ -653,37 +706,35 @@
             document.getElementById('pageIndicator').textContent = `${currentPage + 1} / ${totalPages}`;
         }
 
-        function addTypewriterEffect() {
-            const storyText = document.querySelectorAll('.story-page')[currentPage].querySelector('.story-text');
-            if (storyText) {
-                storyText.classList.add('typewriter');
-                setTimeout(() => {
-                    storyText.classList.remove('typewriter');
-                }, 3000);
+        function createFloatingHearts(pageIndex) {
+            heartIntervals.forEach(interval => clearInterval(interval));
+            heartIntervals = [];
+
+            if (pageIndex >= 3) {
+                const heartsContainer = document.getElementById(`hearts-${pageIndex + 1}`);
+                if (heartsContainer) {
+                    heartsContainer.innerHTML = '';
+                    const heartEmojis = ['💕', '💖', '💗', '💝', '💘', '❤️', '🌟', '✨'];
+                    
+                    const interval = setInterval(() => {
+                        const heart = document.createElement('div');
+                        heart.className = 'heart';
+                        heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                        heart.style.left = Math.random() * 100 + '%';
+                        heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                        heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                        heartsContainer.appendChild(heart);
+                        
+                        setTimeout(() => {
+                            heart.remove();
+                        }, 7000);
+                    }, 600);
+                    
+                    heartIntervals.push(interval);
+                }
             }
         }
 
-        function createFloatingHearts() {
-            const heartsContainer = document.getElementById('hearts');
-            const heartEmojis = ['💕', '💖', '💗', '💝', '💘', '❤️', '🌟', '✨'];
-            
-            setInterval(() => {
-                if (currentPage >= 3) { // Only show hearts from page 4 onwards
-                    const heart = document.createElement('div');
-                    heart.className = 'heart';
-                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                    heart.style.left = Math.random() * 100 + '%';
-                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                    heartsContainer.appendChild(heart);
-                    
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 6000);
-                }
-            }, 800);
-        }
-
-        // Add keyboard navigation
         document.addEventListener('keydown', function(event) {
             if (event.key === 'ArrowRight' && currentPage < totalPages - 1) {
                 nextPage();
@@ -691,11 +742,6 @@
                 previousPage();
             }
         });
-
-        // Add magical sound effect (optional)
-        function playMagicSound() {
-            // You could add audio here if desired
-        }
     </script>
 </body>
 </html>
