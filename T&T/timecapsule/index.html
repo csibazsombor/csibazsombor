@@ -14,6 +14,7 @@
         body {
             font-family: 'Georgia', 'Times New Roman', serif;
             background: linear-gradient(135deg, #f5f3f0 0%, #ede7e0 100%);
+            background-attachment: fixed;
             color: #4a4a4a;
             line-height: 1.7;
             min-height: 100vh;
@@ -173,9 +174,14 @@
             font-family: inherit;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             background: #333;
             transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .btn-primary {
@@ -187,10 +193,11 @@
             background: white;
             color: #666;
             border: 1.5px solid #e8e8e8;
-            margin-left: 12px;
+            margin-top: 8px;
+            padding: 10px 16px;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:disabled) {
             background: #f8f8f8;
             border-color: #ccc;
             color: #333;
@@ -200,6 +207,23 @@
             background: #ff4444;
             color: white;
             border-color: #ff4444;
+        }
+
+        .recording-timer {
+            display: inline-block;
+            margin-left: 12px;
+            color: #ff4444;
+            font-weight: bold;
+        }
+
+        .audio-info {
+            background: rgba(100, 150, 200, 0.1);
+            border-left: 3px solid #2196F3;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: #555;
         }
 
         .capsules-grid {
@@ -260,11 +284,19 @@
             font-weight: 600;
             color: #1a1a1a;
             margin: 0;
+            flex: 1;
         }
 
         .capsule-emoji {
             font-size: 1.5rem;
             line-height: 1;
+            margin-left: 12px;
+        }
+
+        .capsule-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
         }
 
         .capsule-author {
@@ -297,6 +329,11 @@
             line-height: 1.6;
         }
 
+        .audio-player {
+            width: 100%;
+            margin-top: 12px;
+        }
+
         .capsule-date {
             font-size: 0.85rem;
             color: #999;
@@ -317,15 +354,6 @@
             padding: 60px 20px;
         }
 
-        .audio-controls {
-            margin-top: 12px;
-        }
-
-        .audio-player {
-            width: 100%;
-            margin-top: 12px;
-        }
-
         .loading {
             text-align: center;
             color: #666;
@@ -340,6 +368,44 @@
             margin-bottom: 20px;
             border: 1px solid rgba(139, 69, 19, 0.2);
             font-style: italic;
+        }
+
+        .success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(46, 125, 50, 0.2);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            color: #666;
+            border: 1.5px solid #e8e8e8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            border-color: #a0926b;
+            color: #5d4e37;
+        }
+
+        .filter-btn.active {
+            background: #5d4e37;
+            color: white;
+            border-color: #5d4e37;
         }
 
         @media (max-width: 768px) {
@@ -358,6 +424,15 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+
+            .capsule-header {
+                flex-direction: column;
+            }
+
+            .capsule-emoji {
+                margin-left: 0;
+                margin-top: 8px;
+            }
         }
     </style>
 </head>
@@ -365,9 +440,10 @@
     <div class="container">
         <div class="header">
             <h1>🕰️ Time capsule</h1>
+            <p>For Toyeee & Toyaaa 💗</p>
         </div>
 
-        <div id="error-container"></div>
+        <div id="message-container"></div>
 
         <div class="section">
             <h2>✨ New time capsule</h2>
@@ -377,32 +453,41 @@
                         <label for="title">Capsule name</label>
                         <input type="text" id="title" placeholder="e.g. Come back in 2026" required>
                     </div>
-                <div class="form-group">
-                    <label for="author">Author</label>
-                    <select id="author" required>
-                        <option value="">Who write this?</option>
-                        <option value="Toyeee babe💗">Toyeee babe💗</option>
-                        <option value="Toyaaa babe💗">Toyaaa babe💗</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <select id="author" required>
+                            <option value="">Who is writing this?</option>
+                            <option value="Toyeee babe💗">Toyeee babe💗</option>
+                            <option value="Toyaaa babe💗">Toyaaa babe💗</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="message">Message</label>
                     <textarea id="message" placeholder="type.." required></textarea>
-                    <button type="button" class="btn-secondary" id="record-btn" disabled>🎤 Voice message (not working)</button>
-                    <div class="audio-controls" id="audio-controls" style="display: none;">
+                </div>
+
+                <div class="form-group">
+                    <label>Voice Message</label>
+                    <button type="button" class="btn-secondary" id="record-btn">🎤 Start Recording</button>
+                    <span class="recording-timer" id="recording-timer" style="display: none;">0:00</span>
+                    <div id="audio-controls" style="display: none;">
+                        <div class="audio-info">
+                            📝 Voice message recorded! Click play to preview.
+                        </div>
                         <audio class="audio-player" id="audio-player" controls></audio>
+                        <button type="button" class="btn-secondary" id="clear-audio-btn" style="margin-top: 8px;">❌ Clear Audio</button>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="unlock-date">Unlock date (When the capsule ready)</label>
+                        <label for="unlock-date">Unlock date</label>
                         <input type="datetime-local" id="unlock-date" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">password (optional) </label>
+                        <label for="password">Password (optional)</label>
                         <input type="password" id="password" placeholder="shh..">
                     </div>
                 </div>
@@ -418,6 +503,8 @@
                         <div class="emoji-option" data-emoji="😈">😈</div>
                         <div class="emoji-option" data-emoji="🤪">🤪</div>
                         <div class="emoji-option" data-emoji="✨">✨</div>
+                        <div class="emoji-option" data-emoji="💕">💕</div>
+                        <div class="emoji-option" data-emoji="🎉">🎉</div>
                     </div>
                 </div>
 
@@ -427,6 +514,11 @@
 
         <div class="section">
             <h2>📦 Capsules</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="locked">🔒 Locked</button>
+                <button class="filter-btn" data-filter="unlocked">✅ Unlocked</button>
+            </div>
             <div id="capsules-container" class="loading">
                 Loading...
             </div>
@@ -439,7 +531,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-storage-compat.min.js"></script>
 
     <script>
-        // Firebase konfiguráció - CSERÉLD KI A SAJÁT ADATAIDDAL!
         const firebaseConfig = {
             apiKey: "AIzaSyA88zcDyz_g8Cg_gmTUcHihowYDnf-WZIQ",
             authDomain: "timecapsule-4f0c4.firebaseapp.com",
@@ -451,17 +542,15 @@
             measurementId: "G-6CY69RBZ0N"
         };
 
-        // Firebase inicializálás
         let db, storage;
         try {
             firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             storage = firebase.storage();
-            console.log('Firebase sikeresen inicializálva');
+            console.log('Firebase initialized successfully');
         } catch (error) {
-            console.error('Firebase inicializálási hiba:', error);
-            showError('Firebase kapcsolat sikertelen. LocalStorage-ot használunk helyette.');
-            // Fallback LocalStorage-ra
+            console.error('Firebase initialization error:', error);
+            showMessage('Firebase connection failed. Using LocalStorage as fallback.', 'error');
             db = null;
         }
 
@@ -469,16 +558,20 @@
         let audioBlob = null;
         let mediaRecorder = null;
         let capsules = [];
+        let currentFilter = 'all';
+        let recordingStartTime = null;
+        let recordingInterval = null;
 
-        function showError(message) {
-            const errorContainer = document.getElementById('error-container');
-            errorContainer.innerHTML = `<div class="error">${message}</div>`;
+        function showMessage(message, type = 'success') {
+            const container = document.getElementById('message-container');
+            const className = type === 'error' ? 'error' : 'success';
+            container.innerHTML = `<div class="${className}">${message}</div>`;
             setTimeout(() => {
-                errorContainer.innerHTML = '';
-            }, 5000);
+                container.innerHTML = '';
+            }, 4000);
         }
 
-        // Emoji kiválasztás
+        // Emoji selection
         document.querySelectorAll('.emoji-option').forEach(option => {
             option.addEventListener('click', () => {
                 document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
@@ -487,14 +580,22 @@
             });
         });
 
-        // Alapértelmezett emoji
         document.querySelector('.emoji-option[data-emoji="☺️"]').classList.add('selected');
 
-        // Hang rögzítés
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderCapsules();
+            });
+        });
+
+        // Voice recording
         document.getElementById('record-btn').addEventListener('click', async () => {
             const recordBtn = document.getElementById('record-btn');
-            const audioControls = document.getElementById('audio-controls');
-            const audioPlayer = document.getElementById('audio-player');
+            const timer = document.getElementById('recording-timer');
 
             if (!mediaRecorder || mediaRecorder.state === 'inactive') {
                 try {
@@ -507,43 +608,66 @@
                     };
 
                     mediaRecorder.onstop = () => {
-                        audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                         const audioUrl = URL.createObjectURL(audioBlob);
-                        audioPlayer.src = audioUrl;
-                        audioControls.style.display = 'block';
+                        document.getElementById('audio-player').src = audioUrl;
+                        document.getElementById('audio-controls').style.display = 'block';
                         stream.getTracks().forEach(track => track.stop());
+                        clearInterval(recordingInterval);
+                        timer.style.display = 'none';
                     };
 
                     mediaRecorder.start();
-                    recordBtn.textContent = '⏹️ Stop recording';
+                    recordBtn.textContent = '⏹️ Stop Recording';
                     recordBtn.classList.add('recording');
+                    timer.style.display = 'inline-block';
+                    timer.textContent = '0:00';
+                    recordingStartTime = Date.now();
+
+                    recordingInterval = setInterval(() => {
+                        const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+                        const mins = Math.floor(elapsed / 60);
+                        const secs = elapsed % 60;
+                        timer.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                    }, 100);
                 } catch (error) {
-                    showError('Unable to access microphone. Please allow microphone access in your browser settings.');
+                    showMessage('Unable to access microphone. Please allow microphone access in your browser settings.', 'error');
                 }
             } else {
                 mediaRecorder.stop();
-                recordBtn.textContent = '🎤 Voice message';
+                recordBtn.textContent = '🎤 Start Recording';
                 recordBtn.classList.remove('recording');
             }
         });
 
-        // Kapszula létrehozás
+        document.getElementById('clear-audio-btn').addEventListener('click', () => {
+            audioBlob = null;
+            document.getElementById('audio-controls').style.display = 'none';
+            document.getElementById('audio-player').src = '';
+        });
+
+        // Create capsule
         document.getElementById('capsule-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const title = document.getElementById('title').value;
+            const title = document.getElementById('title').value.trim();
             const author = document.getElementById('author').value;
-            const message = document.getElementById('message').value;
+            const message = document.getElementById('message').value.trim();
             const unlockDate = new Date(document.getElementById('unlock-date').value);
             const password = document.getElementById('password').value;
 
+            if (!title || !author || !message) {
+                showMessage('Please fill in all required fields.', 'error');
+                return;
+            }
+
             if (unlockDate <= new Date()) {
-                showError('The unlock date must be in the future!');
+                showMessage('The unlock date must be in the future!', 'error');
                 return;
             }
 
             const submitBtn = document.querySelector('.btn-primary');
-            submitBtn.textContent = 'Saveing...';
+            submitBtn.textContent = 'Saving...';
             submitBtn.disabled = true;
 
             try {
@@ -557,49 +681,43 @@
                     createdAt: new Date().toISOString()
                 };
 
-                // Hangfájl feltöltése Firebase Storage-ba
                 if (audioBlob && storage) {
-                    const audioRef = storage.ref().child(`audio/${Date.now()}.wav`);
+                    const audioRef = storage.ref().child(`audio/${Date.now()}_${Math.random().toString(36).substr(2, 9)}.webm`);
                     const uploadTask = await audioRef.put(audioBlob);
                     capsule.audioUrl = await uploadTask.ref.getDownloadURL();
                 } else if (audioBlob) {
-                    // LocalStorage fallback
                     capsule.audioBlob = await blobToBase64(audioBlob);
                 }
 
-                // Mentés Firebase-be vagy LocalStorage-ba
                 if (db) {
                     await db.collection('capsules').add(capsule);
                 } else {
                     const localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
-                    capsule.id = Date.now();
+                    capsule.id = Date.now().toString();
                     localCapsules.push(capsule);
                     localStorage.setItem('timeCapsules', JSON.stringify(localCapsules));
                 }
 
-                // Form reset
                 document.getElementById('capsule-form').reset();
                 selectedEmoji = '☺️';
                 audioBlob = null;
                 document.getElementById('audio-controls').style.display = 'none';
+                document.getElementById('audio-player').src = '';
                 document.querySelectorAll('.emoji-option').forEach(o => o.classList.remove('selected'));
                 document.querySelector('.emoji-option[data-emoji="☺️"]').classList.add('selected');
                 
                 await loadCapsules();
-                
-                // Success feedback
-                showError('capsule created successfully! 🎉');
+                showMessage('Capsule created successfully! 🎉', 'success');
                 
             } catch (error) {
-                console.error('Failed to save!', error);
-                showError('Failed to save the capsule. Please try again later.');
+                console.error('Failed to save:', error);
+                showMessage('Failed to save the capsule. Please try again.', 'error');
             }
 
             submitBtn.textContent = 'Create capsule';
             submitBtn.disabled = false;
         });
 
-        // Base64 konverzió
         function blobToBase64(blob) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -608,7 +726,6 @@
             });
         }
 
-        // Időszámítás
         function getTimeRemaining(targetDate) {
             const now = new Date();
             const target = new Date(targetDate);
@@ -620,125 +737,158 @@
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-            if (days > 0) return `${days} day`;
-            if (hours > 0) return `${hours} hours`;
-            return `${minutes} minute`;
+            if (days > 0) return `${days} day${days > 1 ? 's' : ''}`;
+            if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''}`;
+            return `${minutes} minute${minutes > 1 ? 's' : ''}`;
         }
 
-        // Kapszulák betöltése
         async function loadCapsules() {
             const container = document.getElementById('capsules-container');
             container.innerHTML = '<div class="loading">Loading...</div>';
 
             try {
                 if (db) {
-                    // Firebase betöltés
                     const snapshot = await db.collection('capsules').orderBy('createdAt', 'desc').get();
                     capsules = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }));
                 } else {
-                    // LocalStorage fallback
-                    capsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+                    capsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]').sort((a, b) => 
+                        new Date(b.createdAt) - new Date(a.createdAt)
+                    );
                 }
-
                 renderCapsules();
             } catch (error) {
-                console.error('Filed to load!', error);
-                container.innerHTML = '<div class="error">Filed while loading!</div>';
+                console.error('Failed to load:', error);
+                container.innerHTML = '<div class="error">Failed to load capsules!</div>';
             }
         }
 
-        // Kapszulák renderelése
         function renderCapsules() {
             const container = document.getElementById('capsules-container');
             
-            if (capsules.length === 0) {
-                container.innerHTML = '<div class="no-capsules">No capsules yet<br>be the first who write it! ✨</div>';
+            let filtered = capsules;
+            if (currentFilter === 'locked') {
+                filtered = capsules.filter(c => new Date() < new Date(c.unlockDate));
+            } else if (currentFilter === 'unlocked') {
+                filtered = capsules.filter(c => new Date() >= new Date(c.unlockDate));
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-capsules">No capsules yet<br>Be the first to write one! ✨</div>';
                 return;
             }
 
             container.innerHTML = `
                 <div class="capsules-grid">
-                    ${capsules.map(capsule => {
+                    ${filtered.map(capsule => {
                         const now = new Date();
                         const unlockDate = new Date(capsule.unlockDate);
                         const isUnlocked = now >= unlockDate;
                         const timeRemaining = getTimeRemaining(capsule.unlockDate);
 
                         return `
-                            <div class="capsule ${isUnlocked ? 'unlocked' : 'locked'}" onclick="openCapsule('${capsule.id}')">
+                            <div class="capsule ${isUnlocked ? 'unlocked' : 'locked'}">
                                 <div class="capsule-header">
-                                    <h3 class="capsule-title">${capsule.title}</h3>
+                                    <div>
+                                        <h3 class="capsule-title">${escapeHtml(capsule.title)}</h3>
+                                        <div class="capsule-author">${escapeHtml(capsule.author)}</div>
+                                    </div>
                                     <div class="capsule-emoji">${capsule.emoji}</div>
                                 </div>
-                                <div class="capsule-author">${capsule.author}</div>
                                 <div class="capsule-countdown">
-                                    ${isUnlocked ? '✅ Opened!' : `🔒 still ${timeRemaining || 'soon!'}`}
+                                    ${isUnlocked ? '✅ Opened!' :
+                                        (timeRemaining ? `⏳ Unlock in ${timeRemaining}` : '⏳ Soon')}
                                 </div>
+
                                 ${isUnlocked ? `
-                                    <div class="capsule-message">
-                                        ${capsule.message}
-                                        ${(capsule.audioUrl || capsule.audioBlob) ? `
-                                            <audio class="audio-player" controls>
-                                                <source src="${capsule.audioUrl || capsule.audioBlob}" type="audio/wav">
-                                            </audio>
-                                        ` : ''}
-                                    </div>
+                                    <div class="capsule-message">${escapeHtml(capsule.message).replace(/\n/g,'<br>')}</div>
+                                    ${capsule.audioUrl ? `
+                                        <audio class="audio-player" controls src="${capsule.audioUrl}"></audio>
+                                    ` : capsule.audioBlob ? `
+                                        <audio class="audio-player" controls src="${capsule.audioBlob}"></audio>
+                                    ` : ''}
                                 ` : `
-                                    <div class="lock-icon">🔐</div>
+                                    <div class="lock-icon">🔒</div>
                                 `}
+
                                 <div class="capsule-date">
-                                    Will be opened: ${unlockDate.toLocaleDateString('hu-HU')} ${unlockDate.toLocaleTimeString('hu-HU', {hour: '2-digit', minute: '2-digit'})}
+                                    Unlock: ${new Date(capsule.unlockDate).toLocaleString()}
+                                </div>
+
+                                <div class="capsule-actions">
+                                    ${isUnlocked ? `
+                                    ` : `
+                                        <button class="btn btn-secondary" onclick="tryUnlock('${capsule.id}')">🔑 Try Unlock</button>
+                                    `}
                                 </div>
                             </div>
                         `;
                     }).join('')}
                 </div>
             `;
+
+            // Auto-update countdown every minute
+            setTimeout(renderCapsules, 60000);
         }
 
-        // Kapszula megnyitás
-        function openCapsule(id) {
-            const capsule = capsules.find(c => c.id == id);
-            if (!capsule) return;
+        function escapeHtml(str) {
+            return str.replace(/[&<>"']/g, m =>
+                ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[m])
+            );
+        }
 
+        // Unlock with password
+        async function tryUnlock(id) {
+            const capsule = capsules.find(c => c.id === id);
+            if (!capsule) return;
+        
             const now = new Date();
             const unlockDate = new Date(capsule.unlockDate);
-
+        
+            // 🚫 Prevent unlocking before time
             if (now < unlockDate) {
-                const timeRemaining = getTimeRemaining(capsule.unlockDate);
-                alert(`🔒 This capsule is locket yet!\n ${timeRemaining || 'Few minute'} left. `);
+                showMessage("This capsule is still locked! ⏳ Be patient 💝", "error");
                 return;
             }
-
-            if (capsule.password) {
-                const enteredPassword = prompt('🔐 Enter the password:');
-                if (enteredPassword !== capsule.password) {
-                    alert('❌ Incorrect password!');
-                    return;
-                }
+        
+            // If no password → auto open
+            if (!capsule.password || capsule.password.trim() === '') {
+                capsule.unlockDate = new Date().toISOString();
+                await updateCapsule(capsule);
+                renderCapsules();
+                return;
             }
-
-            alert(`🎉 Capsule opened!\n\n"${capsule.title}"\n\n${capsule.message}\n\n- ${capsule.author}`);
+        
+            const input = prompt("Enter password to unlock:");
+            if (input === null) return;
+        
+            if (input === capsule.password) {
+                capsule.unlockDate = new Date().toISOString();
+                await updateCapsule(capsule);
+                showMessage("Capsule unlocked successfully! 🎉");
+                renderCapsules();
+            } else {
+                showMessage("Wrong password! 🔒", "error");
+            }
         }
 
-        // Automatikus frissítés
-        setInterval(() => {
-            renderCapsules();
-        }, 60000); // Minden percben
 
-        // Inicializálás
-        document.addEventListener('DOMContentLoaded', () => {
-            // Alapértelmezett dátum beállítása (holnap)
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('unlock-date').value = tomorrow.toISOString().slice(0, 16);
-            
-            // Kapszulák betöltése
-            loadCapsules();
-        });
+        async function updateCapsule(capsule) {
+            if (db) {
+                await db.collection("capsules").doc(capsule.id).update({
+                    unlockDate: capsule.unlockDate
+                });
+            } else {
+                const localCapsules = JSON.parse(localStorage.getItem('timeCapsules') || '[]');
+                const index = localCapsules.findIndex(c => c.id === capsule.id);
+                localCapsules[index] = capsule;
+                localStorage.setItem('timeCapsules', JSON.stringify(localCapsules));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadCapsules);
     </script>
 </body>
 </html>
