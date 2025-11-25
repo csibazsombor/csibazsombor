@@ -12,6 +12,12 @@ function ourStory() {
     "_blank"
   );
 }
+function toyagames() {
+  window.open(
+    "https://csibazsombor.github.io/toyagames",
+    "_blank"
+  );
+}
 
 function hoverimagehug() {
   document.querySelector('.spotify_widget').style.display = 'block';
