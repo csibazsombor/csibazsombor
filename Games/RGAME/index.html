@@ -74,6 +74,7 @@
 // Step 5: Show version info first, then start button
 setTimeout(() => {
      showVersionInfo(() => {
+
                 setBodyStyles({
                         backgroundColor: "#232526",
                         color: "#fff",
@@ -99,20 +100,19 @@ setTimeout(() => {
                 button.onclick = () => {
                     if (continueTriggered) return;
                     continueTriggered = true;
-                    onContinue();
+                   startGame();
                 };
                 
                 button.onmouseenter = () => {
-                        button.style.background = "linear-gradient(90deg, #414345 0%, #232526 100%)";
+                    button.style.background = "linear-gradient(90deg, #414345 0%, #232526 100%)";
                 };
                 button.onmouseleave = () => {
-                        button.style.background = "linear-gradient(90deg, #232526 0%, #414345 100%)";
+                    button.style.background = "linear-gradient(90deg, #232526 0%, #414345 100%)";
                 };
+                
                 document.body.appendChild(button);
 
-                button.onclick = () => {
-                        startGame();
-                };
+
 
 
 
