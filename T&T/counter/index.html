@@ -743,6 +743,161 @@
                 transition-duration: 0.01ms !important;
             }
         }
+        /* 2025 Review Modal - Enhanced to match site style perfectly */
+        .review-2025-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(18px);
+            background: rgba(12, 8, 14, 0.65);
+            z-index: 9999;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        
+        .review-wrapper {
+            width: 92%;
+            max-width: 780px;
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: var(--shadow-heavy), 0 0 35px rgba(255, 0, 90, 0.25);
+            position: relative;
+        
+            background-image:
+                radial-gradient(circle at top left, rgba(255, 140, 140, 0.07), transparent 60%),
+                radial-gradient(circle at bottom right, rgba(112, 55, 165, 0.07), transparent 60%);
+                
+            animation: modalZoomIn 0.7s cubic-bezier(.16,.83,.45,1) forwards;
+        }
+        
+        /* Header Title Animation */
+        .review-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: softGlowPulse 3s ease-in-out infinite;
+        }
+        
+        @keyframes softGlowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 6px rgba(255, 75, 155, 0.45));
+            }
+            50% {
+                filter: drop-shadow(0 0 9px rgba(255, 75, 155, 0.8));
+            }
+        }
+        
+        /* Sections */
+        .review-section {
+            opacity: 0;
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            animation: sectionFadeUp 0.65s ease forwards;
+            transition: var(--transition-medium);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .review-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--gradient-primary);
+            opacity: 0.15;
+            transition: 0.4s ease;
+        }
+        
+        .review-section:hover::before {
+            opacity: 0.35;
+            width: 8px;
+        }
+        
+        .review-section h3 {
+            margin-bottom: var(--spacing-sm);
+            font-size: 1.25rem;
+        }
+        
+        /* Images */
+        .review-images {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .review-images img {
+            width: 135px;
+            height: auto;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: var(--shadow-light);
+            opacity: 0;
+            transform: scale(0.92);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .review-images img:hover {
+            transform: scale(1.07);
+            box-shadow: var(--shadow-medium), 0 0 15px rgba(255, 0, 90, 0.25);
+            transition: 0.3s ease;
+        }
+        
+        /* Close Button */
+        .close-review {
+            position: sticky;
+            top: 8px;
+            float: right;
+            font-size: 1.3rem;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: none;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition-fast);
+        }
+        
+        .close-review:hover {
+            background: rgba(255, 0, 90, 0.6);
+            transform: scale(1.13);
+        }
+        
+        /* Animations */
+        @keyframes modalZoomIn {
+            0% { opacity: 0; transform: scale(0.85) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        @keyframes modalZoomOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.88) translateY(40px); }
+        }
+        
+        @keyframes sectionFadeUp {
+            from { opacity:0; transform:translateY(40px); }
+            to { opacity:1; transform:translateY(0); }
+        }
+        
+        /* Opening class */
+        .review-2025-modal.open {
+            display: flex;
+            animation: fadeIn 0.4s ease forwards;
+        }
         /* Islamic Theme Enhancements */
         .islam-banner {
              margin: 1rem auto;
@@ -762,6 +917,39 @@
         <button id="switch-to-id" onclick="switchLanguage('id')" class="active">ID</button>
         <button id="switch-to-en" onclick="switchLanguage('en')">EN</button>
     </div>
+<!-- FULLSCREEN 2025 REVIEW MODAL -->
+<div id="review2025Modal" class="review-2025-modal">
+    <div class="review-wrapper">
+        <button class="close-review" onclick="close2025Review()" id="review_close_btn">✖</button>
+        
+        <h2 class="review-heading" id="review_title">🎞️ Our 2025 Review</h2>
+
+        <div class="review-section">
+            <h3 id="review_stories_title">📖 Stories Together</h3>
+            <p id="review_stories_text">Loading...</p>
+        </div>
+
+        <div class="review-section">
+            <h3 id="review_images_title">🖼️ Images</h3>
+            <div class="review-images">
+                <img src="../OurAPP/Images/hug.jpg">
+                <img src="../OurAPP/Images/Snapchat-2089046822.jpg  ">
+                <img src="../OurAPP/Images/Snapchat-457034800.jpg">
+                <img src="../OurAPP/Images/IMG_20251022_190514_703.jpg">
+                <img src="../OurAPP/Images/Snapchat-1304937913.jpg">
+                <img src="../OurAPP/Images/20250921_133048.jpg">
+            </div>
+        </div>
+
+        <div class="review-section">
+            <h3 id="review_adv_title">🏆 Unlocked Advancements</h3>
+            <p id="review_adv_text">Loading...</p>
+        </div>
+
+    </div>
+</div>
+
+
 
     <div class="container">
         <div class="header">
@@ -770,6 +958,7 @@
             </div>
             <div></div>
         </div>
+        <button class="toggle-button" onclick="open2025Review()" id="title_rev">🎞️ 2025 Review</button>
 
         <h1 class="title" id="title_friendship">💕 Our Relationship</h1>
         <div class="milestone" id="milestone">🌱 Growing friendship!</div>
@@ -918,9 +1107,15 @@
             lastNotifiedMilestone: localStorage.getItem('lastMilestoneNotified') || ''
         };
 
-        // Translations
         const translations = {
             en: {
+                title_rev: "🎞️ Our 2025 Review",
+                review_title: "🎞️ Our 2025 Review",
+                review_stories_title: "📖 Stories Together",
+                review_stories_text: "• A Special year for both of us, this year we becamed lovers after a long friendship, and our decision was never regretten! We enjoy to spend times together, imagining about the far future, being crazy and clingy for each other, our love is unconditional! Our relationship is not just a relationship but a story what never ends, when we learn to be patinet for each other, even if our distance is far, but one day everything will be the best! I really amazed since i have my sayangg, i can't get my eyes off from her, and anytime i imagine about her, my smile is endless!😽💕",
+                review_adv_title: "🏆 Achievements",
+                review_adv_text: "✓ Fell in love 💗",
+                review_close_btn: "X",
                 title_friendship: "💕 Our Relationship",
                 years_label: "Years",
                 months_label: "Months", 
@@ -945,6 +1140,13 @@
                 ourtimezone_label: "🌍 Our Timezones"
             },
             id: {
+                title_rev: "🎞️ Kisah Kita di 2025",
+                review_title: "🎞️ Kisah Kita di 2025",
+                review_stories_title: "📖 Cerita Indah Kita",
+                review_stories_text: "• Tahun yang sangat spesial buat kita berdua. Tahun ini kita akhirnya jadi sepasang kekasih setelah persahabatan yang panjang, dan keputusan itu sama sekali nggak pernah kita sesali! Kita selalu senang menghabiskan waktu bareng, membayangkan masa depan kita nanti, jadi bucin bareng dan saling lengket satu sama lain. Cinta kita itu tanpa syarat! Hubungan kita bukan cuma sekadar hubungan, tapi cerita yang nggak akan pernah selesai, di mana kita terus belajar sabar satu sama lain. Walaupun kita masih LDR dan jaraknya jauh, suatu hari nanti semuanya akan jadi yang terbaik! Aku bener-bener kagum sejak aku punya sayangku… aku nggak bisa lepas pandang setiap kali mikirin dia, dan setiap kali aku bayangin dia… senyumku nggak pernah habis! 😽💕",
+                review_adv_title: "🏆 Pencapaian Cinta",
+                review_adv_text: "✓ Jatuh cinta 💗",
+                review_close_btn: "X",
                 title_friendship: "💕 Hubungan kita",
                 years_label: "Tahun",
                 months_label: "Bulan",
@@ -1372,6 +1574,19 @@
     updateBirthdayCountdown('toyeee');
     updateBirthdayCountdown('toyaaa');
 }
+    function open2025Review() {
+        const modal = getElement("review2025Modal");
+        modal.style.display = "flex";
+        setTimeout(() => modal.classList.add("open"), 10);
+    }
+
+    function close2025Review() {
+        const modal = getElement("review2025Modal");
+        modal.classList.remove("open");
+        setTimeout(() => {
+            modal.style.display = "none";
+        }, 350); // sync with modalZoomOut animation
+    }
 
         // Export and Share functions
         function exportStats() {

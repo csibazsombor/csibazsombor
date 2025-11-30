@@ -10,7 +10,7 @@ let updateInfo = ''; // new: details about the update, normalized to a string
 function getLocalVersion() {
   let lv = localStorage.getItem('appVersion');
   if (!lv) {
-    lv = '0.1.6'; // Default version
+    lv = '0.1.7'; // Default version
     localStorage.setItem('appVersion', lv);
   }
   return lv;
@@ -56,7 +56,7 @@ async function fetchRemoteData() {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const data = await response.json();
-    serverVersion = (data.version || '').toString().trim();
+    serverVers7ion = (data.version || '').toString().trim();
     galleryImages = data.galleryImages || [];
 
     // Read update info from known fields (flexible) and normalize to string
@@ -87,7 +87,7 @@ async function fetchRemoteData() {
     console.error('Error fetching remote data:', err);
     const currentVersionEl = document.getElementById('currentVersion');
     if (currentVersionEl) currentVersionEl.textContent = 'Error';
-    serverVersion = "0.1.5"; // Fallback version
+    serverVersion = "0.1.6"; // Fallback version
     updateInfo = '';
     return null;
   }
@@ -272,7 +272,7 @@ async function performUpdate() {
 // Trigger manual update (e.g. from update button)
 function updateApp() {
   if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-    navigator.serviceWorker.controller.postMessage({ type: "MANUAL_UPDATE" });
+    navigator.serviceWorker.controller.postMessage({ type: "APPLY_UPDATE" });
   }
 }
 
