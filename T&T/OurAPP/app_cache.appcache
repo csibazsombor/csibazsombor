@@ -1,9 +1,0 @@
-CACHE MANIFEST
-#v0.1.6 change this to force update
-
-CACHE:
-style.css
-index.html
-icon.png
-updater.js
-service-worker.js

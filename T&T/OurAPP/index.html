@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head manifest="app_cache.appcache">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Relationship APP</title>
@@ -812,5 +812,34 @@
   <script src="gallery-function.js"></script>
   <script src="button-function.js"></script>  
   <script src="../../JS/snow.js"></script>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js")
+      .then(reg => {
+        console.log("[SW] Registered", reg);
+
+        // When a new SW is waiting, prompt app to update
+        if (reg.waiting) {
+          reg.waiting.postMessage({ type: "SKIP_WAITING" });
+        }
+
+        reg.addEventListener("updatefound", () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener("statechange", () => {
+            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+              console.log("[SW] New update available!");
+              localStorage.setItem("newVersionAvailable","true");
+              document.getElementById("updateBtn").style.display = "inline-block";
+              showUpdateModal();
+            }
+          });
+        });
+      })
+      .catch(err => console.error("[SW] Registration failed", err));
+  });
+}
+</script>
+
 </body>
 </html>
