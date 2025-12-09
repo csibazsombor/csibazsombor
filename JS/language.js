@@ -11,8 +11,8 @@
             bekezdes6: "A mi történetünk több, mint egy kapcsolat: ez egy út, amelyet a szeretet, az álmok és a hit vezet. Meg vagyok győződve arról, hogy minden nehézség, amit most megélünk, csak erősebbé teszi a kötelékünket és egy csodálatos jövő felé visz bennünket. Alhamdulillah mindenért.",
 
 
-            verzio: "V4.4",
-            update: "2025 Frissítés",
+            verzio: "V4.5",
+            update: "",
             udvozles: "Üdvözöljük az oldalán!",
             udvozlesText: "Fedezze fel a világ csodáit velünk!",
             galeria: "Úti élmények galériája",
@@ -52,8 +52,8 @@
            bekezdes5: "There are moments when distance feels very difficult, but our love and strong faith give us power every single day. I know that patience, trust, and our prayers will help us get through this time, until we can finally live side by side.",
 
 
-           verzio: "V4.4",
-           update: "2025 Update",
+           verzio: "V4.5",
+           update: "",
            udvozles: "Welcome!",
            udvozlesText: "Discover the wonders of the world with us!",
            galeria: "Gallery",
@@ -93,8 +93,8 @@
            bekezdes5: "Ada saat-saat di mana jarak terasa sangat sulit, tetapi cinta dan keimanan kami memberi kami kekuatan setiap hari. Saya tahu bahwa kesabaran, kepercayaan, dan doa kami akan membantu melewati masa ini, sampai akhirnya kami bisa hidup berdampingan.",
 
 
-           verzio: "V4.4",
-           update: "Pembaharuan 2025",
+           verzio: "V4.5",
+           update: "",
            udvozles: "Selamat Datang!",
            udvozlesText: "Temukan keajaiban dunia bersama kami!",
            galeria: "Galeri",
