@@ -10,7 +10,7 @@ const CORE_ASSETS = [
     "/JS/",
     "/CSS/",
     "/PAGE/",
-    "/images/",
+    "/images/"
 
 ];
 
