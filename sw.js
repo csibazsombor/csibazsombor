@@ -5,12 +5,12 @@ const CACHE_VERSION = "czsomborweb-v4.5";
 const CACHE_NAME = `cache-${CACHE_VERSION}`;
 
 const CORE_ASSETS = [
-    "./index.html",
-    "./sw.js",
-    "./JS/",
-    "./CSS/",
-    "./PAGE/",
-    "./images/Outside",
+    "/index.html",
+    "/sw.js",
+    "/JS/",
+    "/CSS/",
+    "/PAGE/",
+    "/images/",
 
 ];
 
