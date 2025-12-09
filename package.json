@@ -1,8 +1,8 @@
 {
   "name": "czsombor-vlogs",
-  "version": "4.4",
+  "version": "4.5",
   "description": "",
-  "releaseDate": "2023",
+  "releaseDate": "2025",
   "main": "index.js",
   "scripts": {
     "test": "Test.bat"

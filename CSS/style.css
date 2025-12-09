@@ -2258,6 +2258,41 @@ modal {
     margin-top: 30px;
 }
 
+/* ====== Update Popup ====== */
+#update-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(17, 17, 17, 0.95);
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 16px;
+  font-family: sans-serif;
+  display: none;
+  backdrop-filter: blur(12px);
+  border: 2px solid #3ff;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(51, 255, 255, 0.3);
+  animation: slideInRight 0.5s ease-out;
+}
+
+#update-btn {
+  margin-left: 12px;
+  background: linear-gradient(135deg, #00d4ff, #0099ff);
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  color: white;
+}
+
+#update-btn:hover {
+  transform: scale(1.05);
+}
+
 
 /* Base style for form inputs and selects */
 .gallery-controls .form-input,

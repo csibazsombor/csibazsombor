@@ -46,6 +46,10 @@
     <main>
         <section class="udvozollek">
             <h2 id="udvozles">Welcome!</h2>
+              <div id="update-popup">
+            New update available!
+    <button id="update-btn">Update</button>
+  </div>
             <p id="udvozles-text">Discover the wonders of the world with us!</p>
             
             <div class="action-buttons">
@@ -316,6 +320,33 @@
     </footer>
     
     <!-- Scripts -->
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").then(reg => {
+    console.log("🛡 SW registered", reg);
+
+    reg.addEventListener("updatefound", () => {
+      const newSW = reg.installing;
+
+      newSW.addEventListener("statechange", () => {
+        // New service worker installed & old one is controlling page
+        if (newSW.state === "installed" && navigator.serviceWorker.controller) {
+          console.log("📢 New update ready!");
+
+          document.getElementById("update-popup").style.display = "block";
+
+          document.getElementById("update-btn").onclick = () => {
+            newSW.postMessage("skipWaiting");
+            window.location.reload();
+          };
+        }
+      });
+    });
+  });
+}
+</script>
+
+</script>
     <script src="libs/web.lib.js"></script>
     <script src="JS/jsdelivr.js"></script>
     <script src="JS/engedélyek.js"></script>
@@ -327,7 +358,6 @@
     <script src="JS/lazy.loading.js"></script>
     <script src="traffic.js"></script>
     <script src="JS/snow.js"></script>
-    <script src="JS/auto-optimize.js"></script>
     <script>
     window.onload = function() {
         loadLanguage();
