@@ -1,7 +1,7 @@
 // ======================
 // Service Worker Config
 // ======================
-const CACHE_VERSION = "czsomborweb-v4.5";
+const CACHE_VERSION = "czsomborweb-v4.8";
 const CACHE_NAME = `cache-${CACHE_VERSION}`;
 
 const CORE_ASSETS = [
