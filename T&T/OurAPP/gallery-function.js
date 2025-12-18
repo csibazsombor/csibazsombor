@@ -8,7 +8,7 @@
     
     function showGallery() {
       document.getElementById('galleryModal').style.display = 'flex';
-      if (allPhotos.length === 0) initializeGallery();
+      if (allPhotos.length === 0) initializeGallery(); sortByDate();
     }
 
     function closeGallery() {
@@ -92,6 +92,7 @@
       filteredPhotos = [...filteredPhotos].sort((a, b) => new Date(b.date) - new Date(a.date));
       renderGallery();
     }
+
 
     function toggleGridView() {
       isGridView = !isGridView;
