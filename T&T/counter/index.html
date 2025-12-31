@@ -579,6 +579,97 @@
             letter-spacing: 0.05em;
         }
 
+        /* Memories Section */
+        .memories-section {
+            width: 100%;
+            max-width: 900px;
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-lg);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-medium);
+            margin: var(--spacing-lg) 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.5s forwards;
+        }
+
+        .memories-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--text-primary);
+            text-align: center;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .memory-card {
+            background: rgba(110, 77, 77, 0.445);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            border: 1px solid var(--border-color);
+            transition: var(--transition-medium);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .memory-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: var(--transition-medium);
+        }
+
+        .memory-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .memory-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-heavy);
+            border-color: var(--text-muted);
+        }
+
+        .memory-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        .memory-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .memory-date {
+            font-size: 0.875rem;
+            color: rgb(192, 55, 78);
+            margin-bottom: var(--spacing-sm);
+            font-weight: 500;
+        }
+
+        .memory-description {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -632,6 +723,10 @@
             }
             
             .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .memories-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -692,6 +787,10 @@
 
             .achievements-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+
+            .memories-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -900,13 +999,13 @@
         }
         /* Islamic Theme Enhancements */
         .islam-banner {
-             margin: 1rem auto;
+            margin: 1rem auto;
             margin-top: 1rem;
-            padding: 5px 15px;
+            padding: 1px 5px;
             border-radius: 50px;
             text-align: center;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
             box-shadow: 0 0 18px rgba(0, 255, 180, 0.25);
         }
@@ -954,11 +1053,12 @@
     <div class="container">
         <div class="header">
             <div class="islam-banner">
-                Alhamdulillah🤲✨
+                The only way
+                <br>Alhamdulillah🤲✨
             </div>
             <div></div>
         </div>
-        <button class="toggle-button" onclick="open2025Review()" id="title_rev" style="display: none;">🎞️ 2025 Review</button>
+        <button class="toggle-button" onclick="open2025Review()" id="title_rev">🎞️ 2025 Review</button>
 
         <h1 class="title" id="title_friendship">💕 Our Relationship</h1>
         <div class="milestone" id="milestone">🌱 Growing friendship!</div>
@@ -992,18 +1092,21 @@
 
         <div class="description">
             Friend since <span class="date-highlight" id="friendship-date">March 14, 2025</span>, Toyeee & Toyaaa 😏<br>
-            Lover Since <span class="date-highlight" id="friendship-date">August 23, 2025</span>💞💗
+            <span class="date-highlight" id="friendship-date">August 23, 2025</span> - Lovers💞
         </div>
 
         <div class="controls">
             <button class="toggle-button" onclick="toggleTimeUnits()">
-                <span id="show_more_btn">⏰ Show More</span>
+                <span id="show_more_btn">⏰ More</span>
             </button>
             <button class="toggle-button" onclick="toggleStats()">
-                <span id="show_stats_btn">📊 Show Stats</span>
+                <span id="show_stats_btn">📊 Stats</span>
             </button>
             <button class="toggle-button" onclick="toggleAchievements()">
                 <span id="show_achievements_btn">🏆 Achievements</span>
+            </button>
+            <button class="toggle-button" onclick="toggleMemories()">
+                <span id="show_memories_btn">💭 Memories</span>
             </button>
         </div>
 
@@ -1042,6 +1145,13 @@
             <h2 class="achievements-title">🏆 Friendship Achievements</h2>
             <div class="achievements-grid" id="achievements-grid">
                 <!-- Achievements will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="memories-section stats-hidden" id="memories-section">
+            <h2 class="memories-title" id="memories_title">💭 Memories Together</h2>
+            <div class="memories-grid" id="memories-grid">
+                <!-- Memories will be populated by JavaScript -->
             </div>
         </div>
 
@@ -1102,75 +1212,171 @@
             showDetailedTime: false,
             showStats: false,
             showAchievements: false,
+            showMemories: false,
             currentLanguage: 'id',
             darkMode: false,
             lastNotifiedMilestone: localStorage.getItem('lastMilestoneNotified') || ''
         };
 
-        const translations = {
-            en: {
-                title_rev: "🎞️ Our 2025 Review",
-                review_title: "🎞️ Our 2025 Review",
-                review_stories_title: "📖 Stories Together",
-                review_stories_text: "• A Special year for both of us, this year we becamed lovers after a long friendship, and our decision was never regretten! We enjoy to spend times together, imagining about the far future, being crazy and clingy for each other, our love is unconditional! Our relationship is not just a relationship but a story what never ends, when we learn to be patinet for each other, even if our distance is far, but one day everything will be the best! I really amazed since i have my sayangg, i can't get my eyes off from her, and anytime i imagine about her, my smile is endless!😽💕",
-                review_adv_title: "🏆 Achievements",
-                review_adv_text: "✓ Fell in love 💗",
-                review_close_btn: "X",
-                title_friendship: "💕 Our Relationship",
-                years_label: "Years",
-                months_label: "Months", 
-                days_label: "Days",
-                hours_label: "Hours",
-                minutes_label: "Minutes",
-                seconds_label: "Seconds",
-                show_more_btn: "⏰ Show More",
-                show_less_btn: "⏰ Show Less",
-                show_stats_btn: "📊 Show Stats",
-                hide_stats_btn: "📊 Hide Stats",
-                show_achievements_btn: "🏆 Achievements",
-                hide_achievements_btn: "🏆 Hide Achievements",
-                totaldays_label: "Total Days ☀️",
-                totalhours_label: "Total Hours 🕰️",
-                totalweeks_label: "Total Weeks 📅",
-                totalminutes_label: "Total Minutes",
-                goalprogress_label: "Goal Progress (1000 Days) 🥇",
-                nextfriendiversary_label: "Next anniversary 💗",
-                toyeeesbirthday_label: "Toyeee's Birthday",
-                toyaaasbirthday_label: "Toyaaa's Birthday",
-                ourtimezone_label: "🌍 Our Timezones"
+const translations = {
+    en: {
+        title_rev: "🎞️ Our 2025 Review",
+        review_title: "🎞️ Our 2025 Review",
+        review_stories_title: "📖 Stories Together",
+        review_stories_text: "• A Special year for both of us, this year we becamed lovers after a long friendship, and our decision was never regretten! We enjoy to spend times together, imagining about the far future, being crazy and clingy for each other, our love is unconditional! Our relationship is not just a relationship but a story what never ends, when we learn to be patient for each other, even if our distance is far, but one day everything will be the best! I really amazed since i have my sayangg, i can't get my eyes off from her, and anytime i imagine about her, my smile is endless!😽💕",
+        review_images_title: "🖼️ Images",
+        review_adv_title: "🏆 Unlocked Advancements",
+        review_adv_text: "✓ Fell in love 💗",
+        review_close_btn: "X",
+        title_friendship: "💕 Our Relationship",
+        milestone: "🌱 Growing friendship!",
+        years_label: "Years",
+        months_label: "Months", 
+        days_label: "Days",
+        hours_label: "Hours",
+        minutes_label: "Minutes",
+        seconds_label: "Seconds",
+        show_more_btn: "⏰ More",
+        show_less_btn: "⏰ Show Less",
+        show_stats_btn: "📊 Stats",
+        hide_stats_btn: "📊 Hide Stats",
+        show_achievements_btn: "🏆 Achievements",
+        hide_achievements_btn: "🏆 Hide Achievements",
+        show_memories_btn: "💭 Memories",
+        hide_memories_btn: "💭 Hide Memories",
+        memories_title: "💭 Memories Together",
+        totaldays_label: "Total Days ☀️",
+        totalhours_label: "Total Hours 🕰️",
+        totalweeks_label: "Total Weeks 📅",
+        totalminutes_label: "Total Minutes",
+        goalprogress_label: "Goal Progress (1000 Days) 🥇",
+        nextfriendiversary_label: "Next Anniversary 💗",
+        toyeeesbirthday_label: "Toyeee's Birthday",
+        toyaaasbirthday_label: "Toyaaa's Birthday",
+        ourtimezone_label: "🌍 Our Timezones",
+        achievements_title: "🏆 Friendship Achievements",
+        description: "Friend since <span class='date-highlight'>March 14, 2025</span>, Toyeee & Toyaaa 😏<br><span class='date-highlight'>August 23, 2025</span> - Lovers💞",
+        leave_note: "Leave a note",
+        export_stats: "📊 Export Stats",
+        share: "🔗 Share",
+        other_features: "💌 Other features:",
+        copied: "Copied:",
+        copy_failed: "Copy failed!",
+        unlocked: "Unlocked!",
+        locked: "Locked",
+        stats_exported: "Stats exported successfully!",
+        link_copied: "Link copied to clipboard!",
+        friendship_milestone: "🎉 Friendship Milestone!"
+    },
+    id: {
+        title_rev: "🎞️ Kisah Kita di 2025",
+        review_title: "🎞️ Kisah Kita di 2025",
+        review_stories_title: "📖 Cerita Indah Kita",
+        review_stories_text: "• Tahun yang sangat spesial buat kita berdua. Tahun ini kita akhirnya jadi sepasang kekasih setelah persahabatan yang panjang, dan keputusan itu sama sekali nggak pernah kita sesali! Kita selalu senang menghabiskan waktu bareng, membayangkan masa depan kita nanti, jadi bucin bareng dan saling lengket satu sama lain. Cinta kita itu tanpa syarat! Hubungan kita bukan cuma sekadar hubungan, tapi cerita yang nggak akan pernah selesai, di mana kita terus belajar sabar satu sama lain. Walaupun kita masih LDR dan jaraknya jauh, suatu hari nanti semuanya akan jadi yang terbaik! Aku bener-bener kagum sejak aku punya sayangku… aku nggak bisa lepas pandang setiap kali mikirin dia, dan setiap kali aku bayangin dia… senyumku nggak pernah habis! 😽💕",
+        review_images_title: "🖼️ Foto-foto Kita",
+        review_adv_title: "🏆 Pencapaian Cinta",
+        review_adv_text: "✓ Jatuh cinta 💗",
+        review_close_btn: "X",
+        title_friendship: "💕 Hubungan kita",
+        milestone: "🌱 Persahabatan yang tumbuh!",
+        years_label: "Tahun",
+        months_label: "Bulan",
+        days_label: "Hari", 
+        hours_label: "Jam",
+        minutes_label: "Menit",
+        seconds_label: "Detik",
+        show_more_btn: "⏰ Tampilkan Lebih",
+        show_less_btn: "⏰ Tampilkan Kurang",
+        show_stats_btn: "📊 Tampilkan Statistik",
+        hide_stats_btn: "📊 Sembunyikan Statistik",
+        show_achievements_btn: "🏆 Pencapaian",
+        hide_achievements_btn: "🏆 Sembunyikan Pencapaian",
+        show_memories_btn: "💭 Kenangan",
+        hide_memories_btn: "💭 Sembunyikan Kenangan",
+        memories_title: "💭 Kenangan Bersama",
+        totaldays_label: "Total Hari ☀️",
+        totalhours_label: "Total Jam 🕰️",
+        totalweeks_label: "Total Minggu 📅",
+        totalminutes_label: "Total Menit",
+        goalprogress_label: "Progress Target (1000 Hari) 🥇",
+        nextfriendiversary_label: "Anniversary Selanjutnya 💗",
+        toyeeesbirthday_label: "Ulang Tahun Toyeee",
+        toyaaasbirthday_label: "Ulang Tahun Toyaaa",
+        ourtimezone_label: "🌍 Zona Waktu Kita",
+        achievements_title: "🏆 Pencapaian Persahabatan",
+        description: "Berteman sejak <span class='date-highlight'>14 Maret 2025</span>, Toyeee & Toyaaa 😏<br><span class='date-highlight'>23 Agustus 2025</span> - Sepasang Kekasih💞",
+        leave_note: "Tulis catatan",
+        export_stats: "📊 Ekspor Statistik",
+        share: "🔗 Bagikan",
+        other_features: "💌 Fitur lainnya:",
+        copied: "Tersalin:",
+        copy_failed: "Gagal menyalin!",
+        unlocked: "Terbuka!",
+        locked: "Terkunci",
+        stats_exported: "Statistik berhasil diekspor!",
+        link_copied: "Tautan disalin ke papan klip!",
+        friendship_milestone: "🎉 Pencapaian Persahabatan!"
+    }
+};
+
+
+        // Memories data
+        const memories = [
+            {
+                icon: '🌟',
+                title: { en: 'First Meeting', id: 'Pertemuan Pertama' },
+                date: 'March 14, 2025',
+                description: { 
+                    en: 'The day our beautiful friendship began. A moment that changed everything.',
+                    id: 'Hari dimulainya persahabatan indah kita. Momen yang mengubah segalanya.'
+                }
             },
-            id: {
-                title_rev: "🎞️ Kisah Kita di 2025",
-                review_title: "🎞️ Kisah Kita di 2025",
-                review_stories_title: "📖 Cerita Indah Kita",
-                review_stories_text: "• Tahun yang sangat spesial buat kita berdua. Tahun ini kita akhirnya jadi sepasang kekasih setelah persahabatan yang panjang, dan keputusan itu sama sekali nggak pernah kita sesali! Kita selalu senang menghabiskan waktu bareng, membayangkan masa depan kita nanti, jadi bucin bareng dan saling lengket satu sama lain. Cinta kita itu tanpa syarat! Hubungan kita bukan cuma sekadar hubungan, tapi cerita yang nggak akan pernah selesai, di mana kita terus belajar sabar satu sama lain. Walaupun kita masih LDR dan jaraknya jauh, suatu hari nanti semuanya akan jadi yang terbaik! Aku bener-bener kagum sejak aku punya sayangku… aku nggak bisa lepas pandang setiap kali mikirin dia, dan setiap kali aku bayangin dia… senyumku nggak pernah habis! 😽💕",
-                review_adv_title: "🏆 Pencapaian Cinta",
-                review_adv_text: "✓ Jatuh cinta 💗",
-                review_close_btn: "X",
-                title_friendship: "💕 Hubungan kita",
-                years_label: "Tahun",
-                months_label: "Bulan",
-                days_label: "Hari", 
-                hours_label: "Jam",
-                minutes_label: "Menit",
-                seconds_label: "Detik",
-                show_more_btn: "⏰ Tampilkan Lebih",
-                show_less_btn: "⏰ Tampilkan Kurang",
-                show_stats_btn: "📊 Tampilkan Statistik",
-                hide_stats_btn: "📊 Sembunyikan Statistik",
-                show_achievements_btn: "🏆 Pencapaian",
-                hide_achievements_btn: "🏆 Sembunyikan Pencapaian",
-                totaldays_label: "Total Hari ☀️",
-                totalhours_label: "Total Jam 🕰️",
-                totalweeks_label: "Total Minggu 📅",
-                totalminutes_label: "Total Menit ",
-                goalprogress_label: "Progress Target (1000 Hari) 🥇",
-                nextfriendiversary_label: "Anniversary Selanjutnya  💗",
-                toyeeesbirthday_label: "Ulang Tahun Toyeee",
-                toyaaasbirthday_label: "Ulang Tahun Toyaaa",
-                ourtimezone_label: "🌍 Zona Waktu Kita"
+            {
+                icon: '💕',
+                title: { en: 'Became Lovers', id: 'Menjadi Sepasang Kekasih' },
+                date: 'August 23, 2025',
+                description: { 
+                    en: 'The special day we officially became a couple. Our love story truly began.',
+                    id: 'Hari spesial saat kita resmi menjadi sepasang kekasih. Kisah cinta kita benar-benar dimulai.'
+                }
+            },
+            {
+                icon: '',
+                title: { en: '', id: '' },
+                date: '',
+                description: { 
+                    en: '',
+                    id: ''
+                }
+            },
+            {
+                icon: '',
+                title: { en: '', id: '' },
+                date: '',
+                description: { 
+                    en: '',
+                    id: ''
+                }
+            },
+            {
+                icon: '',
+                title: { en: '', id: '' },
+                date: '',
+                description: { 
+                    en: '',
+                    id: ''
+                }
+            },
+            {
+                icon: '',
+                title: { en: '', id: '' },
+                date: '',
+                description: { 
+                    en: '',
+                    id: ''
+                }
             }
-        };
+        ];
 
         // Achievements system
         const achievements = [
@@ -1237,6 +1443,7 @@
             });
 
             updateAchievementsDisplay();
+            updateMemoriesDisplay();
             localStorage.setItem('preferredLanguage', lang);
         }
 
@@ -1287,6 +1494,21 @@
             } else {
                 achievementsSection.classList.add('stats-hidden');
                 buttonText.textContent = state.currentLanguage === 'en' ? '🏆 Achievements' : '🏆 Pencapaian';
+            }
+        }
+
+        function toggleMemories() {
+            const memoriesSection = getElement('memories-section');
+            const buttonText = getElement('show_memories_btn');
+
+            state.showMemories = !state.showMemories;
+
+            if (state.showMemories) {
+                memoriesSection.classList.remove('stats-hidden');
+                buttonText.textContent = state.currentLanguage === 'en' ? '💭 Hide Memories' : '💭 Sembunyikan Kenangan';
+            } else {
+                memoriesSection.classList.add('stats-hidden');
+                buttonText.textContent = state.currentLanguage === 'en' ? '💭 Memories' : '💭 Kenangan';
             }
         }
 
@@ -1518,6 +1740,31 @@
             });
         }
 
+        function updateMemoriesDisplay() {
+            const grid = getElement('memories-grid');
+            
+            grid.innerHTML = '';
+            
+            memories.forEach((memory, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <span class="memory-icon">${memory.icon}</span>
+                    <div class="memory-title">${memory.title[state.currentLanguage]}</div>
+                    <div class="memory-date">${memory.date}</div>
+                    <div class="memory-description">${memory.description[state.currentLanguage]}</div>
+                `;
+                
+                card.onclick = () => {
+                    showNotification(`${memory.icon} ${memory.title[state.currentLanguage]}`);
+                };
+                
+                grid.appendChild(card);
+            });
+        }
+
         // Main counter update function
         function updateCounter() {
     const now = new Date();
@@ -1644,8 +1891,9 @@
             document.querySelector('.minutes-item').classList.add('minutes-hidden');
             document.querySelector('.seconds-item').classList.add('seconds-hidden');
 
-            // Initialize achievements
+            // Initialize achievements and memories
             updateAchievementsDisplay();
+            updateMemoriesDisplay();
 
             // Start counters
             updateCounter();
