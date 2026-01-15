@@ -9,5 +9,27 @@
 <body>
        <h2> Welcome to CX!</h2>
        <p>Coming soon...</p>
+                <br>
+        
+                <a href="" class="button">Preview Current project</a>
 </body>
+<script>        
+        var currentDate = new Date();
+        var year = currentDate.getFullYear();
+        const footer = document.createElement('footer');
+        footer.innerHTML = `<br><p>&copy; ${year} CX. All rights reserved.</p>`;
+        document.body.appendChild(footer);
+
+        var preview_project = true;
+
+        document.querySelector('.button').addEventListener('click', function(event) {
+                event.preventDefault();
+                if (preview_project) {
+                        alert('Previewing the current project...');
+                        alert('The project preview is coming soon!');
+                        return;
+                }
+                
+        });
+</script>
 </html>
