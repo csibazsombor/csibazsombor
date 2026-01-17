@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Unlimited</title>
+
+     <style>
+        @font-face{
+           font-family: Galler;
+           src: url(../../FONTS/GallaeciaForte.ttf);
+        }
+        :root{
+                --default-color: #07090f
+        }
+        body {
+              background-color: var(--default-color);
+              color: white;  
+              font-size: 0.9cm;
+              font-family: 'Galler';
+        }       
+        button {
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                font-size: 1.4cm;
+                border-radius: 12px;
+                color: rgb(189, 164, 133);
+                border-color: wheat;
+                border-inline-style: inherit;
+                border-width: 2px;
+                background-color: rgb(146, 93, 32);
+                transition: all 0.3s;
+                margin-right: -2px;
+        }
+
+        button:hover {
+                transition: all 0.3s;
+                font-size: 1.2cm;   
+                background-color: rgba(146, 93, 32, 0.226)
+        }
+
+        .progress {
+                content: "";
+                background-color: #252f4b49;
+                text-align: center;
+                border-radius: 25px;
+                padding-bottom: 20cm;
+
+        }
+
+        @media (max-width: 768px) {
+                body {
+                        font-size: 0.9cm;
+                }
+                .progress {
+                        padding-bottom: 15.5cm;
+                }
+                button {
+                        font-size: 1cm;
+                        margin-right: -7px;
+                }
+        }
+     </style>
+</head>
+<body>
+        <div class="ui">
+                <div class="hp" id="HP">
+                <div class="character" id="character"></div>
+                </div>
+        </div><br>
+        <div class="progress">
+        </div>
+        <div class="decisions">
+                <button>Attack</button>
+                <button>Search</button>
+                <button>Rest</button>
+        </div>
+</body>
+        <script>
+                // Base script
+                let HP = 10;
+                let character = null;
+
+                // Displaying stats
+                let max_HP = HP;
+
+                function update_stats() {
+
+                        if(HP < 1) {
+                                HP = 0;
+                        }
+
+                        document.getElementById("HP").innerHTML = HP + "/" + max_HP;
+                } update_stats()
+
+
+                // Loading assets
+                character = document.getElementById("character");
+
+
+
+                // Damage and interactions
+                function damage() {
+                        HP -= 1.5;
+                        console.log(HP);
+                        update_stats();
+                }
+
+        </script>
+</html>
