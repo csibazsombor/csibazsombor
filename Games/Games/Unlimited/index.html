@@ -32,14 +32,14 @@
                 border-inline-style: inherit;
                 border-width: 2px;
                 background-color: rgb(139, 122, 102);
-                transition: all 0.3s;
+                transition: all 0.35s;
                 margin-right: -2px;
         }
 
         button:hover {
                 cursor: pointer;
-                transition: all 0.3s;
-                font-size: 1.2cm;
+                transition: all 0.35s;
+                font-size: 1.3cm;
                 color: bisque;   
                 background-color: rgb(190, 165, 135)
         }
@@ -64,26 +64,31 @@
                         font-size: 1cm;
                         margin-right: -7px;
                 }
+                button:hover {
+                font-size: 0.9cm;
+                }
         }
      </style>
 </head>
 <body>
         <div class="ui">
                 <div class="hp" id="HP">
-                <div class="character" id="character"></div>
+
                 </div>
         </div><br>
-        <div class="progress">
+        <div class="progress">MAP
+                <div class="character" id="character"><img src="character-unlimited.png" alt="" height="300"></div>
         </div>
         <div class="decisions">
-                <button>Attack</button>
-                <button>Search</button>
+                <button onclick="Attack()">Attack</button>
+                <button onclick="Search()">Search</button>
         </div>
 </body>
         <script>
                 // Base script
                 let HP = 10;
                 let character = null;
+
 
                 // Displaying stats
                 let max_HP = HP;
@@ -95,20 +100,35 @@
                         }
 
                         document.getElementById("HP").innerHTML = HP + "/" + max_HP;
-                } update_stats()
+                } update_stats();
 
 
                 // Loading assets
                 character = document.getElementById("character");
 
+                //Enemy config
+                let isEnemy;
+                let enemy_HP;
+                let enemy_damage;
 
+                //Spawn enemy
+                function spawn_enemy() {
 
+                }
                 // Damage and interactions
-                function damage() {
-                        HP -= 1.5;
+                function damage(e_damage) {
+                        HP -= e_damage;
                         console.log(HP);
                         update_stats();
                 }
 
+                function Attack() {
+
+                        if(isEnemy == true) {
+
+                        } else {
+                                return;
+                        }
+                }
         </script>
 </html>
