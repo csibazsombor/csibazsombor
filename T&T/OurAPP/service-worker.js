@@ -1,4 +1,4 @@
-const CACHE_VERSION = "our-relationship-cache-v3";
+const CACHE_VERSION = "our-relationship-cache-v7";
 const CACHE_NAME = `cache-${CACHE_VERSION}`;
 
 // Files required for offline usage
@@ -20,7 +20,6 @@ const ASSETS = [
 
   // Minimum images required offline
   "./Images/hug.jpg",
-  "./Images/20241203_190719.jpg"
 ];
 
 // -------------------------
