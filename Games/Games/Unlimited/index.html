@@ -121,7 +121,28 @@
                         console.log(HP);
                         update_stats();
                 }
+                function Search() {
+                        const items = [
+                          { name: "Gold", chance: 0.5 },    // 0.5%
+                          { name: "pergo", chance: 50 },  // 50%
+                          { name: "Stone", chance: 80 }   // 80%
+                        ];
 
+                        function getRandomItem() {
+                          const roll = Math.random() * 100; // 0–100
+                          let cumulative = 0;
+                        
+                          for (const item of items) {
+                            cumulative += item.chance;
+                            if (roll < cumulative) {
+                              return item.name;
+                            }
+                          }
+                        }
+
+                        console.log(getRandomItem());
+
+                }
                 function Attack() {
 
                         if(isEnemy == true) {
