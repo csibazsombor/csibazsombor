@@ -8,8 +8,6 @@ const ASSETS = [
   "./style.css",
   "./manifest.json",
   "./icon.png",
-  "./icon-192.png",
-  "./icon-512.png",
   "./offline.html",
 
   // JS used by page
