@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeFlow - Modern Counters</title>
+    <title>TimeFlow - Beautiful Time Tracking</title>
     <style>
         * {
             margin: 0;
@@ -12,15 +12,23 @@
         }
 
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #f093fb;
+            --accent: #4facfe;
+            --success: #00d4aa;
+            --warning: #ffd93d;
+            --danger: #ff6b9d;
             --dark-bg: #0a0a0f;
-            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(255, 255, 255, 0.06);
+            --card-hover: rgba(255, 255, 255, 0.09);
             --text-primary: #ffffff;
-            --text-secondary: #b3b3b3;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --text-secondary: #a0a0b0;
+            --border: rgba(255, 255, 255, 0.12);
+            --glow: rgba(102, 126, 234, 0.4);
         }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
         body {
             background: var(--dark-bg);
@@ -28,6 +36,7 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
         .bg-pattern {
@@ -37,227 +46,514 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(120, 219, 226, 0.3) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(79, 172, 254, 0.15) 0%, transparent 50%);
             z-index: -1;
         }
 
+        .bg-pattern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
             position: relative;
+            padding: 3rem 0;
         }
 
         .header h1 {
-            font-size: 3.5rem;
+            font-size: 4.5rem;
             font-weight: 800;
-            background: var(--primary-gradient);
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 50%, #4facfe 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
+            filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.3));
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
         .header p {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-clock {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 2px solid var(--border);
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-clock::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .main-clock h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .digital-clock {
+            font-size: 5rem;
+            font-weight: 300;
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(135deg, #ffffff 0%, #667eea 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 8px;
+        }
+
+        .date-display {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .timezone {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: var(--primary);
         }
 
         .counters-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
         }
 
         .counter-card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 2.5rem;
             position: relative;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
         }
 
         .counter-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transition: left 0.5s ease;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
         }
 
         .counter-card:hover::before {
-            left: 100%;
+            opacity: 0.2;
         }
 
         .counter-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            background: var(--card-hover);
         }
 
         .counter-header {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .counter-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .counter-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: inherit;
+            filter: blur(10px);
+            opacity: 0.5;
+        }
+
+        .season-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .time-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .date-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .celebration-icon { background: linear-gradient(135deg, #ffd93d 0%, #ff6b9d 100%); }
+        .success-icon { background: linear-gradient(135deg, #00d4aa 0%, #00c9ff 100%); }
+        .ramadan-icon { background: linear-gradient(135deg, #00d4aa 0%, #667eea 100%); }
+
+        .counter-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .counter-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -2px;
+        }
+
+        .counter-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-top: 1rem;
+        }
+
+        .progress-container {
+            margin: 1.5rem 0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            animation: fillShine 1.5s infinite;
+        }
+
+        @keyframes fillShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .season-progress { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .year-progress { background: linear-gradient(90deg, #f093fb, #f5576c); }
+        .day-progress { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .celebration-progress { background: linear-gradient(90deg, #ffd93d, #ff6b9d); }
+        .success-progress { background: linear-gradient(90deg, #00d4aa, #00c9ff); }
+        .ramadan-progress { background: linear-gradient(90deg, #00d4aa, #667eea); }
+
+        .stats-section {
+            margin-top: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: 'Space Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .milestone-section {
+            margin-top: 3rem;
+        }
+
+        .milestone-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .milestone-header {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
-        .counter-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .season-icon { background: var(--primary-gradient); }
-        .time-icon { background: var(--secondary-gradient); }
-        .date-icon { background: var(--accent-gradient); }
-
-        .counter-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .counter-value {
+        .milestone-icon {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin: 1rem 0;
-            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .counter-description {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.4;
+        .milestone-title {
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
-        .season-progress { background: var(--primary-gradient); }
-        .year-progress { background: var(--secondary-gradient); }
-        .day-progress { background: var(--accent-gradient); }
-
-        .live-time {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .live-time h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .digital-clock {
-            font-size: 3rem;
-            font-weight: 300;
-            font-family: 'Courier New', monospace;
-            background: var(--primary-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        .date-display {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-        }
-
-        .stats-grid {
+        .milestone-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
-        .stat-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 1.5rem;
+        .milestone-item {
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
         }
 
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
+        .milestone-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: 'Space Mono', monospace;
         }
 
-        .stat-label {
+        .milestone-label {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: 0.5rem;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
+        .footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
         }
 
-        .pulse {
-            animation: pulse 2s infinite;
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
         }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .counter-card, .stat-item {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .counter-card:nth-child(1) { animation-delay: 0.1s; }
+        .counter-card:nth-child(2) { animation-delay: 0.2s; }
+        .counter-card:nth-child(3) { animation-delay: 0.3s; }
+        .counter-card:nth-child(4) { animation-delay: 0.4s; }
+        .counter-card:nth-child(5) { animation-delay: 0.5s; }
+        .counter-card:nth-child(6) { animation-delay: 0.6s; }
+        .counter-card:nth-child(7) { animation-delay: 0.7s; }
+        .counter-card:nth-child(8) { animation-delay: 0.8s; }
 
         @media (max-width: 768px) {
             .header h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
+                letter-spacing: -2px;
             }
             
             .digital-clock {
-                font-size: 2rem;
+                font-size: 3rem;
+                letter-spacing: 4px;
             }
             
             .counter-value {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
             .counters-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -267,14 +563,15 @@
     
     <div class="container">
         <div class="header">
-            <h1>TimeFlow</h1>
-            <p>Experience time in beautiful ways with live counters for seasons, days, and moments that matter</p>
+            <h1>⏰ TimeFlow</h1>
+            <p>Experience time in beautiful ways with live counters, progress trackers, and insights that matter</p>
         </div>
 
-        <div class="live-time">
-            <h2>Live Time</h2>
+        <div class="main-clock">
+            <h2>Current Time</h2>
             <div class="digital-clock" id="digitalClock">00:00:00</div>
             <div class="date-display" id="dateDisplay"></div>
+            <div class="timezone" id="timezone"></div>
         </div>
 
         <div class="counters-grid">
@@ -284,89 +581,208 @@
                     <div class="counter-title">Current Season</div>
                 </div>
                 <div class="counter-value" id="currentSeason">Spring</div>
-                <div class="progress-bar">
-                    <div class="progress-fill season-progress" id="seasonProgress"></div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Progress</span>
+                        <span id="seasonPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill season-progress" id="seasonProgress"></div>
+                    </div>
                 </div>
                 <div class="counter-description" id="seasonDescription">Days until next season</div>
             </div>
 
             <div class="counter-card">
                 <div class="counter-header">
-                    <div class="counter-icon time-icon">⏰</div>
+                    <div class="counter-icon time-icon">📅</div>
                     <div class="counter-title">Year Progress</div>
                 </div>
                 <div class="counter-value" id="yearProgress">0%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill year-progress" id="yearProgressBar"></div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>2026</span>
+                        <span id="daysRemaining">0 days left</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill year-progress" id="yearProgressBar"></div>
+                    </div>
                 </div>
-                <div class="counter-description" id="yearDescription">Days remaining in 2025</div>
+                <div class="counter-description" id="yearDescription">Making every day count</div>
             </div>
 
             <div class="counter-card">
                 <div class="counter-header">
-                    <div class="counter-icon date-icon">📅</div>
+                    <div class="counter-icon date-icon">🌅</div>
                     <div class="counter-title">Day Progress</div>
                 </div>
                 <div class="counter-value" id="dayProgress">0%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill day-progress" id="dayProgressBar"></div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Today</span>
+                        <span id="hoursRemaining">0h left</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill day-progress" id="dayProgressBar"></div>
+                    </div>
                 </div>
-                <div class="counter-description">Hours and minutes until midnight</div>
+                <div class="counter-description">Seize the day! ✨</div>
             </div>
 
             <div class="counter-card">
                 <div class="counter-header">
-                    <div class="counter-icon season-icon">🎄</div>
-                    <div class="counter-title">Days to Christmas</div>
+                    <div class="counter-icon success-icon">📊</div>
+                    <div class="counter-title">Week Progress</div>
                 </div>
-                <div class="counter-value" id="christmasCountdown">0</div>
-                <div class="progress-bar">
-                    <div class="progress-fill season-progress" id="christmasProgress"></div>
+                <div class="counter-value" id="weekProgress">0%</div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="weekDay">Monday</span>
+                        <span id="daysToWeekend">0 days to weekend</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill success-progress" id="weekProgressBar"></div>
+                    </div>
                 </div>
-                <div class="counter-description">Ho ho ho! 🎅</div>
+                <div class="counter-description" id="weekDescription">Keep pushing forward! 💪</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon ramadan-icon">🌙</div>
+                    <div class="counter-title">Ramadan 2026</div>
+                </div>
+                <div class="counter-value" id="ramadanCountdown">0</div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Days remaining</span>
+                        <span id="ramadanPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill ramadan-progress" id="ramadanProgress"></div>
+                    </div>
+                </div>
+                <div class="counter-description">Ramadan Mubarak! ☪️ A blessed month approaches</div>
             </div>
 
             <div class="counter-card">
                 <div class="counter-header">
                     <div class="counter-icon time-icon">🎊</div>
-                    <div class="counter-title">Days to New Year</div>
+                    <div class="counter-title">New Year 2027</div>
                 </div>
                 <div class="counter-value" id="newYearCountdown">0</div>
-                <div class="progress-bar">
-                    <div class="progress-fill year-progress" id="newYearProgress"></div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span>Days remaining</span>
+                        <span id="newYearPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill year-progress" id="newYearProgress"></div>
+                    </div>
                 </div>
-                <div class="counter-description">Ready for 2026?</div>
+                <div class="counter-description">New beginnings ahead! 🌟</div>
             </div>
 
             <div class="counter-card">
                 <div class="counter-header">
-                    <div class="counter-icon date-icon">🌙</div>
-                    <div class="counter-title">Week Progress</div>
+                    <div class="counter-icon date-icon">📆</div>
+                    <div class="counter-title">Month Progress</div>
                 </div>
-                <div class="counter-value" id="weekProgress">0%</div>
-                <div class="progress-bar">
-                    <div class="progress-fill day-progress" id="weekProgressBar"></div>
+                <div class="counter-value" id="monthProgress">0%</div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="monthName">January</span>
+                        <span id="monthDays">0 days left</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill day-progress" id="monthProgressBar"></div>
+                    </div>
                 </div>
-                <div class="counter-description" id="weekDescription">Days until weekend</div>
+                <div class="counter-description">This month's journey 📆</div>
+            </div>
+
+            <div class="counter-card">
+                <div class="counter-header">
+                    <div class="counter-icon season-icon">🌍</div>
+                    <div class="counter-title">Quarter Progress</div>
+                </div>
+                <div class="counter-value" id="quarterProgress">0%</div>
+                <div class="progress-container">
+                    <div class="progress-label">
+                        <span id="quarterName">Q1</span>
+                        <span id="quarterDays">0 days left</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill season-progress" id="quarterProgressBar"></div>
+                    </div>
+                </div>
+                <div class="counter-description">Business quarter tracking 📈</div>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-value" id="totalSeconds">0</div>
-                <div class="stat-label">Seconds Today</div>
+        <div class="stats-section">
+            <h2 class="section-title">Today's Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value pulse" id="totalSeconds">0</div>
+                    <div class="stat-label">Seconds Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalMinutes">0</div>
+                    <div class="stat-label">Minutes Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="totalHours">0</div>
+                    <div class="stat-label">Hours Today</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="dayOfYear">0</div>
+                    <div class="stat-label">Day of Year</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="weekOfYear">0</div>
+                    <div class="stat-label">Week of Year</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="dayOfMonth">0</div>
+                    <div class="stat-label">Day of Month</div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="totalMinutes">0</div>
-                <div class="stat-label">Minutes Today</div>
+        </div>
+
+        <div class="milestone-section">
+            <div class="milestone-card">
+                <div class="milestone-header">
+                    <span class="milestone-icon">🎯</span>
+                    <span class="milestone-title">Year Milestones</span>
+                </div>
+                <div class="milestone-grid">
+                    <div class="milestone-item">
+                        <div class="milestone-value" id="milestone25">0</div>
+                        <div class="milestone-label">Days to 25%</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-value" id="milestone50">0</div>
+                        <div class="milestone-label">Days to 50%</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-value" id="milestone75">0</div>
+                        <div class="milestone-label">Days to 75%</div>
+                    </div>
+                    <div class="milestone-item">
+                        <div class="milestone-value" id="milestone100">0</div>
+                        <div class="milestone-label">Days to Year End</div>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value" id="dayOfYear">0</div>
-                <div class="stat-label">Day of Year</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value" id="weekOfYear">0</div>
-                <div class="stat-label">Week of Year</div>
+        </div>
+
+        <div class="footer">
+            <p>TimeFlow - Making every moment count ⏰</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Features</a>
+                <a href="#" class="footer-link">Privacy</a>
             </div>
         </div>
     </div>
@@ -375,14 +791,11 @@
         function updateAllCounters() {
             const now = new Date();
             
-            // Digital Clock
-            const timeString = now.toLocaleTimeString('en-US', { 
-                hour12: false, 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit' 
-            });
-            document.getElementById('digitalClock').textContent = timeString;
+            // Digital Clock with milliseconds
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
             
             // Date Display
             const dateString = now.toLocaleDateString('en-US', { 
@@ -393,37 +806,55 @@
             });
             document.getElementById('dateDisplay').textContent = dateString;
             
-            // Season Calculation
-            const month = now.getMonth();
-            let season, seasonIcon, daysToNext;
+            // Timezone
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            document.getElementById('timezone').textContent = timezone;
             
-            if (month >= 2 && month <= 4) {
+            // Season Calculation with better accuracy
+            const month = now.getMonth();
+            const day = now.getDate();
+            let season, seasonIcon, seasonEnd, seasonStart;
+            
+            // More precise season dates
+            if (month < 2 || (month === 2 && day < 20)) {
+                season = 'Winter';
+                seasonIcon = '❄️';
+                seasonEnd = new Date(now.getFullYear(), 2, 20);
+                seasonStart = new Date(now.getFullYear() - 1, 11, 21);
+            } else if (month < 5 || (month === 5 && day < 21)) {
                 season = 'Spring';
                 seasonIcon = '🌸';
-                daysToNext = new Date(now.getFullYear(), 5, 21) - now;
-            } else if (month >= 5 && month <= 7) {
+                seasonEnd = new Date(now.getFullYear(), 5, 21);
+                seasonStart = new Date(now.getFullYear(), 2, 20);
+            } else if (month < 8 || (month === 8 && day < 23)) {
                 season = 'Summer';
                 seasonIcon = '☀️';
-                daysToNext = new Date(now.getFullYear(), 8, 23) - now;
-            } else if (month >= 8 && month <= 10) {
+                seasonEnd = new Date(now.getFullYear(), 8, 23);
+                seasonStart = new Date(now.getFullYear(), 5, 21);
+            } else if (month < 11 || (month === 11 && day < 21)) {
                 season = 'Autumn';
                 seasonIcon = '🍂';
-                daysToNext = new Date(now.getFullYear(), 11, 21) - now;
+                seasonEnd = new Date(now.getFullYear(), 11, 21);
+                seasonStart = new Date(now.getFullYear(), 8, 23);
             } else {
                 season = 'Winter';
                 seasonIcon = '❄️';
-                daysToNext = new Date(now.getFullYear() + (month === 11 ? 1 : 0), 2, 20) - now;
+                seasonEnd = new Date(now.getFullYear() + 1, 2, 20);
+                seasonStart = new Date(now.getFullYear(), 11, 21);
             }
             
             document.getElementById('currentSeason').textContent = season;
             document.querySelector('.season-icon').textContent = seasonIcon;
             
-            const daysToNextSeason = Math.ceil(daysToNext / (1000 * 60 * 60 * 24));
-            document.getElementById('seasonDescription').textContent = `${daysToNextSeason} days until next season`;
+            const daysToNextSeason = Math.ceil((seasonEnd - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('seasonDescription').textContent = `${daysToNextSeason} days until ${getNextSeason(season)}`;
             
-            // Season progress (approximate)
-            const seasonProgress = ((90 - daysToNextSeason) / 90) * 100;
-            document.getElementById('seasonProgress').style.width = `${Math.max(0, seasonProgress)}%`;
+            // Season progress
+            const seasonLength = (seasonEnd - seasonStart) / (1000 * 60 * 60 * 24);
+            const seasonDaysElapsed = (now - seasonStart) / (1000 * 60 * 60 * 24);
+            const seasonProgressPercent = (seasonDaysElapsed / seasonLength) * 100;
+            document.getElementById('seasonProgress').style.width = `${Math.min(100, seasonProgressPercent)}%`;
+            document.getElementById('seasonPercent').textContent = `${seasonProgressPercent.toFixed(1)}%`;
             
             // Year Progress
             const startOfYear = new Date(now.getFullYear(), 0, 1);
@@ -433,7 +864,7 @@
             document.getElementById('yearProgressBar').style.width = `${yearProgressPercent}%`;
             
             const daysRemainingInYear = Math.ceil((endOfYear - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('yearDescription').textContent = `${daysRemainingInYear} days remaining in ${now.getFullYear()}`;
+            document.getElementById('daysRemaining').textContent = `${daysRemainingInYear} days left`;
             
             // Day Progress
             const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -442,26 +873,13 @@
             document.getElementById('dayProgress').textContent = `${dayProgressPercent.toFixed(1)}%`;
             document.getElementById('dayProgressBar').style.width = `${dayProgressPercent}%`;
             
-            // Christmas Countdown
-            let christmas = new Date(now.getFullYear(), 11, 25);
-            if (now > christmas) {
-                christmas = new Date(now.getFullYear() + 1, 11, 25);
-            }
-            const daysToChristmas = Math.ceil((christmas - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('christmasCountdown').textContent = daysToChristmas;
-            const christmasProgress = ((365 - daysToChristmas) / 365) * 100;
-            document.getElementById('christmasProgress').style.width = `${christmasProgress}%`;
-            
-            // New Year Countdown
-            let newYear = new Date(now.getFullYear() + 1, 0, 1);
-            const daysToNewYear = Math.ceil((newYear - now) / (1000 * 60 * 60 * 24));
-            document.getElementById('newYearCountdown').textContent = daysToNewYear;
-            const newYearProgress = ((365 - daysToNewYear) / 365) * 100;
-            document.getElementById('newYearProgress').style.width = `${newYearProgress}%`;
+            const hoursRemaining = Math.ceil((endOfDay - now) / (1000 * 60 * 60));
+            document.getElementById('hoursRemaining').textContent = `${hoursRemaining}h left`;
             
             // Week Progress
+            const dayOfWeek = now.getDay();
             const startOfWeek = new Date(now);
-            startOfWeek.setDate(now.getDate() - now.getDay());
+            startOfWeek.setDate(now.getDate() - dayOfWeek);
             startOfWeek.setHours(0, 0, 0, 0);
             const endOfWeek = new Date(startOfWeek);
             endOfWeek.setDate(startOfWeek.getDate() + 7);
@@ -469,8 +887,59 @@
             document.getElementById('weekProgress').textContent = `${weekProgressPercent.toFixed(1)}%`;
             document.getElementById('weekProgressBar').style.width = `${weekProgressPercent}%`;
             
-            const daysToWeekend = 6 - now.getDay();
-            document.getElementById('weekDescription').textContent = daysToWeekend === 0 ? "It's weekend!" : `${daysToWeekend} days until weekend`;
+            const weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            document.getElementById('weekDay').textContent = weekDayNames[dayOfWeek];
+            
+            const daysToWeekend = dayOfWeek === 0 ? 0 : (dayOfWeek === 6 ? 0 : 6 - dayOfWeek);
+            document.getElementById('daysToWeekend').textContent = daysToWeekend === 0 ? "It's weekend! 🎉" : `${daysToWeekend} days to weekend`;
+            
+            // Month Progress
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+            const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+            const monthProgressPercent = ((now - startOfMonth) / (endOfMonth - startOfMonth)) * 100;
+            document.getElementById('monthProgress').textContent = `${monthProgressPercent.toFixed(1)}%`;
+            document.getElementById('monthProgressBar').style.width = `${monthProgressPercent}%`;
+            
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('monthName').textContent = monthNames[now.getMonth()];
+            
+            const daysLeftInMonth = Math.ceil((endOfMonth - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('monthDays').textContent = `${daysLeftInMonth} days left`;
+            
+            // Quarter Progress
+            const quarter = Math.floor(now.getMonth() / 3) + 1;
+            const startOfQuarter = new Date(now.getFullYear(), (quarter - 1) * 3, 1);
+            const endOfQuarter = new Date(now.getFullYear(), quarter * 3, 1);
+            const quarterProgressPercent = ((now - startOfQuarter) / (endOfQuarter - startOfQuarter)) * 100;
+            document.getElementById('quarterProgress').textContent = `${quarterProgressPercent.toFixed(1)}%`;
+            document.getElementById('quarterProgressBar').style.width = `${quarterProgressPercent}%`;
+            
+            document.getElementById('quarterName').textContent = `Q${quarter} ${now.getFullYear()}`;
+            const daysLeftInQuarter = Math.ceil((endOfQuarter - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('quarterDays').textContent = `${daysLeftInQuarter} days left`;
+            
+            // Ramadan Countdown (Ramadan 2026 starts approximately February 17, 2026)
+            // Note: Islamic calendar dates vary, this is an approximation
+            let ramadan = new Date(2026, 1, 17); // February 17, 2026
+            if (now > ramadan) {
+                // Ramadan 2027 starts approximately February 6, 2027
+                ramadan = new Date(2027, 1, 6);
+            }
+            const daysToRamadan = Math.ceil((ramadan - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('ramadanCountdown').textContent = daysToRamadan;
+            
+            // Calculate progress through the year for Ramadan countdown
+            const ramadanProgressPercent = ((365 - daysToRamadan) / 365) * 100;
+            document.getElementById('ramadanProgress').style.width = `${Math.max(0, Math.min(100, ramadanProgressPercent))}%`;
+            document.getElementById('ramadanPercent').textContent = `${ramadanProgressPercent.toFixed(1)}%`;
+            
+            // New Year Countdown
+            const newYear = new Date(now.getFullYear() + 1, 0, 1);
+            const daysToNewYear = Math.ceil((newYear - now) / (1000 * 60 * 60 * 24));
+            document.getElementById('newYearCountdown').textContent = daysToNewYear;
+            const newYearProgressPercent = ((365 - daysToNewYear) / 365) * 100;
+            document.getElementById('newYearProgress').style.width = `${newYearProgressPercent}%`;
+            document.getElementById('newYearPercent').textContent = `${newYearProgressPercent.toFixed(1)}%`;
             
             // Stats
             const secondsToday = Math.floor((now - startOfDay) / 1000);
@@ -479,21 +948,48 @@
             const minutesToday = Math.floor(secondsToday / 60);
             document.getElementById('totalMinutes').textContent = minutesToday.toLocaleString();
             
+            const hoursToday = (minutesToday / 60).toFixed(1);
+            document.getElementById('totalHours').textContent = hoursToday;
+            
             const dayOfYear = Math.ceil((now - startOfYear) / (1000 * 60 * 60 * 24));
             document.getElementById('dayOfYear').textContent = dayOfYear;
             
             const weekOfYear = Math.ceil(dayOfYear / 7);
             document.getElementById('weekOfYear').textContent = weekOfYear;
+            
+            document.getElementById('dayOfMonth').textContent = now.getDate();
+            
+            // Milestones
+            const totalDaysInYear = Math.ceil((endOfYear - startOfYear) / (1000 * 60 * 60 * 24));
+            const daysElapsed = dayOfYear;
+            
+            const milestone25Day = Math.floor(totalDaysInYear * 0.25);
+            const milestone50Day = Math.floor(totalDaysInYear * 0.50);
+            const milestone75Day = Math.floor(totalDaysInYear * 0.75);
+            
+            document.getElementById('milestone25').textContent = Math.max(0, milestone25Day - daysElapsed);
+            document.getElementById('milestone50').textContent = Math.max(0, milestone50Day - daysElapsed);
+            document.getElementById('milestone75').textContent = Math.max(0, milestone75Day - daysElapsed);
+            document.getElementById('milestone100').textContent = daysRemainingInYear;
         }
         
-        // Update immediately and then every second
+        function getNextSeason(currentSeason) {
+            const seasons = { 'Winter': 'Spring', 'Spring': 'Summer', 'Summer': 'Autumn', 'Autumn': 'Winter' };
+            return seasons[currentSeason];
+        }
+        
+        // Update immediately
         updateAllCounters();
+        
+        // Update every second
         setInterval(updateAllCounters, 1000);
         
-        // Add subtle animation to counter cards
-        const cards = document.querySelectorAll('.counter-card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
+        // Add entrance animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.counter-card, .stat-item');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
         });
     </script>
 </body>
