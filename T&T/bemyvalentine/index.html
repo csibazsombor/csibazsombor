@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will you be my valentine?</title>
+
+<style>
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    margin-top: 5cm;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    overflow: hidden;
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+h1{
+    transition: 0.3s;
+}
+
+button{
+    border-radius: 30px;
+    background-color: pink;
+    border: none;
+    padding: 12px 25px;
+    font-size: 20px;
+    cursor: pointer;
+    margin: 10px;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+button:hover{
+    transform: scale(1.1);
+    background-color: hotpink;
+}
+
+#yes-btn{
+    background-color: #ff4d6d;
+    color: white;
+}
+
+.flowerpos1{
+    margin-left: 280px;
+}
+
+.flowerpos2{
+    margin-left: -280px;
+}
+
+/* Floating hearts */
+.heart {
+    position: absolute;
+    font-size: 20px;
+    animation: float 4s linear infinite;
+    color: #ff4d6d;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-600px) scale(1.5);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>  
+
+<h1 class="flowerpos1">🌹</h1>  
+
+<img id="image"
+src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3ExMnl5dWJsdDFvOG91MTVobWMyamVqa3pyZGc2bXFobm91aDM0bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Zl7u48zLVFgLpRwq6f/giphy.gif"
+width="200" height="200">
+
+<h1 id="h1">Will you be my valentine?</h1>             
+
+<button onclick="yes()" id="yes-btn">Yes</button>
+<button onclick="no()" id="no-btn">No</button>
+
+<h1 class="flowerpos2">🌹</h1>
+
+<script>
+let yesbutton = document.getElementById("yes-btn");
+let nobutton = document.getElementById("no-btn");
+
+function yes(){
+    let image = document.getElementById("image");
+    image.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTd1MHc5YnRobmJieWlubXBveXFlNHZyYzJwcWR5MG83aHp2YzZudiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/T70hpBP1L0N7U0jtkq/giphy.gif";
+    
+    let h1 = document.getElementById("h1");
+    h1.innerText = "YEAYYYYYY 😽💖";
+    h1.style.transform = "scale(1.3)";
+    h1.style.color = "#ff004c";
+
+    createHearts();
+}
+
+function no(){
+    // Make Yes button bigger
+    yesbutton.style.fontSize =
+    (parseInt(window.getComputedStyle(yesbutton).fontSize) + 30) + "px";
+
+}
+
+// Create floating hearts
+function createHearts(){
+    for(let i = 0; i < 20; i++){
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "💖";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = window.innerHeight + "px";
+        heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 4000);
+    }
+}
+</script>
+
+</body>
+</html>
